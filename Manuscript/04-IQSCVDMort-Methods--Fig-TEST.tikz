@@ -1,0 +1,103 @@
+\begin{tikzpicture}[auto,
+block_center/.style={rectangle,draw=@set_draw,thick,fill=white,
+textwidth=8em,textcentered,
+minimumheight=4em},
+block_left/.style={rectangle,draw=@set_draw,thick,fill=white,
+textwidth=16em,textragged,minimumheight=4em,innersep=6pt},
+block_noborder/.style={rectangle,draw=none,thick,fill=none,
+textwidth=18em,textcentered,minimumheight=1em},
+block_assign/.style={rectangle,draw=@set_draw,thick,fill=white,
+textwidth=18em,textragged,minimumheight=3em,innersep=6pt},
+block_lost/.style={rectangle,draw=@set_draw,thick,fill=white,
+textwidth=16em,textragged,minimumheight=3em,innersep=6pt},
+line/.style={draw,thick,-latex',shorten>=0pt}]
+   % Outlining the flowchart using the PGF/TikZ matrix function
+   \matrix [column sep=5mm,row sep=3mm] {
+%Enrollment-row1
+\node[block_center](referred){Referred(n=\figvalue{referred})};
+&\node[block_left](excluded1){Excluded(n=\figvalue{referred_excluded}):\\
+a)Didnotwishtoparticipate(n=\figvalue{referred_excluded_nopartic})\\
+b)Didnotshowforinterview(n=\figvalue{referred_excluded_noshow})\\
+c)Otherreasons(n=\figvalue{referred_excluded_other})};\\
+%Enrollment-row2
+\node[block_center](assessment){AssessedforEligibility(n=\figvalue{assessed})};
+&\node[block_left](excluded2){Excluded(n=\figvalue{assessed_excluded}):\\
+a)Inclusioncriterianotmet(n=\figvalue{assessed_excluded_inclusioncritunmet})\\
+b)Exclusioncriteria(s)met(n=\figvalue{assessed_excluded_exclusioncritmet})\\
+c)Notsuitedforgroup(n=\figvalue{assessed_excluded_unsuitedgroup})\\
+d)Notsuitedforintervention(n=\figvalue{assessed_excluded_unsuitedtx})\\
+e)Soughtothertreatment(n=\figvalue{assessed_excluded_othertx})\\
+f)Otherreasons(n=\figvalue{assessed_excluded_other})};\\
+%Enrollment-row3
+\node[block_center](random){Randomized(n=\figvalue{randomized})};
+&\\
+%Follow-up-row4
+\node[block_noborder](i){Interventiongroup};
+&\node[block_noborder](wlc){Wait-listcontrolgroup};\\
+%Follow-up-row5
+\node[block_assign](i_T0){Allocatedtointervention(n=\figvalue{alloc_interventiongroup}):\\
+\hReceivedintervention(n=\figvalue{intervention_received})\\
+\hDidnotreceiveintervention(n=\figvalue{intervention_unreceived},\\
+\hh\figvalue{intervention_unreceived_exclusioncrit}withexclusionarycriteria,\\
+\hh\figvalue{intervention_unreceived_notime}couldnotfindtimetoparticipate)};
+	&\node[block_assign](wlc_T0){Allocatedtowait-list(n=\figvalue{alloc_waitlistgroup}):\\
+\hStayedonwait-list(n=\figvalue{waitlist_stayedon})\\
+\hDidnotstayonwait-list(n=\figvalue{waitlist_didnotstay},\\
+\hh\figvalue{waitlist_didnotstay_selfinduced}lostmotivation,\\
+\hh\figvalue{waitlist_didnotstay_leftarea}wasofferedtreatmentelsewhere)};\\
+%Follow-up-row6
+\node[block_lost](i_T3){Post-interventionmeasurement:\\
+\hLosttofollow-up(n=\figvalue{postintervention_lost},\\
+\hh\figvalue{postintervention_lost_droppedout}droppedoutoftheintervention,\\
+\hh\figvalue{postintervention_lost_nomeasurement}didnotcompletemeasurement)};
+	&\node[block_lost](wlc_T3){Post-wait-listmeasurement:\\
+\hLosttofollow-up(n=\figvalue{postwaitlist_lost},\\
+\hh\figvalue{postwaitlist_lost_droppedout}droppedoutofthewait-list,\\
+\hh\figvalue{postwaitlist_lost_nomeasurement}didnotcompletemeasurement)};\\
+%Follow-up-row7
+%	Emptyfirstcolumnforinterventiongroup
+&\node[block_assign](wlc_T36){Allocatedtointervention(n=\figvalue{postwaitlist_intervention_allocated}):\\
+\hReceivedintervention(n=\figvalue{postwaitlist_intervention_received})\\
+\hDidnotreceiveintervention(n=\figvalue{postwaitlist_intervention_didnotreceive},\\
+\hh\figvalue{postwaitlist_intervention_dnr_lowmotivation}reportedlowmotivation,\\
+\hh\figvalue{postwaitlist_intervention_dnr_notime}couldnotfindtimetoparticipate)};\\
+%Follow-up-row8
+\node[block_lost](i_T6){3-monthsfollow-upmeasurement:\\
+\hLosttofollow-up(n=\figvalue{intervention_3monthfollowup},\\
+\hhdidnotcompletemeasurement)};
+&\node[block_lost](wlc_T6){Post-interventionmeasurement:\\
+\hLosttofollow-up(n=\figvalue{postwaitlist_postintervention_losstofollowup},\\
+\hh\figvalue{postwaitlist_postintervention_losstofollowup_droppedout}droppedoutoftheintervention,\\
+\hh\figvalue{postwaitlist_postintervention_losstofollowup_incomplete}didnotcompletemeasurement)};\\
+%Follow-up-row9
+%	Emptyfirstcolumnforinterventiongroup
+&\node[block_lost](wlc_T9){3-monthsfollow-upmeasurement\\
+\hLosttofollow-up(n=\figvalue{postwaitlist_3monthfollowup},\\
+\hhdidnotcompletemeasurement)};\\
+%Analysis-row10
+\node[block_assign](i_ana){Analysed(n=\figvalue{intervention_analyzed})};
+&\node[block_assign](wlc_ana){Analysed(n=\figvalue{postwaitlist_analyzed})};\\
+   };% End Matrix
+   % Connecting nodes with paths
+   \begin{scope}[every path/.style=line]
+%Pathsforenrollmentrows
+\path(referred)--(excluded1);
+\path(referred)--(assessment);
+\path(assessment)--(excluded2);
+\path(assessment)--(random);
+\path(random)--(i);
+\path(random)-|(wlc);
+%Pathsfori-groupfollow-uprows
+\path(i)--(i_T0);
+\path(i_T0)--(i_T3);
+\path(i_T3)--(i_T6);
+\path(i_T6)--(i_ana);
+%Pathsforwlc-groupfollow-uprows
+\path(wlc)--(wlc_T0);
+\path(wlc_T0)--(wlc_T3);
+\path(wlc_T3)--(wlc_T36);
+\path(wlc_T36)--(wlc_T6);
+\path(wlc_T6)--(wlc_T9);
+\path(wlc_T9)--(wlc_ana);
+   \end{scope}
+\end{tikzpicture}

@@ -1,0 +1,10 @@
+v 3
+* Reference http://www.stata.com/manuals13/rnet.pdf
+d Isaac M. E. Dodd
+d imedodd@gmail.com
+d 
+d Distribution-Date: 28july2017
+p flowchart Download the Flowchart package.
+f flowchart.ado
+f flowchart.sthlp
+e

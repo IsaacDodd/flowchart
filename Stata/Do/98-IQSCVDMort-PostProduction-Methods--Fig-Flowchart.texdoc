@@ -1,0 +1,116 @@
+
+texdoc substitute "$Flowchart_Settings"
+
+/*tex
+ \begin{tikzpicture}[auto,
+     block_center/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_center_textwidth, text @set_center_textalign,
+       minimum height=@set_center_minheight},
+     block_left/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_left_textwidth, text @set_left_textalign, minimum height=@set_left_minheight, inner sep=@set_left_innersep},
+     block_noborder/.style ={rectangle, draw=@set_noborder_draw, thick, fill=@set_noborder_fill,
+       text width=@set_noborder_textwidth, text @set_noborder_textalign, minimum height=@set_noborder_minheight},
+     block_assign/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_assign_textwidth, text @set_assign_textalign, minimum height=@set_assign_minheight, inner sep=@set_assign_innersep},
+     block_lost/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_lost_textwidth, text @set_lost_textalign, minimum height=@set_lost_minheight, inner sep=@set_lost_innersep},
+       line/.style ={draw, thick, -latex', shorten >=0pt}]
+tex*/
+
+texdoc write    % Outlining the flowchart using the PGF/TikZ matrix function
+
+texdoc write    \matrix [column sep=5mm,row sep=3mm] {
+	/*tex
+      % Enrollment - row 1
+      \node [block_center] (referred) {Referred (n=\figvalue{referred})};
+      & \node [block_left] (excluded1) {Excluded (n=\figvalue{referred_excluded}): \\
+        a) Did not wish to participate (n=\figvalue{referred_excluded_nopartic}) \\
+        b) Did not show for interview (n=\figvalue{referred_excluded_noshow}) \\
+        c) Other reasons (n=\figvalue{referred_excluded_other})}; \\
+      % Enrollment - row 2
+      \node [block_center] (assessment) {Assessed for Eligibility (n=\figvalue{assessed})}; 
+      & \node [block_left] (excluded2) {Excluded (n=\figvalue{assessed_excluded}): \\
+        a) Inclusion criteria not met (n=\figvalue{assessed_excluded_inclusioncritunmet}) \\
+        b) Exclusion criteria(s) met (n=\figvalue{assessed_excluded_exclusioncritmet}) \\
+        c) Not suited for group (n=\figvalue{assessed_excluded_unsuitedgroup}) \\
+        d) Not suited for intervention (n=\figvalue{assessed_excluded_unsuitedtx}) \\
+        e) Sought other treatment (n=\figvalue{assessed_excluded_othertx}) \\
+        f) Other reasons (n=\figvalue{assessed_excluded_other})}; \\
+      % Enrollment - row 3
+      \node [block_center] (random) {Randomized (n=\figvalue{randomized})};
+      & \\
+      % Follow-up - row 4
+      \node [block_noborder] (i) {Intervention group}; 
+      & \node [block_noborder] (wlc) {Wait-list control group}; \\
+      % Follow-up - row 5
+      \node [block_assign] (i_T0) {Allocated to intervention (n=\figvalue{alloc_interventiongroup}): \\
+      \h Received intervention (n=\figvalue{intervention_received}) \\
+      \h Did not receive intervention (n=\figvalue{intervention_unreceived}, \\
+      \hh \figvalue{intervention_unreceived_exclusioncrit} with exclusionary criteria, \\
+      \hh \figvalue{intervention_unreceived_notime} could not find time to participate)}; 
+	  & \node [block_assign] (wlc_T0) {Allocated to wait-list (n=\figvalue{alloc_waitlistgroup}): \\
+      \h Stayed on wait-list (n=\figvalue{waitlist_stayedon}) \\
+      \h Did not stay on wait-list (n=\figvalue{waitlist_didnotstay}, \\
+      \hh \figvalue{waitlist_didnotstay_selfinduced} lost motivation, \\
+      \hh \figvalue{waitlist_didnotstay_leftarea} was offered treatment elsewhere)}; \\
+      % Follow-up - row 6
+      \node [block_lost] (i_T3) {Post-intervention measurement: \\
+      \h Lost to follow-up (n=\figvalue{postintervention_lost}, \\
+      \hh \figvalue{postintervention_lost_droppedout} dropped out of the intervention, \\
+      \hh \figvalue{postintervention_lost_nomeasurement} did not complete measurement)}; 
+	  & \node [block_lost] (wlc_T3) {Post-wait-list measurement: \\
+      \h Lost to follow-up (n=\figvalue{postwaitlist_lost}, \\
+      \hh \figvalue{postwaitlist_lost_droppedout} dropped out of the wait-list, \\
+      \hh \figvalue{postwaitlist_lost_nomeasurement} did not complete measurement)}; \\
+      % Follow-up - row 7
+      % 	Empty first column for intervention group 
+      & \node [block_assign] (wlc_T36) {Allocated to intervention (n=\figvalue{postwaitlist_intervention_allocated}): \\
+      \h Received intervention (n=\figvalue{postwaitlist_intervention_received}) \\
+      \h Did not receive intervention (n=\figvalue{postwaitlist_intervention_didnotreceive}, \\
+      \hh \figvalue{postwaitlist_intervention_dnr_lowmotivation} reported low motivation, \\
+      \hh \figvalue{postwaitlist_intervention_dnr_notime} could not find time to participate)}; \\
+      % Follow-up - row 8
+      \node [block_lost] (i_T6) {3-months follow-up measurement: \\
+      \h Lost to follow-up (n=\figvalue{intervention_3monthfollowup}, \\
+      \hh did not complete measurement)}; 
+      & \node [block_lost] (wlc_T6) {Post-intervention measurement: \\
+      \h Lost to follow-up (n=\figvalue{postwaitlist_postintervention_losstofollowup}, \\
+      \hh \figvalue{postwaitlist_postintervention_losstofollowup_droppedout} dropped out of the intervention, \\
+      \hh \figvalue{postwaitlist_postintervention_losstofollowup_incomplete} did not complete measurement)}; \\
+      % Follow-up - row 9
+      % 	Empty first column for intervention group 
+      & \node [block_lost] (wlc_T9) {3-months follow-up measurement \\
+      \h Lost to follow-up (n=\figvalue{postwaitlist_3monthfollowup}, \\
+      \hh did not complete measurement)}; \\
+      % Analysis - row 10
+      \node [block_assign] (i_ana) {Analysed (n=\figvalue{intervention_analyzed})}; 
+      & \node [block_assign] (wlc_ana) {Analysed (n=\figvalue{postwaitlist_analyzed})}; \\
+	tex*/
+texdoc write    };% End Matrix
+
+texdoc write    % Connecting nodes with paths
+texdoc write    \begin{scope}[every path/.style=line]
+	/*tex
+      % Paths for enrollment rows
+      \path (referred)   -- (excluded1);
+      \path (referred)   -- (assessment);
+      \path (assessment) -- (excluded2);
+      \path (assessment) -- (random);
+      \path (random)     -- (i);
+      \path (random)     -| (wlc);
+      % Paths for i-group follow-up rows
+      \path (i)          -- (i_T0);
+      \path (i_T0)       -- (i_T3);
+      \path (i_T3)       -- (i_T6);
+      \path (i_T6)       -- (i_ana);
+      % Paths for wlc-group follow-up rows
+      \path (wlc)        -- (wlc_T0);
+      \path (wlc_T0)     -- (wlc_T3);
+      \path (wlc_T3)     -- (wlc_T36);
+      \path (wlc_T36)    -- (wlc_T6);
+      \path (wlc_T6)     -- (wlc_T9);
+      \path (wlc_T9)     -- (wlc_ana);
+	tex*/
+
+texdoc write    \end{scope}
+texdoc write \end{tikzpicture}

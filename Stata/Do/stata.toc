@@ -1,0 +1,6 @@
+v 3
+* Reference http://www.stata.com/manuals13/rnet.pdf
+d flowchart
+d Use this command to generate a publication-quality Subject Disposition Flowchart Diagram, similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format
+d 
+p flowchart Download the Flowchart package.
