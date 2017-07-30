@@ -1,5 +1,6 @@
+texdoc local settings_substitutions = `"$Flowchart_Settings"'
 
-texdoc substitute "$Flowchart_Settings"
+texdoc substitute `settings_substitutions'
 
 /*tex
  \begin{tikzpicture}[auto,

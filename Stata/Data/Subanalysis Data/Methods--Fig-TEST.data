@@ -1,3 +1,4 @@
+set_dummy = null
 set_draw = black
 set_fill = white
 set_center_textwidth = 8em

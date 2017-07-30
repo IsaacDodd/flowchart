@@ -8,7 +8,19 @@ capture program drop flowchart
 *! version 0.0.1  28jul2017  Isaac M. E. Dodd
 program define flowchart
 	version 13
-	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]	
+	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]
+	
+	* Parse the token for a possible sub-command that contains a parameter (e.g., flowchart subcommand(parameter): ... )
+	* 	This is necessary since Stata's 'syntax' command returns the subcommand token `1' with a colon. This method ensures the proper string is parsed.
+	gettoken subcommand 0 : 0, parse(" :") quotes
+	while `"`subcommand'"' != ":" & `"`subcommand'"' != "" {
+		local subcmdwithparam `"`subcmdwithparam' `subcommand'"'
+		gettoken subcommand 0 : 0, parse(" :") quotes
+	}
+	* Parse the possible sub-command with parameter, accounting for any whitespace within the passed parameter and subcommand.
+	local subparam = trim(substr(trim("`subcmdwithparam'"), strpos(trim("`subcmdwithparam'"), "(")+1, length(trim("`subcmdwithparam'"))-strpos(trim("`subcmdwithparam'"), "(")-1))
+	local subcmdnew = substr(trim("`subcmdwithparam'"), 1, strpos(trim("`subcmdwithparam'"), "(")-1)
+	
 	if("`1'" == "init" | "`1'" == "init,") {
 		global Flowchart_Settings = ""
 		capture file close FlowchartFile
@@ -28,7 +40,28 @@ program define flowchart
 		else if("`2'" == "row" | "`2'" == "row,") {
 			display "Write: `2' `name' `value'"
 		}
-	*display "0 = `0' ; 1 = `1' ; 2 = `2' ; 3 = `3' ; 4 = `4' ; 5 = `5' ; 6 = `6' ; 7 = `7'"
+		*display "0 = `0' ; 1 = `1' ; 2 = `2' ; 3 = `3' ; 4 = `4' ; 5 = `5' ; 6 = `6' ; 7 = `7'"
+	}
+	else if("`1'" == "writerow:") {
+	   gettoken varfirst varothers : 0
+	   display ""
+	   display " First Variable: `varfirst'"
+	   display ""
+	   display "Macro Without Quotes: " `varothers'
+	   display ""
+	   display `"Compound Quotes (CQ's):  `varothers'"'
+	   display ""
+	   display `"Entire Statement (With CQ's): `0'"'
+	   display ""
+
+	   display `"Tokens:"'
+	   display ""
+	   local i = 1
+	   while "``i''" != "" {
+		  display "`i': ``i''"
+		  display ""
+		  local i = `i' + 1
+	   }
 	}
 	else if("`1'" == "newbox") {
 		display "New Box: `1' `2'"
@@ -36,7 +69,7 @@ program define flowchart
 end
 capture program drop flowchart_init
 program define flowchart_init
-	*flowchart_writevar, name("set_dummy") value("null")	// Set dummy variable since the first variable is not recognized by texdoc.
+	flowchart_writevar, name("set_dummy") value("null")	// Set dummy variable since the first variable is not recognized by texdoc.
 	flowchart_writevar, name("set_draw") value("black")
 	flowchart_writevar, name("set_fill") value("white")
 	flowchart_writevar, name("set_center_textwidth") value("8em")
@@ -90,7 +123,7 @@ program define flowchart_tdwrite
 end
 
 flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
-flowchart write row, 
+flowchart write row
 flowchart write box, name("Test")
 flowchart write box, name("TestBoxName") value("TestBoxValue")
 flowchart write row, name("TestRow")

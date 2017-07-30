@@ -39,7 +39,7 @@ default is {cmd:separator(5)}{p_end}
 {marker description}{. . .}
 {title:Description}
 {pstd}
-{cmd:flowchart} is acommand that generates a Subject Disposition Flowchart Diagram. This is similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format using data from a dataset. This command uses the 'texdoc' command (written by Ben Jann). Install it first by typing into Stata: 'net install texdoc, replace'
+{cmd:flowchart} is a command that generates a Subject Disposition Flowchart Diagram. This is similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format using data from a dataset. This command uses the 'texdoc' command (written by Ben Jann). Install it first by typing into Stata: 'net install texdoc, replace'
 {marker options}{. . .}
 {title:Options}
 {dlgtab:Main}
