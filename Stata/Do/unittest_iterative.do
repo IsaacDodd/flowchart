@@ -36,9 +36,9 @@ program define flowchart_writeblock
 		display ""
 		
 		
-		local i = 1
+		local i = 1		// Token Iterator
 		local blockparse = "center"
-display `"      % Row - `subparam'"'
+flowchart_tdwrite `"      % Row - `subparam'"'
 		
 		while "``i''" != "" {
 			display "`i': ``i''"
@@ -54,36 +54,82 @@ display `"      % Row - `subparam'"'
 				continue
 			}
 			
-			local ilookahead = `i' + 1
+			* Generate a Look-Ahead Macro: This allows the conditional if statements determine the end of a block.
+			local ilookahead = `i' + 3
 			display `"			LA: ``ilookahead'' "'
 			
 			if("`blockparse'" == "center") {
-				local cblock_string_node = `"\node [block_`blockparse'] (``i'')"'
-				local i = `i' + 1
-				local cblock_string_n = `"(n=\figvalue{``i''})"'
-				local i = `i' + 1
-				local cblock_string_lead = `"``i''"'
-display `"      `cblock_string_node' {`cblock_string_lead' `cblock_string_n'};"'
-			} 
+flowchart_tdwrite `"      \node [block_`blockparse'] (`subparam'_`blockparse') {"'	
+			} // fi: End of BlockParse
 			else if("`blockparse'" == "left") {
-				local lblock_string_node = `"\node [block_`blockparse'] (``i'')"'
+flowchart_tdwrite `"      & \node [block_`blockparse'] (`subparam'_`blockparse') {"'	
+			} // fi: End of BlockParse
+			
+			local k = 1	// Line Iterator
+			local stop = ""
+			while("`stop'" == "") {
+				local linename = `"``i''"'
 				local i = `i' + 1
-				local lblock_string_n = `"(n=\figvalue{``i''})"'
+				local linenum = `"``i''"'
+				flowchart_writevar, name(`"`linename'"') value(`"`linenum'"') // Store the number as the named line's number value.
 				local i = `i' + 1
-				local lblock_string_lead = `"``i''"'
-display `"      & `lblock_string_node' {`lblock_string_lead' `lblock_string_n'};"'
+				local linedesc = `"``i''"'
+				if(`k' == 1) {
+					flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead
+				}
+				else if(`k' != 1 & trim("``ilookahead''") == ",") {
+					flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') end
+				}
+				else {
+					flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') 
+				}
 				
-				* Set the block back to the center block for the next row.
-				local blockparse = "center"
-			}
-*display `"      & \node [block_left] (excluded1) {Excluded (n=\figvalue{referred_excluded}): \\"'
-*display `"        a) Did not wish to participate (n=\figvalue{referred_excluded_nopartic}) \\"'
-*display `"        b) Did not show for interview (n=\figvalue{referred_excluded_noshow}) \\"'
-*display `"        c) Other reasons (n=\figvalue{referred_excluded_other})}; \\"'
-
+				if(trim("``ilookahead''") != ",") {
+					local stop = ""
+				}
+				else {
+					local stop = "stop"
+				}
+			} // elihw: End of LineWhile
+flowchart_tdwrite `"      }; \\ "'				
 			local i = `i' + 1
-		}
-	}
+		} // elihw: End of TokenWhile
+	} //fi: End of Writerow
 end
 
+capture program drop flowchart_tdwrite
+program define flowchart_tdwrite
+	syntax [anything] [, indent]
+	display  "1=|`1'|, 2=|`2'|, 3=|`3'| indent=|`indent'|"
+*	texdoc write "`varname'"
+end
+
+capture program drop flowchart_tdwriteline
+program define flowchart_tdwriteline
+	syntax [anything] [, indent lead end name(string) num(string) desc(string)]
+	if("`lead'" != "") {
+		local linestring = `"        `desc' (n=`num'): \\ "'
+	}
+	else {
+		if("`indent'" != "") {
+			local linestring = `"        \h\h `num' `desc' \\ "'
+		}
+		else {
+			local linestring = `"        \h`desc' (n=`num') \\ "'
+		}
+	}
+flowchart_tdwrite `"`linestring'"'
+*	texdoc write "`varname'"
+end
+capture program drop flowchart_writevar
+program define flowchart_writevar
+	syntax [anything] [, name(string) value(string) *]	
+	local variablerow "`name' = `value'"
+	* file write FlowchartFile "`variablerow'" _n	<-- Temporarily stop writing to file for unittest...
+	if(substr("`name'",1,4) == "set_") {
+		global Flowchart_Settings = `"$Flowchart_Settings @`name'"'
+		global Flowchart_Settings = `"$Flowchart_Settings "`value'""'
+	}
+end
+* ------------------------
 flowchart_writeblock writerow(row_name): "referred" 173 "Referred" "lblock1_line2" 43 "This is another row, of a block" "lblock1_line3" 3 "This is another row, of a block", "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a block" "rblock1_line3" 44 "This is another row, of a block"
