@@ -10,17 +10,6 @@ program define flowchart
 	version 13
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]
 	
-	* Parse the token for a possible sub-command that contains a parameter (e.g., flowchart subcommand(parameter): ... )
-	* 	This is necessary since Stata's 'syntax' command returns the subcommand token `1' with a colon. This method ensures the proper string is parsed.
-	gettoken subcommand 0 : 0, parse(" :") quotes
-	while `"`subcommand'"' != ":" & `"`subcommand'"' != "" {
-		local subcmdwithparam `"`subcmdwithparam' `subcommand'"'
-		gettoken subcommand 0 : 0, parse(" :") quotes
-	}
-	* Parse the possible sub-command with parameter, accounting for any whitespace within the passed parameter and subcommand.
-	local subparam = trim(substr(trim("`subcmdwithparam'"), strpos(trim("`subcmdwithparam'"), "(")+1, length(trim("`subcmdwithparam'"))-strpos(trim("`subcmdwithparam'"), "(")-1))
-	local subcmdnew = substr(trim("`subcmdwithparam'"), 1, strpos(trim("`subcmdwithparam'"), "(")-1)
-	
 	if("`1'" == "init" | "`1'" == "init,") {
 		global Flowchart_Settings = ""
 		capture file close FlowchartFile
@@ -42,29 +31,51 @@ program define flowchart
 		}
 		*display "0 = `0' ; 1 = `1' ; 2 = `2' ; 3 = `3' ; 4 = `4' ; 5 = `5' ; 6 = `6' ; 7 = `7'"
 	}
-	else if("`1'" == "writerow:") {
-	   gettoken varfirst varothers : 0
-	   display ""
-	   display " First Variable: `varfirst'"
-	   display ""
-	   display "Macro Without Quotes: " `varothers'
-	   display ""
-	   display `"Compound Quotes (CQ's):  `varothers'"'
-	   display ""
-	   display `"Entire Statement (With CQ's): `0'"'
-	   display ""
-
-	   display `"Tokens:"'
-	   display ""
-	   local i = 1
-	   while "``i''" != "" {
-		  display "`i': ``i''"
-		  display ""
-		  local i = `i' + 1
-	   }
-	}
 	else if("`1'" == "newbox") {
 		display "New Box: `1' `2'"
+	}
+	else {
+	
+		* Parse the token for a possible sub-command that contains a parameter (e.g., flowchart subcommand(parameter): ... )
+		* 	This is necessary since Stata's 'syntax' command returns the subcommand token `1' with a colon. This method ensures the proper string is parsed.
+		gettoken subcommand 0 : 0, parse(" :") quotes
+		while `"`subcommand'"' != ":" & `"`subcommand'"' != "" {
+			local subcmdwithparam `"`subcmdwithparam' `subcommand'"'
+			gettoken subcommand 0 : 0, parse(" :") quotes
+			display `"Subcommand via GetToken: `subcommand'"'
+			display "Subcommand via Syntax: `1'"
+			display `"Subcommand with Parameter: `subcmdwithparam'"'
+			display `"Compound Quotes (CQ's):  `0'"'
+		}
+		* Parse the possible sub-command with parameter, accounting for any whitespace within the passed parameter and subcommand.
+		local subparam = trim(substr(trim("`subcmdwithparam'"), strpos(trim("`subcmdwithparam'"), "(")+1, length(trim("`subcmdwithparam'"))-strpos(trim("`subcmdwithparam'"), "(")-1))
+		local subcmdparsed = substr(trim("`subcmdwithparam'"), 1, strpos(trim("`subcmdwithparam'"), "(")-1)
+		
+			display `"Subparameter via String Parse (CQs):  `subparam'"'
+			display `"Subcommand via String Parse (CQs):  `subcmdparsed'"'
+			
+		if("`1'" == "writerow:" | "`1'" == "writerow" | "`subcmdparsed'" == "writerow" | trim("`subcmdparsed'") == "writerow") {
+	
+			gettoken varfirst varothers : 0
+			display ""
+			display " First Variable: `varfirst'"
+			display ""
+			display "Macro Without Quotes: " `varothers'
+			display ""
+			display `"Compound Quotes (CQ's):  `varothers'"'
+			display ""
+			display `"Entire Statement (With CQ's): `0'"'
+			display ""
+
+			display `"Tokens:"'
+			display ""
+			local i = 1
+			while "``i''" != "" {
+				display "`i': ``i''"
+				display ""
+				local i = `i' + 1
+			}
+	   }
 	}
 end
 capture program drop flowchart_init
@@ -123,11 +134,16 @@ program define flowchart_tdwrite
 end
 
 flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
-flowchart write row
+
 flowchart write box, name("Test")
 flowchart write box, name("TestBoxName") value("TestBoxValue")
 flowchart write row, name("TestRow")
 flowchart write row, name("TestRowName") value("TestRowValue")
 flowchart write row
+
+
+flowchart writerow(row_name): "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblock1_line3" 3 "This is another row, of a block", ///
+	"rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a block" "rblock1_line3" 44 "This is another row, of a block"
+
 display `" $Flowchart_Settings "'
 flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz")

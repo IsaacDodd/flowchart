@@ -24604,3 +24604,899 @@ end of do-file
 
 r(111);
 
+. exit, clear
+----------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Log\tdcommands_log_07-28-2017.log
+  log type:  text
+ opened on:  30 Jul 2017, 08:12:45
+
+. do "C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\13-IQSCVDMort-Analysis-SubjectDisposition.do"
+
+. 
+. * DISPOSITION SUBANALYSIS: Analyze and setup the subject disposition.
+. 
+. 
+. * DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
+. 
+. capture program drop flowchart
+
+. *! version 0.0.1  28jul2017  Isaac M. E. Dodd
+. program define flowchart
+  1.         version 13
+  2.         syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]
+  3.         
+.         if("`1'" == "init" | "`1'" == "init,") {
+  4.                 global Flowchart_Settings = ""
+  5.                 capture file close FlowchartFile
+  6.                 file open FlowchartFile using "`using'", write text replace
+  7.                 flowchart_init
+  8.         }
+  9.         else if("`1'" == "close" | "`1'" == "finalize" | "`1'" == "close," | "`1'" == "finalize," ) {
+ 10.                 display "Closed."
+ 11.                 capture file close FlowchartFile 
+ 12.                 flowchart_tdfinalize, input("`input'") output("`output'")
+ 13.         }
+ 14.         else if("`1'" == "write") {
+ 15.                 if("`2'" == "box" | "`2'" == "box,") {
+ 16.                         display "Write: `2' `name' `value'"
+ 17.                         flowchart_writevar, name("Test") value("Testing testing 1 2 3 5 6 7 8 9 10 ...")
+ 18.                 }
+ 19.                 else if("`2'" == "row" | "`2'" == "row,") {
+ 20.                         display "Write: `2' `name' `value'"
+ 21.                 }
+ 22.                 *display "0 = `0' ; 1 = `1' ; 2 = `2' ; 3 = `3' ; 4 = `4' ; 5 = `5' ; 6 = `6' ; 7 = `7'"
+.         }
+ 23.         else if("`1'" == "newbox") {
+ 24.                 display "New Box: `1' `2'"
+ 25.         }
+ 26.         else {
+ 27.         
+.                 
+.                 * Parse the token for a possible sub-command that contains a parameter (e.g., flowchart subcommand(parameter): ... )
+.                 *       This is necessary since Stata's 'syntax' command returns the subcommand token `1' with a colon. This method ensures 
+> the proper string is parsed.
+.                 gettoken subcommand 0 : 0, parse(" :") quotes
+ 28.                 while `"`subcommand'"' != ":" & `"`subcommand'"' != "" {
+ 29.                         local subcmdwithparam `"`subcmdwithparam' `subcommand'"'
+ 30.                         gettoken subcommand 0 : 0, parse(" :") quotes
+ 31.                         display `"Subcommand: `subcommand'"'
+ 32.                         display `"Subcommand with Parameter: `subcmdwithparam'"'
+ 33.                 }
+ 34.                 * Parse the possible sub-command with parameter, accounting for any whitespace within the passed parameter and subcommand
+> .
+.                 local subparam = trim(substr(trim("`subcmdwithparam'"), strpos(trim("`subcmdwithparam'"), "(")+1, length(trim("`subcmdwithpa
+> ram'"))-strpos(trim("`subcmdwithparam'"), "(")-1))
+ 35.                 local subcmdnew = substr(trim("`subcmdwithparam'"), 1, strpos(trim("`subcmdwithparam'"), "(")-1)
+ 36.                 
+.                         display `"Subparameter via String Parse (CQs):  `subparam'"'
+ 37.                         display `"Subcommand via String Parse (CQs):  `subcmdparsed'"'
+ 38.                         
+.                 if("`1'" == "writerow:" | "`1'" == "writerow" | "`subcmdparsed'" == "writerow" | trim("`subcmdparsed'") == "writerow") {
+ 39.         
+.                         gettoken varfirst varothers : 0
+ 40.                         display ""
+ 41.                         display " First Variable: `varfirst'"
+ 42.                         display ""
+ 43.                         display "Macro Without Quotes: " `varothers'
+ 44.                         display ""
+ 45.                         display `"Compound Quotes (CQ's):  `varothers'"'
+ 46.                         display ""
+ 47.                         display `"Entire Statement (With CQ's): `0'"'
+ 48.                         display ""
+ 49. 
+.                         display `"Tokens:"'
+ 50.                         display ""
+ 51.                         local i = 1
+ 52.                         while "``i''" != "" {
+ 53.                                 display "`i': ``i''"
+ 54.                                 display ""
+ 55.                                 local i = `i' + 1
+ 56.                         }
+ 57.            }
+ 58.         }
+ 59. end
+
+. capture program drop flowchart_init
+
+. program define flowchart_init
+  1.         flowchart_writevar, name("set_dummy") value("null")     // Set dummy variable since the first variable is not recognized by texdo
+> c.
+  2.         flowchart_writevar, name("set_draw") value("black")
+  3.         flowchart_writevar, name("set_fill") value("white")
+  4.         flowchart_writevar, name("set_center_textwidth") value("8em")
+  5.         flowchart_writevar, name("set_center_textalign") value("centered")
+  6.         flowchart_writevar, name("set_center_minheight") value("4em")
+  7.         flowchart_writevar, name("set_left_textwidth") value("16em")
+  8.         flowchart_writevar, name("set_left_textalign") value("ragged")
+  9.         flowchart_writevar, name("set_left_minheight") value("4em")
+ 10.         flowchart_writevar, name("set_left_innersep") value("6pt")
+ 11.         flowchart_writevar, name("set_noborder_textwidth") value("18em")
+ 12.         flowchart_writevar, name("set_noborder_textalign") value("centered")
+ 13.         flowchart_writevar, name("set_noborder_minheight") value("1em")
+ 14.         flowchart_writevar, name("set_noborder_draw") value("none")
+ 15.         flowchart_writevar, name("set_noborder_fill") value("none")
+ 16.         flowchart_writevar, name("set_assign_textwidth") value("18em")
+ 17.         flowchart_writevar, name("set_assign_textalign") value("ragged")
+ 18.         flowchart_writevar, name("set_assign_minheight") value("3em")
+ 19.         flowchart_writevar, name("set_assign_innersep") value("6pt")
+ 20.         flowchart_writevar, name("set_lost_textwidth") value("16em")
+ 21.         flowchart_writevar, name("set_lost_textalign") value("ragged")
+ 22.         flowchart_writevar, name("set_lost_minheight") value("3em")
+ 23.         flowchart_writevar, name("set_lost_innersep") value("6pt")
+ 24. end
+
+. capture program drop flowchart_writevar
+
+. program define flowchart_writevar
+  1.         syntax [anything] [, name(string) value(string) *]      
+  2.         local variablerow "`name' = `value'"
+  3.         file write FlowchartFile "`variablerow'" _n
+  4.         if(substr("`name'",1,4) == "set_") {
+  5.                 global Flowchart_Settings = `"$Flowchart_Settings @`name'"'
+  6.                 global Flowchart_Settings = `"$Flowchart_Settings "`value'""'
+  7.         }
+  8. end
+
+. 
+. capture program drop flowchart_tdfinalize
+
+. program define flowchart_tdfinalize
+  1.         syntax , input(string) output(string)
+  2.         ***\\ TIKZ PICTURE: Write the TikZ Picture to the file.
+.         *display "`input' `output'"
+.         texdoc do "`input'", init("`output'") replace
+  3.         * Important Note: The '.tikz' extension here is important since if it is not specified, calling 'texdoc do' in the Main Analysis 
+> Do File will overwrite the .tex file of the same name in the same directory.
+.         texdoc close
+  4. end
+
+. 
+. capture program drop flowchart_tdwrite
+
+. program define flowchart_tdwrite
+  1.         syntax [anything]
+  2.         tokenize Some Words
+  3.         texdoc write "1=|`1'|, 2=|`2'|, 3=|`3'|"
+  4. *       texdoc write "`varname'"
+. end
+
+. 
+. flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
+
+. 
+. flowchart write box, name("Test")
+Write: box, Test 
+
+. flowchart write box, name("TestBoxName") value("TestBoxValue")
+Write: box, TestBoxName TestBoxValue
+
+. flowchart write row, name("TestRow")
+Write: row, TestRow 
+
+. flowchart write row, name("TestRowName") value("TestRowValue")
+Write: row, TestRowName TestRowValue
+
+. flowchart write row
+Write: row  
+
+. 
+. 
+. flowchart writerow(row_name): "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lbl
+> ock1_line3" 3 "This is another row, of a block", ///
+>         "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a block" "rblock1_line3" 44 "This is a
+> nother row, of a block"
+Subcommand: :
+Subcommand with Parameter:  writerow(row_name)
+Subparameter via String Parse (CQs):  row_name
+Subcommand via String Parse (CQs):  
+
+. 
+. display `" $Flowchart_Settings "'
+  @set_dummy "null" @set_draw "black" @set_fill "white" @set_center_textwidth "8em" @set_center_textalign "centered" @set_center_minheight "4e
+> m" @set_left_textwidth "16em" @set_left_textalign "ragged" @set_left_minheight "4em" @set_left_innersep "6pt" @set_noborder_textwidth "18em"
+>  @set_noborder_textalign "centered" @set_noborder_minheight "1em" @set_noborder_draw "none" @set_noborder_fill "none" @set_assign_textwidth 
+> "18em" @set_assign_textalign "ragged" @set_assign_minheight "3em" @set_assign_innersep "6pt" @set_lost_textwidth "16em" @set_lost_textalign 
+> "ragged" @set_lost_minheight "3em" @set_lost_innersep "6pt" 
+
+. flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-
+> TEST.tikz")
+Closed.
+
+. texdoc init `"..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz"'
+(texdoc output file is ..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz)
+
+. texdoc local settings_substitutions = `"$Flowchart_Settings"'
+(no stlog available; skipping backup)
+
+. 
+. texdoc substitute `settings_substitutions'
+
+. 
+. texdoc append_snippet 2
+
+. 
+. texdoc write    % Outlining the flowchart using the PGF/TikZ matrix function
+
+. 
+. texdoc write    \matrix [column sep=5mm,row sep=3mm] {
+
+. texdoc append_snippet 3
+
+. texdoc write    };% End Matrix
+
+. 
+. texdoc write    % Connecting nodes with paths
+
+. texdoc write    \begin{scope}[every path/.style=line]
+
+. texdoc append_snippet 4
+
+. 
+. texdoc write    \end{scope}
+
+. texdoc write \end{tikzpicture}
+
+. 
+end of do-file
+(texdoc output written to ..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz)
+(texdoc not initialized; nothing to do)
+
+. 
+end of do-file
+
+. do "C:\Users\Krist\AppData\Local\Temp\STD00000000.tmp"
+
+. 
+. capture program drop flowchart_writeblock
+
+. program define flowchart_writeblock
+  1.         syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]
+  2. 
+.         * Parse the token for a possible sub-command that contains a command (e.g., flowchart subcommand(parameter): ... )
+.         gettoken subcmd 0 : 0, parse(" :") quotes
+  3.         while `"`subcmd'"' != ":" & `"`subcmd'"' != "" {
+  4.                 local subcmdwithparam `"`subcmdwithparam' `subcmd'"'
+  5.                 gettoken subcmd 0 : 0, parse(" :") quotes
+  6.         }
+  7.         display ""
+  8.         display "Subcommand via GetToken: `subcmd'"
+  9.         display "Subcommand via Syntax: `1'"
+ 10.         display `"Subcommand With Parameter: `subcmdwithparam'"'
+ 11.         display `"Compound Quotes (CQ's):  `0'"'
+ 12.         local subparam = substr("`subcmdwithparam'", strpos("`subcmdwithparam'", "(")+1, length("`subcmdwithparam'")-strpos("`subcmdwithp
+> aram'", "(")-1)
+ 13.         local subcmdparsed = substr("`subcmdwithparam'", 1, strpos("`subcmdwithparam'", "(")-1)
+ 14.         display `"Subparameter via String Parse (CQ's):  `subparam'"'
+ 15.         display `"Subcommand via String Parse (CQ's):  `subcmdparsed'"'
+ 16.         
+.         if("`1'" == "writerow:" | "`1'" == "writerow" | "`subcmdparsed'" == "writerow" | trim("`subcmdparsed'") == "writerow") {
+ 17.                 gettoken varfirst varothers : 0
+ 18.                 display ""
+ 19.                 display " First Variable: `varfirst'"
+ 20.                 display ""
+ 21.                 display "Macro Without Quotes: " `varothers'
+ 22.                 display ""
+ 23.                 display `"Compound Quotes (CQ's):  `varothers'"'
+ 24.                 display ""
+ 25.                 display `"Entire Statement (With CQ's): `0'"'
+ 26.                 display ""
+ 27. 
+.                 display `"Tokens:"'
+ 28.                 display ""
+ 29.                 local i = 1
+ 30.                 while "``i''" != "" {
+ 31.                         display "`i': ``i''"
+ 32.                         display ""
+ 33.                         local i = `i' + 1
+ 34.                 }
+ 35.         }
+ 36. end
+
+. 
+. flowchart_writeblock writerow(row_name): "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a 
+> block" "lblock1_line3" 3 "This is another row, of a block", "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is an
+> other row, of a block" "rblock1_line3" 44 "This is another row, of a block"
+
+Subcommand via GetToken: :
+Subcommand via Syntax: writerow(row_name):
+Subcommand With Parameter:  writerow(row_name)
+Compound Quotes (CQ's):   "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblock1_l
+> ine3" 3 "This is another row, of a block", "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a b
+> lock" "rblock1_line3" 44 "This is another row, of a block"
+Subparameter via String Parse (CQ's):  row_name
+Subcommand via String Parse (CQ's):   writerow
+
+ First Variable: lblock1_line1
+
+Macro Without Quotes: 46This is one row, \\ of a block.lblock1_line243This is another row, of a blocklblock1_line33This is another row, of a b
+> lock rblock1_line197This is one row, of a block.rblock1_line233This is another row, of a blockrblock1_line344This is another row, of a block
+
+Compound Quotes (CQ's):   46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblock1_line3" 3 "This is
+>  another row, of a block", "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a block" "rblock1_l
+> ine3" 44 "This is another row, of a block"
+
+Entire Statement (With CQ's):  "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblo
+> ck1_line3" 3 "This is another row, of a block", "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, o
+> f a block" "rblock1_line3" 44 "This is another row, of a block"
+
+Tokens:
+
+1: writerow(row_name):
+
+2: lblock1_line1
+
+3: 46
+
+4: This is one row, \\ of a block.
+
+5: lblock1_line2
+
+6: 43
+
+7: This is another row, of a block
+
+8: lblock1_line3
+
+9: 3
+
+10: This is another row, of a block
+
+11: ,
+
+12: rblock1_line1
+
+13: 97
+
+14: This is one row, of a block.
+
+15: rblock1_line2
+
+16: 33
+
+17: This is another row, of a block
+
+18: rblock1_line3
+
+19: 44
+
+20: This is another row, of a block
+
+
+. 
+end of do-file
+
+. do "C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\13-IQSCVDMort-Analysis-SubjectDisposition.do"
+
+. 
+. * DISPOSITION SUBANALYSIS: Analyze and setup the subject disposition.
+. 
+. 
+. * DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
+. 
+. capture program drop flowchart
+
+. *! version 0.0.1  28jul2017  Isaac M. E. Dodd
+. program define flowchart
+  1.         version 13
+  2.         syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]
+  3.         
+.         if("`1'" == "init" | "`1'" == "init,") {
+  4.                 global Flowchart_Settings = ""
+  5.                 capture file close FlowchartFile
+  6.                 file open FlowchartFile using "`using'", write text replace
+  7.                 flowchart_init
+  8.         }
+  9.         else if("`1'" == "close" | "`1'" == "finalize" | "`1'" == "close," | "`1'" == "finalize," ) {
+ 10.                 display "Closed."
+ 11.                 capture file close FlowchartFile 
+ 12.                 flowchart_tdfinalize, input("`input'") output("`output'")
+ 13.         }
+ 14.         else if("`1'" == "write") {
+ 15.                 if("`2'" == "box" | "`2'" == "box,") {
+ 16.                         display "Write: `2' `name' `value'"
+ 17.                         flowchart_writevar, name("Test") value("Testing testing 1 2 3 5 6 7 8 9 10 ...")
+ 18.                 }
+ 19.                 else if("`2'" == "row" | "`2'" == "row,") {
+ 20.                         display "Write: `2' `name' `value'"
+ 21.                 }
+ 22.                 *display "0 = `0' ; 1 = `1' ; 2 = `2' ; 3 = `3' ; 4 = `4' ; 5 = `5' ; 6 = `6' ; 7 = `7'"
+.         }
+ 23.         else if("`1'" == "newbox") {
+ 24.                 display "New Box: `1' `2'"
+ 25.         }
+ 26.         else {
+ 27.         
+.                 * Parse the token for a possible sub-command that contains a parameter (e.g., flowchart subcommand(parameter): ... )
+.                 *       This is necessary since Stata's 'syntax' command returns the subcommand token `1' with a colon. This method ensures 
+> the proper string is parsed.
+.                 gettoken subcommand 0 : 0, parse(" :") quotes
+ 28.                 while `"`subcommand'"' != ":" & `"`subcommand'"' != "" {
+ 29.                         local subcmdwithparam `"`subcmdwithparam' `subcommand'"'
+ 30.                         gettoken subcommand 0 : 0, parse(" :") quotes
+ 31.                         display `"Subcommand via GetToken: `subcommand'"'
+ 32.                         display "Subcommand via Syntax: `1'"
+ 33.                         display `"Subcommand with Parameter: `subcmdwithparam'"'
+ 34.                         display `"Compound Quotes (CQ's):  `0'"'
+ 35.                 }
+ 36.                 * Parse the possible sub-command with parameter, accounting for any whitespace within the passed parameter and subcommand
+> .
+.                 local subparam = trim(substr(trim("`subcmdwithparam'"), strpos(trim("`subcmdwithparam'"), "(")+1, length(trim("`subcmdwithpa
+> ram'"))-strpos(trim("`subcmdwithparam'"), "(")-1))
+ 37.                 local subcmdnew = substr(trim("`subcmdwithparam'"), 1, strpos(trim("`subcmdwithparam'"), "(")-1)
+ 38.                 
+.                         display `"Subparameter via String Parse (CQs):  `subparam'"'
+ 39.                         display `"Subcommand via String Parse (CQs):  `subcmdparsed'"'
+ 40.                         
+.                 if("`1'" == "writerow:" | "`1'" == "writerow" | "`subcmdparsed'" == "writerow" | trim("`subcmdparsed'") == "writerow") {
+ 41.         
+.                         gettoken varfirst varothers : 0
+ 42.                         display ""
+ 43.                         display " First Variable: `varfirst'"
+ 44.                         display ""
+ 45.                         display "Macro Without Quotes: " `varothers'
+ 46.                         display ""
+ 47.                         display `"Compound Quotes (CQ's):  `varothers'"'
+ 48.                         display ""
+ 49.                         display `"Entire Statement (With CQ's): `0'"'
+ 50.                         display ""
+ 51. 
+.                         display `"Tokens:"'
+ 52.                         display ""
+ 53.                         local i = 1
+ 54.                         while "``i''" != "" {
+ 55.                                 display "`i': ``i''"
+ 56.                                 display ""
+ 57.                                 local i = `i' + 1
+ 58.                         }
+ 59.            }
+ 60.         }
+ 61. end
+
+. capture program drop flowchart_init
+
+. program define flowchart_init
+  1.         flowchart_writevar, name("set_dummy") value("null")     // Set dummy variable since the first variable is not recognized by texdo
+> c.
+  2.         flowchart_writevar, name("set_draw") value("black")
+  3.         flowchart_writevar, name("set_fill") value("white")
+  4.         flowchart_writevar, name("set_center_textwidth") value("8em")
+  5.         flowchart_writevar, name("set_center_textalign") value("centered")
+  6.         flowchart_writevar, name("set_center_minheight") value("4em")
+  7.         flowchart_writevar, name("set_left_textwidth") value("16em")
+  8.         flowchart_writevar, name("set_left_textalign") value("ragged")
+  9.         flowchart_writevar, name("set_left_minheight") value("4em")
+ 10.         flowchart_writevar, name("set_left_innersep") value("6pt")
+ 11.         flowchart_writevar, name("set_noborder_textwidth") value("18em")
+ 12.         flowchart_writevar, name("set_noborder_textalign") value("centered")
+ 13.         flowchart_writevar, name("set_noborder_minheight") value("1em")
+ 14.         flowchart_writevar, name("set_noborder_draw") value("none")
+ 15.         flowchart_writevar, name("set_noborder_fill") value("none")
+ 16.         flowchart_writevar, name("set_assign_textwidth") value("18em")
+ 17.         flowchart_writevar, name("set_assign_textalign") value("ragged")
+ 18.         flowchart_writevar, name("set_assign_minheight") value("3em")
+ 19.         flowchart_writevar, name("set_assign_innersep") value("6pt")
+ 20.         flowchart_writevar, name("set_lost_textwidth") value("16em")
+ 21.         flowchart_writevar, name("set_lost_textalign") value("ragged")
+ 22.         flowchart_writevar, name("set_lost_minheight") value("3em")
+ 23.         flowchart_writevar, name("set_lost_innersep") value("6pt")
+ 24. end
+
+. capture program drop flowchart_writevar
+
+. program define flowchart_writevar
+  1.         syntax [anything] [, name(string) value(string) *]      
+  2.         local variablerow "`name' = `value'"
+  3.         file write FlowchartFile "`variablerow'" _n
+  4.         if(substr("`name'",1,4) == "set_") {
+  5.                 global Flowchart_Settings = `"$Flowchart_Settings @`name'"'
+  6.                 global Flowchart_Settings = `"$Flowchart_Settings "`value'""'
+  7.         }
+  8. end
+
+. 
+. capture program drop flowchart_tdfinalize
+
+. program define flowchart_tdfinalize
+  1.         syntax , input(string) output(string)
+  2.         ***\\ TIKZ PICTURE: Write the TikZ Picture to the file.
+.         *display "`input' `output'"
+.         texdoc do "`input'", init("`output'") replace
+  3.         * Important Note: The '.tikz' extension here is important since if it is not specified, calling 'texdoc do' in the Main Analysis 
+> Do File will overwrite the .tex file of the same name in the same directory.
+.         texdoc close
+  4. end
+
+. 
+. capture program drop flowchart_tdwrite
+
+. program define flowchart_tdwrite
+  1.         syntax [anything]
+  2.         tokenize Some Words
+  3.         texdoc write "1=|`1'|, 2=|`2'|, 3=|`3'|"
+  4. *       texdoc write "`varname'"
+. end
+
+. 
+. flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
+
+. 
+. flowchart write box, name("Test")
+Write: box, Test 
+
+. flowchart write box, name("TestBoxName") value("TestBoxValue")
+Write: box, TestBoxName TestBoxValue
+
+. flowchart write row, name("TestRow")
+Write: row, TestRow 
+
+. flowchart write row, name("TestRowName") value("TestRowValue")
+Write: row, TestRowName TestRowValue
+
+. flowchart write row
+Write: row  
+
+. 
+. 
+. flowchart writerow(row_name): "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lbl
+> ock1_line3" 3 "This is another row, of a block", ///
+>         "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a block" "rblock1_line3" 44 "This is a
+> nother row, of a block"
+Subcommand via GetToken: :
+Subcommand via Syntax: writerow(row_name):
+Subcommand with Parameter:  writerow(row_name)
+Compound Quotes (CQ's):   "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblock1_l
+> ine3" 3 "This is another row, of a block",         "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row
+> , of a block" "rblock1_line3" 44 "This is another row, of a block"
+Subparameter via String Parse (CQs):  row_name
+Subcommand via String Parse (CQs):  
+
+. 
+. display `" $Flowchart_Settings "'
+  @set_dummy "null" @set_draw "black" @set_fill "white" @set_center_textwidth "8em" @set_center_textalign "centered" @set_center_minheight "4e
+> m" @set_left_textwidth "16em" @set_left_textalign "ragged" @set_left_minheight "4em" @set_left_innersep "6pt" @set_noborder_textwidth "18em"
+>  @set_noborder_textalign "centered" @set_noborder_minheight "1em" @set_noborder_draw "none" @set_noborder_fill "none" @set_assign_textwidth 
+> "18em" @set_assign_textalign "ragged" @set_assign_minheight "3em" @set_assign_innersep "6pt" @set_lost_textwidth "16em" @set_lost_textalign 
+> "ragged" @set_lost_minheight "3em" @set_lost_innersep "6pt" 
+
+. flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-
+> TEST.tikz")
+Closed.
+
+. texdoc init `"..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz"'
+(texdoc output file is ..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz)
+
+. texdoc local settings_substitutions = `"$Flowchart_Settings"'
+(no stlog available; skipping backup)
+
+. 
+. texdoc substitute `settings_substitutions'
+
+. 
+. texdoc append_snippet 2
+
+. 
+. texdoc write    % Outlining the flowchart using the PGF/TikZ matrix function
+
+. 
+. texdoc write    \matrix [column sep=5mm,row sep=3mm] {
+
+. texdoc append_snippet 3
+
+. texdoc write    };% End Matrix
+
+. 
+. texdoc write    % Connecting nodes with paths
+
+. texdoc write    \begin{scope}[every path/.style=line]
+
+. texdoc append_snippet 4
+
+. 
+. texdoc write    \end{scope}
+
+. texdoc write \end{tikzpicture}
+
+. 
+end of do-file
+(texdoc output written to ..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz)
+(texdoc not initialized; nothing to do)
+
+. 
+end of do-file
+
+. do "C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\13-IQSCVDMort-Analysis-SubjectDisposition.do"
+
+. 
+. * DISPOSITION SUBANALYSIS: Analyze and setup the subject disposition.
+. 
+. 
+. * DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
+. 
+. capture program drop flowchart
+
+. *! version 0.0.1  28jul2017  Isaac M. E. Dodd
+. program define flowchart
+  1.         version 13
+  2.         syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]
+  3.         
+.         if("`1'" == "init" | "`1'" == "init,") {
+  4.                 global Flowchart_Settings = ""
+  5.                 capture file close FlowchartFile
+  6.                 file open FlowchartFile using "`using'", write text replace
+  7.                 flowchart_init
+  8.         }
+  9.         else if("`1'" == "close" | "`1'" == "finalize" | "`1'" == "close," | "`1'" == "finalize," ) {
+ 10.                 display "Closed."
+ 11.                 capture file close FlowchartFile 
+ 12.                 flowchart_tdfinalize, input("`input'") output("`output'")
+ 13.         }
+ 14.         else if("`1'" == "write") {
+ 15.                 if("`2'" == "box" | "`2'" == "box,") {
+ 16.                         display "Write: `2' `name' `value'"
+ 17.                         flowchart_writevar, name("Test") value("Testing testing 1 2 3 5 6 7 8 9 10 ...")
+ 18.                 }
+ 19.                 else if("`2'" == "row" | "`2'" == "row,") {
+ 20.                         display "Write: `2' `name' `value'"
+ 21.                 }
+ 22.                 *display "0 = `0' ; 1 = `1' ; 2 = `2' ; 3 = `3' ; 4 = `4' ; 5 = `5' ; 6 = `6' ; 7 = `7'"
+.         }
+ 23.         else if("`1'" == "newbox") {
+ 24.                 display "New Box: `1' `2'"
+ 25.         }
+ 26.         else {
+ 27.         
+.                 * Parse the token for a possible sub-command that contains a parameter (e.g., flowchart subcommand(parameter): ... )
+.                 *       This is necessary since Stata's 'syntax' command returns the subcommand token `1' with a colon. This method ensures 
+> the proper string is parsed.
+.                 gettoken subcommand 0 : 0, parse(" :") quotes
+ 28.                 while `"`subcommand'"' != ":" & `"`subcommand'"' != "" {
+ 29.                         local subcmdwithparam `"`subcmdwithparam' `subcommand'"'
+ 30.                         gettoken subcommand 0 : 0, parse(" :") quotes
+ 31.                         display `"Subcommand via GetToken: `subcommand'"'
+ 32.                         display "Subcommand via Syntax: `1'"
+ 33.                         display `"Subcommand with Parameter: `subcmdwithparam'"'
+ 34.                         display `"Compound Quotes (CQ's):  `0'"'
+ 35.                 }
+ 36.                 * Parse the possible sub-command with parameter, accounting for any whitespace within the passed parameter and subcommand
+> .
+.                 local subparam = trim(substr(trim("`subcmdwithparam'"), strpos(trim("`subcmdwithparam'"), "(")+1, length(trim("`subcmdwithpa
+> ram'"))-strpos(trim("`subcmdwithparam'"), "(")-1))
+ 37.                 local subcmdparsed = substr(trim("`subcmdwithparam'"), 1, strpos(trim("`subcmdwithparam'"), "(")-1)
+ 38.                 
+.                         display `"Subparameter via String Parse (CQs):  `subparam'"'
+ 39.                         display `"Subcommand via String Parse (CQs):  `subcmdparsed'"'
+ 40.                         
+.                 if("`1'" == "writerow:" | "`1'" == "writerow" | "`subcmdparsed'" == "writerow" | trim("`subcmdparsed'") == "writerow") {
+ 41.         
+.                         gettoken varfirst varothers : 0
+ 42.                         display ""
+ 43.                         display " First Variable: `varfirst'"
+ 44.                         display ""
+ 45.                         display "Macro Without Quotes: " `varothers'
+ 46.                         display ""
+ 47.                         display `"Compound Quotes (CQ's):  `varothers'"'
+ 48.                         display ""
+ 49.                         display `"Entire Statement (With CQ's): `0'"'
+ 50.                         display ""
+ 51. 
+.                         display `"Tokens:"'
+ 52.                         display ""
+ 53.                         local i = 1
+ 54.                         while "``i''" != "" {
+ 55.                                 display "`i': ``i''"
+ 56.                                 display ""
+ 57.                                 local i = `i' + 1
+ 58.                         }
+ 59.            }
+ 60.         }
+ 61. end
+
+. capture program drop flowchart_init
+
+. program define flowchart_init
+  1.         flowchart_writevar, name("set_dummy") value("null")     // Set dummy variable since the first variable is not recognized by texdo
+> c.
+  2.         flowchart_writevar, name("set_draw") value("black")
+  3.         flowchart_writevar, name("set_fill") value("white")
+  4.         flowchart_writevar, name("set_center_textwidth") value("8em")
+  5.         flowchart_writevar, name("set_center_textalign") value("centered")
+  6.         flowchart_writevar, name("set_center_minheight") value("4em")
+  7.         flowchart_writevar, name("set_left_textwidth") value("16em")
+  8.         flowchart_writevar, name("set_left_textalign") value("ragged")
+  9.         flowchart_writevar, name("set_left_minheight") value("4em")
+ 10.         flowchart_writevar, name("set_left_innersep") value("6pt")
+ 11.         flowchart_writevar, name("set_noborder_textwidth") value("18em")
+ 12.         flowchart_writevar, name("set_noborder_textalign") value("centered")
+ 13.         flowchart_writevar, name("set_noborder_minheight") value("1em")
+ 14.         flowchart_writevar, name("set_noborder_draw") value("none")
+ 15.         flowchart_writevar, name("set_noborder_fill") value("none")
+ 16.         flowchart_writevar, name("set_assign_textwidth") value("18em")
+ 17.         flowchart_writevar, name("set_assign_textalign") value("ragged")
+ 18.         flowchart_writevar, name("set_assign_minheight") value("3em")
+ 19.         flowchart_writevar, name("set_assign_innersep") value("6pt")
+ 20.         flowchart_writevar, name("set_lost_textwidth") value("16em")
+ 21.         flowchart_writevar, name("set_lost_textalign") value("ragged")
+ 22.         flowchart_writevar, name("set_lost_minheight") value("3em")
+ 23.         flowchart_writevar, name("set_lost_innersep") value("6pt")
+ 24. end
+
+. capture program drop flowchart_writevar
+
+. program define flowchart_writevar
+  1.         syntax [anything] [, name(string) value(string) *]      
+  2.         local variablerow "`name' = `value'"
+  3.         file write FlowchartFile "`variablerow'" _n
+  4.         if(substr("`name'",1,4) == "set_") {
+  5.                 global Flowchart_Settings = `"$Flowchart_Settings @`name'"'
+  6.                 global Flowchart_Settings = `"$Flowchart_Settings "`value'""'
+  7.         }
+  8. end
+
+. 
+. capture program drop flowchart_tdfinalize
+
+. program define flowchart_tdfinalize
+  1.         syntax , input(string) output(string)
+  2.         ***\\ TIKZ PICTURE: Write the TikZ Picture to the file.
+.         *display "`input' `output'"
+.         texdoc do "`input'", init("`output'") replace
+  3.         * Important Note: The '.tikz' extension here is important since if it is not specified, calling 'texdoc do' in the Main Analysis 
+> Do File will overwrite the .tex file of the same name in the same directory.
+.         texdoc close
+  4. end
+
+. 
+. capture program drop flowchart_tdwrite
+
+. program define flowchart_tdwrite
+  1.         syntax [anything]
+  2.         tokenize Some Words
+  3.         texdoc write "1=|`1'|, 2=|`2'|, 3=|`3'|"
+  4. *       texdoc write "`varname'"
+. end
+
+. 
+. flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
+
+. 
+. flowchart write box, name("Test")
+Write: box, Test 
+
+. flowchart write box, name("TestBoxName") value("TestBoxValue")
+Write: box, TestBoxName TestBoxValue
+
+. flowchart write row, name("TestRow")
+Write: row, TestRow 
+
+. flowchart write row, name("TestRowName") value("TestRowValue")
+Write: row, TestRowName TestRowValue
+
+. flowchart write row
+Write: row  
+
+. 
+. 
+. flowchart writerow(row_name): "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lbl
+> ock1_line3" 3 "This is another row, of a block", ///
+>         "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a block" "rblock1_line3" 44 "This is a
+> nother row, of a block"
+Subcommand via GetToken: :
+Subcommand via Syntax: writerow(row_name):
+Subcommand with Parameter:  writerow(row_name)
+Compound Quotes (CQ's):   "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblock1_l
+> ine3" 3 "This is another row, of a block",         "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row
+> , of a block" "rblock1_line3" 44 "This is another row, of a block"
+Subparameter via String Parse (CQs):  row_name
+Subcommand via String Parse (CQs):  writerow
+
+ First Variable: lblock1_line1
+
+Macro Without Quotes: 46This is one row, \\ of a block.lblock1_line243This is another row, of a blocklblock1_line33This is another row, of a b
+> lock rblock1_line197This is one row, of a block.rblock1_line233This is another row, of a blockrblock1_line344This is another row, of a block
+
+Compound Quotes (CQ's):   46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblock1_line3" 3 "This is
+>  another row, of a block",         "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is another row, of a block" "r
+> block1_line3" 44 "This is another row, of a block"
+
+Entire Statement (With CQ's):  "lblock1_line1" 46 "This is one row, \\ of a block." "lblock1_line2" 43 "This is another row, of a block" "lblo
+> ck1_line3" 3 "This is another row, of a block",         "rblock1_line1" 97 "This is one row, of a block." "rblock1_line2" 33 "This is anothe
+> r row, of a block" "rblock1_line3" 44 "This is another row, of a block"
+
+Tokens:
+
+1: writerow(row_name):
+
+2: lblock1_line1
+
+3: 46
+
+4: This is one row, \\ of a block.
+
+5: lblock1_line2
+
+6: 43
+
+7: This is another row, of a block
+
+8: lblock1_line3
+
+9: 3
+
+10: This is another row, of a block
+
+11: ,
+
+12: rblock1_line1
+
+13: 97
+
+14: This is one row, of a block.
+
+15: rblock1_line2
+
+16: 33
+
+17: This is another row, of a block
+
+18: rblock1_line3
+
+19: 44
+
+20: This is another row, of a block
+
+
+. 
+. display `" $Flowchart_Settings "'
+  @set_dummy "null" @set_draw "black" @set_fill "white" @set_center_textwidth "8em" @set_center_textalign "centered" @set_center_minheight "4e
+> m" @set_left_textwidth "16em" @set_left_textalign "ragged" @set_left_minheight "4em" @set_left_innersep "6pt" @set_noborder_textwidth "18em"
+>  @set_noborder_textalign "centered" @set_noborder_minheight "1em" @set_noborder_draw "none" @set_noborder_fill "none" @set_assign_textwidth 
+> "18em" @set_assign_textalign "ragged" @set_assign_minheight "3em" @set_assign_innersep "6pt" @set_lost_textwidth "16em" @set_lost_textalign 
+> "ragged" @set_lost_minheight "3em" @set_lost_innersep "6pt" 
+
+. flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-
+> TEST.tikz")
+Closed.
+
+. texdoc init `"..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz"'
+(texdoc output file is ..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz)
+
+. texdoc local settings_substitutions = `"$Flowchart_Settings"'
+(no stlog available; skipping backup)
+
+. 
+. texdoc substitute `settings_substitutions'
+
+. 
+. texdoc append_snippet 2
+
+. 
+. texdoc write    % Outlining the flowchart using the PGF/TikZ matrix function
+
+. 
+. texdoc write    \matrix [column sep=5mm,row sep=3mm] {
+
+. texdoc append_snippet 3
+
+. texdoc write    };% End Matrix
+
+. 
+. texdoc write    % Connecting nodes with paths
+
+. texdoc write    \begin{scope}[every path/.style=line]
+
+. texdoc append_snippet 4
+
+. 
+. texdoc write    \end{scope}
+
+. texdoc write \end{tikzpicture}
+
+. 
+end of do-file
+(texdoc output written to ..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz)
+(texdoc not initialized; nothing to do)
+
+. 
+end of do-file
+
