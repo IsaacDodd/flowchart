@@ -8,7 +8,7 @@ capture program drop flowchart
 *! version 0.0.1  28jul2017  Isaac M. E. Dodd
 program define flowchart
 	version 13
-	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) *]
+	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
 	
 	if("`1'" == "init" | "`1'" == "init,") {
 		global Flowchart_Settings = ""
@@ -36,13 +36,22 @@ program define flowchart
 			}
 		}
 	}
-	else if("`1'" == "newbox") {
+	else if("`1'" == "connect") {
 		if("$Flowchart_Debug" == "on") {
-			display "New Box: `1' `2'"
+			display "Connect: `1' `2' `3'"
 		}
+		if("`arrow'" != "") {
+			if("`arrow'" == "angled" | "`arrow'" == "angle") {
+				local arrow = "-|"
+			}
+		}
+		else {
+			local arrow = "--"
+		}
+		flowchart_tdwrite `"      \path (`2')   `arrow' (`3');"'
 	}
 	else {
-	
+		*Sub-Commands that Require More Advanced Parsing
 		* Parse the token for a possible sub-command that contains a parameter (e.g., flowchart subcommand(parameter): ... )
 		* 	This is necessary since Stata's 'syntax' command returns the subcommand token `1' with a colon. This method ensures the proper string is parsed.
 		gettoken subcommand 0 : 0, parse(" :") quotes
@@ -318,8 +327,62 @@ flowchart writerow(enrollment): ///
 	"referred_excluded_nopartic" 9 "a) Did not wish to participate" ///
 	"referred_excluded_noshow" 5 "b) Did not show for interview" ///
 	"referred_excluded_other" 3 "c) Other reasons"
+	
+flowchart writerow(assessment): ///
+	"assessed" 156 "" ///
+	"assessed_excluded" 54 "" ///
+	"assessed_excluded_inclusioncritunmet" 22 "" ///
+	"assessed_excluded_exclusioncritmet" 13 "" ///
+	"assessed_excluded_unsuitedgroup" 7 "" ///
+	"assessed_excluded_unsuitedtx" 2 "" ///
+	"assessed_excluded_othertx" 3 "" ///
+	"assessed_excluded_other" 7 ""
+	
+flowchart writerow(random): ///
+	"randomized" 102 "" ///
+	
+flowchart writerow(allocgroup): ///
+	"alloc_interventiongroup" 51 "" ///
+	"alloc_waitlistgroup" 51 ""
+	
+flowchart writerow(allocdetails): ///
+	"intervention_received" 49 "" ///
+	"intervention_unreceived" 2 "" ///
+	"intervention_unreceived_exclusioncrit" 1 "" ///
+	"intervention_unreceived_notime" 1 "" ///
+	"waitlist_stayedon" 48 "" ///
+	"waitlist_didnotstay" 3 "" ///
+	"waitlist_didnotstay_selfinduced" 2 "" ///
+	"waitlist_didnotstay_leftarea" 1 ""
+	
+flowchart writerow(allocpost): ///
+	"postintervention_lost" 5 "" ///
+	"postintervention_lost_droppedout" 2 "" ///
+	"postintervention_lost_nomeasurement" 3 "" ///
+	"postwaitlist_lost" 6 "" ///
+	"postwaitlist_lost_droppedout" 3 "" ///
+	"postwaitlist_lost_nomeasurement" 3 "" ///
+	"postwaitlist_intervention_allocated" 48 "" ///
+	"postwaitlist_intervention_received" 46 "" ///
+	"postwaitlist_intervention_didnotreceive" 2 "" ///
+	"postwaitlist_intervention_dnr_lowmotivation" 1 "" ///
+	"postwaitlist_intervention_dnr_notime" 1 ""
+	
+flowchart writerow(alloc3month): ///
+	"intervention_3monthfollowup" 9 "" ///
+	"postwaitlist_postintervention_losstofollowup" 5 "" ///
+	"postwaitlist_postintervention_losstofollowup_droppedout" 2 "" ///
+	"postwaitlist_postintervention_losstofollowup_incomplete" 3 "" ///
+	"postwaitlist_3monthfollowup" 2 ""
+	
+flowchart writerow(analyzed): ///
+	"intervention_analyzed" 51 "" ///
+	"postwaitlist_analyzed" 51 ""
+	
+*flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
+*	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+*flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
+*	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
 
-flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
-	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
-
+flowchart connect enrollment_center enrollment_left
 flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz")
