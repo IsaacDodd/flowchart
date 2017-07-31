@@ -77,6 +77,7 @@ program define flowchart
 			gettoken subcommand 0 : 0, parse(" :") quotes
 			if("$Flowchart_Debug" == "on") {
 				display ""
+				display "COMMAND PARSING: "
 				display `"Subcommand via GetToken: `subcommand'"'
 			}
 			local subcmdsyntax = "`1'"
@@ -99,42 +100,46 @@ program define flowchart
 			gettoken varfirst varothers : 0
 			if("$Flowchart_Debug" == "on") {
 				display ""
+				display "ROW CONTENT: "
+				display ""
 				display " First Variable: `varfirst'"
 				display ""
-				display "Macro Without Quotes: " `varothers'
+				* display " Macro Without Quotes: " `varothers' <-- Breaks with flowchart_blank
 				display ""
-				display `"Compound Quotes (CQ's):  `varothers'"'
+				display `" Compound Quotes (CQ's):  `varothers'"'
 				display ""
-				display `"Entire Statement (With CQ's): `0'"'
+				display `" Entire Statement (With CQ's): `0'"'
 				display ""
 
-				display `"Tokens:"'
+				display "TOKENS:"
 				display ""
 			}
 			
 			local i = 1		// Token Iterator
-			local blockparse = "center"
-flowchart_tdwrite_blockfield `"      % Row - `subparam'"'
+			local blockparse = "center"						// First Block Default = Center
+flowchart_tdwrite_blockfield `"      % Row - `subparam'"'	// Row Command with Subparam (This is the Rowname)
 
-			while "``i''" != "" {
+			while ("``i''" != "") {	// while: TokenWhileLoop -- Loop through all of the tokens passed after the 'writerow(subparam):' call
 				if("$Flowchart_Debug" == "on") {
-					display "`i': ``i''"
+					display "BLOCK START ----         [blockparse: `blockparse']"
+					display "`i': ``i''"	// Print Token Number that starts the block, and the contents of that Token
 				}
 				
 				if("``i''" == "`subcmdparsed'" | trim("``i''") == "`subcmdwithparam'" | trim("``i''") == "`subcmdsyntax'") {
-					local i = `i' + 1
+					local i = `i' + 1	// If the first token is the subparameter detected, ignore it and move to the next token instead.
 					continue
 				}
-				else if(trim("``i''") == ",") {
-					* If a comma is encountered, switch the blockparse flag to parse the left block (lblock) instead of the center block (cblock).
+				else if(trim("``i''") == "," | ((lower(trim("``i''")) == "flowchart_blank" | lower(trim("``i''")) == "flowchart_blank,") & "`blockparse'" == "center") ) {
+					* If a comma is encountered, or the block is blank/empty on the first block (default center), switch the blockparse flag to parse the left block (lblock) instead of the default center block (cblock).
 					local blockparse = "left"
-					local i = `i' + 1
+					local i = `i' + 1	// Move to the next token after the loop continues.
 					continue
 				}
 				
-				* Generate a Look-Ahead Macro: This allows the conditional if statements determine the end of a block.
+				* Generate a Look-Ahead Macro: This allows conditional if statements to anticipate the end of a block. (Returns 1 triplet/line ahead of the current triplet/line being parsed.)
 				local ilookahead = `i' + 3
 				if("$Flowchart_Debug" == "on") {
+					display `"          [blockparse: `blockparse']"'
 					display `"			LA: ``ilookahead'' "'
 				}
 					* To Do: Fix this so that the program puts the node on the lead rather than defining this at the start.
@@ -145,28 +150,51 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'
 	local blockparsetoken = `"      & \node [block_`blockparse'] (`subparam'_`blockparse') {"'	
 				} // fi: End of BlockParse
 				
-				local k = 1	// Line Iterator
+				local k = 1	// Line Iterator	- The first line (k=1) is the lead line. If only 1 line for the block is present (i.e., the Look-Ahead is a ',' after the lead-line) then the lead line represents a singleton lead-line, which is the only line in the block.
 				local stop = ""
-				while("`stop'" == "") {	// while: LineWhile
-					if(trim("``i''") == ",") {	// Inept - To Do
+				while("`stop'" == "") {	// while: LineWhileLoop - Loop through all of the lines for each block. The 'Stop' flag is raised when a comma is encountered or there is no more content passed in the command to parse.
+					if("$Flowchart_Debug" == "on") {
+						display " ---- NEW LINE"
+					}
+					if(trim("``i''") == "," | ((lower(trim("``i''")) == "flowchart_blank" | lower(trim("``i''")) == "flowchart_blank,") & "`blockparse'" == "center") ) {	// Inept - To Do
+						* Here, if the first token encountered is a ',' or it's the first block parsed and the block is blank, produce no content. (If the second block, the left block, is blank, it needs to continue to produce a blank line '& \\' character.)
+						if("$Flowchart_Debug" == "on") {
+							display " --- "
+							display " --- Blank First Row --- "
+							display " --- 	Switching to parse the next block."
+							display " --- "
+						}
 						local blockparse = "left"
 						local stop = "stop"
 						break
 					}
-					local linename = `"``i''"'
-					local i = `i' + 1
-					if("$Flowchart_Debug" == "on") {
-						display "	iter: `i'"
-						display "	lnum: ``i''"
+					if("$Flowchart_Debug" == "on" & trim("``i''") == "flowchart_blank" ) {
+						display "	FLOWCHART_BLANK [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
 					}
-					local linenum = `"``i''"'
-					flowchart_writevar, name(`"`linename'"') value(`"`linenum'"') // Store the number as the named line's number value.
-					local i = `i' + 1
-					if("$Flowchart_Debug" == "on") {
-						display "	iter: `i'"
-						display "	desc: ``i''"
+					if( trim("``i''") == "flowchart_blank" & "`blockparse'" == "left") {
+						*local stop = "stop"
+						*break
 					}
-					local linedesc = `"``i''"'
+					local linename = `"``i''"'	// Field 1 of the Line is expected to be the line-name, which is also the variable_name.
+						if("$Flowchart_Debug" == "on") {
+							display "	token: `i'"
+							display "	 desc: ``i''"
+						}
+					local i = `i' + 1			// Move to the next field in the triplet/line.
+						if("$Flowchart_Debug" == "on") {
+							display "	token: `i'"
+							display "	 lnum: ``i''"
+						}
+					local linenum = `"``i''"'	// Field 2 of the Line is expected to be the line's value-number, variable_value, the (n=#).
+					flowchart_writevar, name(`"`linename'"') value(`"`linenum'"') // Store both the number and the line's name, with the line-name as 
+					* the variable_name and the line's value-number as the variable_value with an equal sign as the delimiter (variable_name = variable_value) 
+					* with a newline after. (Write it to the figvalue file.)
+					local i = `i' + 1			// Move to the next field in the triplet/line.
+						if("$Flowchart_Debug" == "on") {
+							display "	token: `i'"
+							display "	 desc: ``i''"
+						}
+					local linedesc = `"``i''"'	// Field 3 of the Line is expected to be the descriptive sentence.
 					if("$Flowchart_Debug" == "on") {
 						display "   Added to Block - Line `k': "
 					}
@@ -178,30 +206,52 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead(`"`blockparsetoken'"')
 						}
 					}
-					else if(trim("``ilookahead''") == "," | trim("``ilookahead''") == "" ) {
+					else if(trim("``ilookahead''") == "," | trim("``ilookahead''") == "" | lower(trim("``i''")) == "flowchart_blank" | lower(trim("``ilookahead''")) == "flowchart_blank") {
 						local ilookaheadx2 = `ilookahead' + 1
 							if("$Flowchart_Debug" == "on") {
 								display "Look Ahead x 1: ``ilookahead''"
 								display "Look Ahead x 2: ``ilookaheadx2''"
 							}
 						if(trim("``ilookahead''") == "") {
+							if("$Flowchart_Debug" == "on") {
+								display "	--- End of Row with New Row - LA is Blank: tdwriteline - [content] [newrow] [end]"
+								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+							}
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') newrow end
 						}
-						else if(trim("``ilookahead''") == "," & trim("``ilookaheadx2''") == "") {
+						else if( (trim("``ilookahead''") == "," & trim("``ilookaheadx2''") == "") | lower(trim("``ilookaheadx2''")) == "flowchart_blank" ) {
 							if("$Flowchart_Debug" == "on") {
-								display "...EndBlank..."
+								display "...--- EndBlank Detection: Second Block is Blank... tdwriteline - [content] [newrow] [end] [endblank]"
+								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
 							}
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') newrow end endblank
+							* The second block, the left block, is blank: Stop the LineWhileLoop to stop parsing the flowchart_blank token and any tokens after it.
+							if(lower(trim("``ilookaheadx2''")) == "flowchart_blank") {
+								if("$Flowchart_Debug" == "on") {
+									display "BREAK"
+								}
+								local stop = "stop"
+								local i = `i' + 1
+								continue, break 
+							}
 						}
 						else {
+							if("$Flowchart_Debug" == "on") {
+								display "...--- End of Row: tdwriteline - [content] [end]""
+								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+							}
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') end
 						}
 					}
 					else {
+							if("$Flowchart_Debug" == "on") {
+								display "...--- Same Row, End of Line: tdwriteline - [content] "
+								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+							}
 						flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') 
 					}
 					if("$Flowchart_Debug" == "on") {
-						display " ---- "
+						display " ---- END OF LINE"
 						display ""
 					}
 					local k = `k' + 1
@@ -215,10 +265,10 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'
 						local stop = "stop"
 					}
 						
-				} // elihw: End of LineWhile
+				} // elihw: End of LineWhileLoop
 	
 if("$Flowchart_Debug" == "on") {
-	flowchart_tdwrite_blockfield `"      % 	end block for row: `subparam'"'	// End of the Row
+	flowchart_tdwrite_blockfield `"      % 	Debug - End block for row: `subparam'"'	// End of the Row
 }
 				local i = `i' + 1
 			} // elihw: End of TokenWhile
@@ -230,12 +280,34 @@ program define flowchart_debug
 	syntax [anything] [, on off]
 	if("`on'" == "on") {
 		global Flowchart_Debug = "on"
+		
+		set more off
+		set linesize 255
+		local logid = subinstr("`c(current_date)'_`c(current_time)'", ":", "", .)
+		local logid = subinstr("`logid'", " ", "", .)
+		display "|||||| DebugLog Started: Log ID = `logid'"
+		capture log query DebugLog
+		* If a log has already been started, DebugLog will exist. If it is off (i.e., it was started but has been closed/turned off), 
+		* 	append to the existing log. If DebugLog does not exist (r(status) is blank) or it exists but is on already, replace the log.
+		if("`r(status)'" == "off") {	
+			capture log close DebugLog
+			log using "DebugLog.log", name(DebugLog) append text
+		}
+		else {
+			capture log close DebugLog
+			log using "DebugLog.log", name(DebugLog) replace text
+		}
 	}
 	else if("`off'" == "off") {
 		global Flowchart_Debug = "off"
+		display "|||||| DebugLog Off"
+		display ""
+		display ""
+		capture log off DebugLog
 	}
 	else {
 		global Flowchart_Debug = "off"
+		capture log close DebugLog
 	}
 end
 capture program drop flowchart_init
@@ -325,14 +397,15 @@ program define flowchart_tdwriteline
 		if("`end'" != "") {
 			if("`newrow'" != "") {
 				if("`endblank'" != "") {
-					local suffix = "}; \\" + "      & \\"
+					local suffix = "}; \\" // Add Row-Skip: + "      & \\"
+					local addrowskip = "true"
 				}
 				else {
 					local suffix = "}; \\"
 				}
 			}
 			else {
-				local suffix = "};"
+				local suffix = "};"		// No New Row (i.e., it is the first block/center block, so don't print \\ at the end).
 			}
 		}
 		else {
@@ -346,8 +419,20 @@ program define flowchart_tdwriteline
 			local linestring = `"        \h `desc' (n=\figvalue{`name'}) `suffix'"'
 		}
 	}
+if("$Flowchart_Debug" == "on") {
+	display `"Blockfield Linestring: `linestring'"'
+}
 global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
 .blockfields.list[$Flowchart_IteratorBlockfields] = `"`linestring'"'
+
+if("`addrowskip'" == "true") {
+	global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
+	.blockfields.list[$Flowchart_IteratorBlockfields] = `"      & \\"'
+	macro drop addrowskip
+	if("$Flowchart_Debug" == "on") {
+		display `"Blockfield Linestring:       & \\"'
+	}
+}
 *flowchart_tdwrite_blockfield `"`linestring'"'
 *	texdoc write "`varname'"
 end
@@ -364,8 +449,16 @@ flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
 
 *display `" $Flowchart_Settings "'
 
-flowchart_debug, off
-
+/*
+* Format: flowchart writerow([Name_of_row]): [Block_Center], [Block_Left]
+* 	The content within each block should be separated by a single comma (strings within a block can still use a comma, it just has to be within double-quotes).
+* 		The first block gets assigned the 'center' orientation and the second gets the 'left' orientation. 
+* 		Each block can have several lines, and each line has to have a triplet of 3 fields which should be separated by spaces.
+* 		A single line is a triplet of these 3 fields: "variable_name" n "Description of the variable name and number."
+* 		Multiple triplets can be separated by a \\\ at the end of the line for readability.
+* 	A blank block is a block with no lines or content (which won't be drawn in the final diagram) and should have the special keyword 'flowchart_blank' 
+* 		to indicate to the program's interpreter internally that there's no content for that block, otherwise the blocks will misalign and the .tex document 
+* 		will not compile the TikZ picture.
 flowchart writerow(enrollment): ///
 	"referred" 173 "Referred", ///
 	"referred_excluded" 17 "Excluded" ///
@@ -386,7 +479,7 @@ flowchart writerow(assessment): ///
 flowchart_debug, on
 display "Start Isaac"
 flowchart writerow(random): "randomized" 102 "Randomized", 
-	// Blank Row
+	flowchart_blank // Blank Row
 
 flowchart writerow(allocgroup): ///
 	"alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
@@ -410,7 +503,7 @@ flowchart writerow(postmeasurement): ///
 	"postwaitlist_lost_droppedout" 3 "Dropped out of the wait-list" ///
 	"postwaitlist_lost_nomeasurement" 3 "Did not complete measurement" ///
 	
-flowchart writerow(wlistintervention): , ///	
+flowchart writerow(wlistintervention): flowchart_blank, ///	
 	"postwaitlist_intervention_allocated" 48 "Allocated to intervention" ///
 	"postwaitlist_intervention_received" 46 "Received intervention" ///
 	"postwaitlist_intervention_didnotreceive" 2 "Did not receive intervention" ///
@@ -423,23 +516,26 @@ flowchart writerow(measurement3monpostint): ///
 	"postwaitlist_postintervention_losstofollowup_droppedout" 2 "Dropped out of the intervention" ///
 	"postwaitlist_postintervention_losstofollowup_incomplete" 3 "Did not complete measurement"
 
-flowchart writerow(wlist3mon): , ///
+flowchart writerow(wlist3mon): flowchart_blankblock, ///
 	"postwaitlist_3monthfollowup" 2 "3-months follow-up measurement \\ \h Did not complete measurement"
 	
 flowchart writerow(analyzed): ///
 	"intervention_analyzed" 51 "Analyzed", ///
 	"postwaitlist_analyzed" 51 "Analyzed"
+*/
 
 
-* Dummy Row
-*flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
-*	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+flowchart_debug, on
 
-* Row with No left-block
-*flowchart writerow(rowname): , "rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+* |||||| TEST1: Dummy Row
+flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
+	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
 
-* Row with No right-block
-*flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", 
+* |||||| TEST2: Row with No left-block
+flowchart writerow(rowname): flowchart_blank, "rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+
+* |||||| TEST3: Row with No right-block
+flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", flowchart_blank
 
 * Format: [rowname_center] --> [rowname_left] - Connect a center block to a left block for horizontal arrows across rows.
 	* [rowname_center] --> [rowname_center] - Connect a center block to a center block for vertical across within the same column for blocks in the center.
@@ -449,6 +545,7 @@ flowchart writerow(analyzed): ///
 * The sides of the diagram are initially counter-intuitive. Think of it like reading a chest x-ray: when interpreting the x-ray the patient's left is on the right of the page and the patient's right is on the left of the page -- the orientation being
 * 	relative to a patient facing out of the plane of the x-ray. Likewise, the column that is immediately to the left of the page as the center column and the column that is immediately to the right of the page is the left column.
 *	Connect each row's block with an underscore and then the column-orientation corresponding to its side in this manner.
+/*
 flowchart connect enrollment_center enrollment_left
 flowchart connect enrollment_center assessment_center
 flowchart connect assessment_center assessment_left
@@ -464,6 +561,6 @@ flowchart connect measurement3monpostint_center analyzed_center
 flowchart connect postmeasurement_left wlistintervention_left
 flowchart connect wlistintervention_left measurement3monpostint_left
 flowchart connect measurement3monpostint_left wlist3mon_left
-flowchart connect wlist3mon_left analyzed_left
+flowchart connect wlist3mon_left analyzed_left */
 
 flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz")
