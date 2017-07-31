@@ -221,3 +221,128 @@ BLOCK START ----         [blockparse: left]
 |||||| DebugLog Off
 
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  DebugLog
+       log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\DebugLog.log
+  log type:  text
+ opened on:  31 Jul 2017, 16:34:27
+
+. 
+. flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
+
+COMMAND PARSING: 
+Subcommand via GetToken: :
+Subcommand via Syntax: writerow(random):
+Subcommand with Parameter:  writerow(random)
+Compound Quotes (CQ's):   "randomized" 102 "Randomized", flowchart_blank
+Subparameter via String Parse (CQs):  random
+Subcommand via String Parse (CQs):  writerow
+
+ROW CONTENT: 
+
+ First Variable: randomized
+
+
+ Compound Quotes (CQ's):   102 "Randomized", flowchart_blank
+
+ Entire Statement (With CQ's):  "randomized" 102 "Randomized", flowchart_blank
+
+TOKENS:
+
+1=|      % Row - random|, 2=||, 3=|| indent=||
+BLOCK START ----         [blockparse: center]
+1: writerow(random):
+BLOCK START ----         [blockparse: center]
+2: randomized
+          [blockparse: center]
+                      LA: , 
+ ---- NEW LINE
+       token: 2
+        desc: randomized
+       token: 3
+        lnum: 102
+       token: 4
+        desc: Randomized
+   Added to Block - Line 1: 
+       --- Singleton Lead-line on Center Block (k=1, LA is Comma): tdwriteline - [content] [lead] [singleton]
+      [blockparse: center] [ i#: 4] [ token: Randomized] [ k: 1]
+Blockfield Linestring:       \node [block_center] (random_center) { Randomized (n=\figvalue{randomized})}; 
+ ---- END OF LINE
+
+                      LA:  
+BLOCK START ----         [blockparse: left]
+6: flowchart_blank
+          [blockparse: left]
+                      LA:  
+ ---- NEW LINE
+       FLOWCHART_BLANK [blockparse: left] [ i#: 6] [ token: flowchart_blank] [ k: 1]
+1=|      & \\ % -- Blank Left Block|, 2=||, 3=|| indent=||
+
+. 
+. flowchart writerow(allocgroup): ///
+>         "alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
+>         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
+
+COMMAND PARSING: 
+Subcommand via GetToken: :
+Subcommand via Syntax: writerow(allocgroup):
+Subcommand with Parameter:  writerow(allocgroup)
+Compound Quotes (CQ's):           "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
+Subparameter via String Parse (CQs):  allocgroup
+Subcommand via String Parse (CQs):  writerow
+
+ROW CONTENT: 
+
+ First Variable: alloc_interventiongroup
+
+
+ Compound Quotes (CQ's):   51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
+
+ Entire Statement (With CQ's):          "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
+
+TOKENS:
+
+1=|      % Row - allocgroup|, 2=||, 3=|| indent=||
+BLOCK START ----         [blockparse: center]
+1: writerow(allocgroup):
+BLOCK START ----         [blockparse: center]
+2: alloc_interventiongroup
+          [blockparse: center]
+                      LA: , 
+ ---- NEW LINE
+       token: 2
+        desc: alloc_interventiongroup
+       token: 3
+        lnum: 51
+       token: 4
+        desc: {Allocated to Intervention group
+   Added to Block - Line 1: 
+       --- Singleton Lead-line on Center Block (k=1, LA is Comma): tdwriteline - [content] [lead] [singleton]
+      [blockparse: center] [ i#: 4] [ token: {Allocated to Intervention group] [ k: 1]
+Blockfield Linestring:       \node [block_center] (allocgroup_center) { {Allocated to Intervention group (n=\figvalue{alloc_interventiongroup})}; 
+ ---- END OF LINE
+
+                      LA: Allocated to Wait-list control group 
+BLOCK START ----         [blockparse: left]
+6: alloc_waitlistgroup
+          [blockparse: left]
+                      LA:  
+ ---- NEW LINE
+       token: 6
+        desc: alloc_waitlistgroup
+       token: 7
+        lnum: 51
+       token: 8
+        desc: Allocated to Wait-list control group
+   Added to Block - Line 1: 
+       --- Singleton Lead-line on Left Block With Blank Center Block (so k=1) and Singleton Left Block (so LA is Blank): tdwriteline - [content] [lead] [singleton] [end]
+      [blockparse: left] [ i#: 8] [ token: Allocated to Wait-list control group] [ k: 1]
+Blockfield Linestring:       & \node [block_left] (allocgroup_left) { Allocated to Wait-list control group (n=\figvalue{alloc_waitlistgroup})}; \\
+ ---- END OF LINE
+
+                      LA:  
+
+. flowchart_debug, off    
+|||||| DebugLog Off
+
+

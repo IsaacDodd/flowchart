@@ -41,7 +41,7 @@ default is {cmd:separator(5)}{p_end}
 {pstd}
 {cmd:flowchart} is a command that generates a Subject Disposition Flowchart Diagram. This is similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format using data from a dataset. This command uses the 'texdoc' command (written by Ben Jann). Install it first by typing into Stata: 'net install texdoc, replace'
 {cmd:flowchart init using <filename.data>}
-	This command takes the filename of a text file where data variables can be written so that the datatool package in LaTeX can be used to load the file specified to fill in all of the \figvalues{variable_name} with the numbers specified in each line.
+	This command takes the filename of a text file where data variables can be written so that the datatool package in LaTeX can be used to load the file specified to fill in all of the \figvalues{variable_name} with the numbers specified in each line. (Variable names entered must be unique.)
 	In LaTeX, place this in the preamble (the space between \documentclass{article}... and \begin{document} ):
 		% 	Figures, Diagrams, and Other Graphics
 		\usepackage{tikz}		% TikZ Package - Generates graphics (i.e., flowcharts)
@@ -56,6 +56,7 @@ Format: flowchart writerow([Name_of_row]): [Block_Center], [Block_Left]
 	The content within each block should be separated by a single comma (strings within a block can still use a comma, it just has to be within double-quotes).
 		The first block gets assigned the 'center' orientation and the second gets the 'left' orientation. Each block can have several lines, and each line has to have a triplet of 3 fields which should be separated by spaces.
  		A single line is a triplet of these 3 fields: "variable_name" n# "Description of the variable name and number."
+		Limitations: Variable names must be unique and the numbers entered should be real numbers. Descriptions must not contain curly braces (i.e., '{' or '}').
 		In Stata, multiple triplets can be separated by a \\\ at the end of the line for readability.
 	A blank block is a block with no lines or content (which won't be drawn in the final diagram) and should have the special keyword 'flowchart_blank' to indicate to the program's interpreter internally that there's no content for that block, otherwise the blocks will misalign and the .tex document will not compile the TikZ picture.
 Format: [rowname_center] --> [rowname_left] - Connect a center block to a left block for horizontal arrows across rows.

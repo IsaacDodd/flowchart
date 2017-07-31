@@ -485,7 +485,7 @@ flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
 
 *display `" $Flowchart_Settings "'
 
-/*
+
 flowchart writerow(enrollment): ///
 	"referred" 173 "Referred", ///
 	"referred_excluded" 17 "Excluded" ///
@@ -494,7 +494,7 @@ flowchart writerow(enrollment): ///
 	"referred_excluded_other" 3 "c) Other reasons"
 	
 flowchart writerow(assessment): ///
-	"assessed" 156 "{Assessed for Eligibility", ///
+	"assessed" 156 "Assessed for Eligibility", ///
 	"assessed_excluded" 54 "Excluded" ///
 	"assessed_excluded_inclusioncritunmet" 22 "a) Inclusion criteria not met" ///
 	"assessed_excluded_exclusioncritmet" 13 "b) Exclusion criteria met" ///
@@ -503,12 +503,12 @@ flowchart writerow(assessment): ///
 	"assessed_excluded_othertx" 3 "e) Sought other treatment" ///
 	"assessed_excluded_other" 7 "f) Other reasons"
 	
-flowchart_debug, on
+flowchart_debug, off
 
 flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
 
 flowchart writerow(allocgroup): ///
-	"alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
+	"alloc_interventiongroup" 51 "Allocated to Intervention group", ///
 	"alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
 flowchart_debug, off	
 flowchart writerow(allocdetails): ///
@@ -548,10 +548,26 @@ flowchart writerow(wlist3mon): flowchart_blank, ///
 flowchart writerow(analyzed): ///
 	"intervention_analyzed" 51 "Analyzed", ///
 	"postwaitlist_analyzed" 51 "Analyzed"
-*/
+
+flowchart connect enrollment_center enrollment_left
+flowchart connect enrollment_center assessment_center
+flowchart connect assessment_center assessment_left
+flowchart connect assessment_center random_center
+flowchart connect random_center allocgroup_center
+flowchart connect random_center allocgroup_left, arrow(angled)
+flowchart connect allocgroup_center allocdetails_center
+flowchart connect allocgroup_left allocdetails_left
+flowchart connect allocdetails_center postmeasurement_center
+flowchart connect allocdetails_left postmeasurement_left
+flowchart connect postmeasurement_center measurement3monpostint_center
+flowchart connect measurement3monpostint_center analyzed_center
+flowchart connect postmeasurement_left wlistintervention_left
+flowchart connect wlistintervention_left measurement3monpostint_left
+flowchart connect measurement3monpostint_left wlist3mon_left
+flowchart connect wlist3mon_left analyzed_left 
 
 
-
+/*
 * DEBUGGING
 * |||||| TEST1: Dummy Row
 flowchart writerow(rownametest1): "lblock1_line1" 46 "This is one line, \\ of a block." ///
@@ -588,24 +604,7 @@ flowchart connect rownametest1_left rownametest2_left
 flowchart connect rownametest1_center rownametest3_center
 flowchart connect rownametest3_center rownametest5_center
 flowchart connect rownametest2_left rownametest4_left
-
-/*
-flowchart connect enrollment_center enrollment_left
-flowchart connect enrollment_center assessment_center
-flowchart connect assessment_center assessment_left
-flowchart connect assessment_center random_center
-flowchart connect random_center allocgroup_center
-flowchart connect random_center allocgroup_left, arrow(angled)
-flowchart connect allocgroup_center allocdetails_center
-flowchart connect allocgroup_left allocdetails_left
-flowchart connect allocdetails_center postmeasurement_center
-flowchart connect allocdetails_left postmeasurement_left
-flowchart connect postmeasurement_center measurement3monpostint_center
-flowchart connect measurement3monpostint_center analyzed_center
-flowchart connect postmeasurement_left wlistintervention_left
-flowchart connect wlistintervention_left measurement3monpostint_left
-flowchart connect measurement3monpostint_left wlist3mon_left
-flowchart connect wlist3mon_left analyzed_left 
 */
+
 
 flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz")
