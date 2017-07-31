@@ -2,132 +2,110 @@
       name:  DebugLog
        log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\DebugLog.log
   log type:  text
- opened on:  31 Jul 2017, 12:52:02
+ opened on:  31 Jul 2017, 16:23:43
 
-. 
-. flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
+. * |||||| TEST4: Row with No left-block and a Singleton Lead-Line in the right-block
+. flowchart writerow(rownametest4): flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
 
 COMMAND PARSING: 
 Subcommand via GetToken: :
-Subcommand via Syntax: writerow(random):
-Subcommand with Parameter:  writerow(random)
-Compound Quotes (CQ's):   "randomized" 102 "Randomized", flowchart_blank
-Subparameter via String Parse (CQs):  random
+Subcommand via Syntax: writerow(rownametest4):
+Subcommand with Parameter:  writerow(rownametest4)
+Compound Quotes (CQ's):   flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
+Subparameter via String Parse (CQs):  rownametest4
 Subcommand via String Parse (CQs):  writerow
 
 ROW CONTENT: 
 
- First Variable: randomized
+ First Variable: flowchart_blank,
 
 
- Compound Quotes (CQ's):   102 "Randomized", flowchart_blank
+ Compound Quotes (CQ's):   "rblock1_line1" 97 "This is one line, \\ of a block."
 
- Entire Statement (With CQ's):  "randomized" 102 "Randomized", flowchart_blank
+ Entire Statement (With CQ's):  flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
 
 TOKENS:
 
-1=|      % Row - random|, 2=||, 3=|| indent=||
+1=|      % Row - rownametest4|, 2=||, 3=|| indent=||
 BLOCK START ----         [blockparse: center]
-1: writerow(random):
+1: writerow(rownametest4):
 BLOCK START ----         [blockparse: center]
-2: randomized
+2: flowchart_blank,
+1=|      % -- Blank Center Block|, 2=||, 3=|| indent=||
+BLOCK START ----         [blockparse: left]
+3: rblock1_line1
+          [blockparse: left]
+                      LA:  
+ ---- NEW LINE
+       token: 3
+        desc: rblock1_line1
+       token: 4
+        lnum: 97
+       token: 5
+        desc: This is one line, \\ of a block.
+   Added to Block - Line 1: 
+       --- Singleton Lead-line on Left Block With Blank Center Block (so k=1) and Singleton Left Block (so LA is Blank): tdwriteline - [content] [lead] [singleton] [end]
+      [blockparse: left] [ i#: 5] [ token: This is one line, \\ of a block.] [ k: 1]
+Blockfield Linestring:       & \node [block_left] (rownametest4_left) { This is one line, \\ of a block. (n=\figvalue{rblock1_line1})}; \\
+ ---- END OF LINE
+
+                      LA:  
+
+.         * To do: Print '\\' at the end of this singleton's line.
+.         
+. * |||||| TEST5: Row with Singleton Lead-Line in the left-block and No right-block
+. flowchart writerow(rownametest5): "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+
+COMMAND PARSING: 
+Subcommand via GetToken: :
+Subcommand via Syntax: writerow(rownametest5):
+Subcommand with Parameter:  writerow(rownametest5)
+Compound Quotes (CQ's):   "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+Subparameter via String Parse (CQs):  rownametest5
+Subcommand via String Parse (CQs):  writerow
+
+ROW CONTENT: 
+
+ First Variable: lblock1_line1
+
+
+ Compound Quotes (CQ's):   46 "This is one line, \\ of a block.", flowchart_blank
+
+ Entire Statement (With CQ's):  "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+
+TOKENS:
+
+1=|      % Row - rownametest5|, 2=||, 3=|| indent=||
+BLOCK START ----         [blockparse: center]
+1: writerow(rownametest5):
+BLOCK START ----         [blockparse: center]
+2: lblock1_line1
           [blockparse: center]
                       LA: , 
  ---- NEW LINE
        token: 2
-        desc: randomized
+        desc: lblock1_line1
        token: 3
-        lnum: 102
+        lnum: 46
        token: 4
-        desc: Randomized
+        desc: This is one line, \\ of a block.
    Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (random_center) { Randomized (n=\figvalue{randomized})}; 
+       --- Singleton Lead-line on Center Block (k=1, LA is Comma): tdwriteline - [content] [lead] [singleton]
+      [blockparse: center] [ i#: 4] [ token: This is one line, \\ of a block.] [ k: 1]
+Blockfield Linestring:       \node [block_center] (rownametest5_center) { This is one line, \\ of a block. (n=\figvalue{lblock1_line1})}; 
  ---- END OF LINE
 
                       LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
 BLOCK START ----         [blockparse: left]
 6: flowchart_blank
           [blockparse: left]
                       LA:  
  ---- NEW LINE
        FLOWCHART_BLANK [blockparse: left] [ i#: 6] [ token: flowchart_blank] [ k: 1]
-       token: 6
-        desc: flowchart_blank
-       token: 7
-        lnum: 
-       token: 8
-        desc: 
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (random_left) {  (n=\figvalue{flowchart_blank}): \\
- ---- END OF LINE
 
-                      LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-
+.         * To do: Print '& \\' at the end of this singleton's line.
 . 
-. flowchart writerow(allocgroup): ///
->         "alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
->         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(allocgroup):
-Subcommand with Parameter:  writerow(allocgroup)
-Compound Quotes (CQ's):           "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-Subparameter via String Parse (CQs):  allocgroup
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: alloc_interventiongroup
-
-
- Compound Quotes (CQ's):   51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
- Entire Statement (With CQ's):          "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-TOKENS:
-
-1=|      % Row - allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(allocgroup):
-BLOCK START ----         [blockparse: center]
-2: alloc_interventiongroup
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: alloc_interventiongroup
-       token: 3
-        lnum: 51
-       token: 4
-        desc: {Allocated to Intervention group
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (allocgroup_center) { {Allocated to Intervention group (n=\figvalue{alloc_interventiongroup})}; 
- ---- END OF LINE
-
-                      LA: Allocated to Wait-list control group 
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: alloc_waitlistgroup
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       token: 6
-        desc: alloc_waitlistgroup
-       token: 7
-        lnum: 51
-       token: 8
-        desc: Allocated to Wait-list control group
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (allocgroup_left) { Allocated to Wait-list control group (n=\figvalue{alloc_waitlistgroup}): \\
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-
-. flowchart_debug, off    
+. flowchart_debug, off
 |||||| DebugLog Off
 
 
@@ -135,520 +113,111 @@ Blockfield Linestring:       & \node [block_left] (allocgroup_left) { Allocated 
       name:  DebugLog
        log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\DebugLog.log
   log type:  text
- opened on:  31 Jul 2017, 12:52:41
+ opened on:  31 Jul 2017, 16:30:55
 
-. 
-. flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
+. * |||||| TEST4: Row with No left-block and a Singleton Lead-Line in the right-block
+. flowchart writerow(rownametest4): flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
 
 COMMAND PARSING: 
 Subcommand via GetToken: :
-Subcommand via Syntax: writerow(random):
-Subcommand with Parameter:  writerow(random)
-Compound Quotes (CQ's):   "randomized" 102 "Randomized", flowchart_blank
-Subparameter via String Parse (CQs):  random
+Subcommand via Syntax: writerow(rownametest4):
+Subcommand with Parameter:  writerow(rownametest4)
+Compound Quotes (CQ's):   flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
+Subparameter via String Parse (CQs):  rownametest4
 Subcommand via String Parse (CQs):  writerow
 
 ROW CONTENT: 
 
- First Variable: randomized
+ First Variable: flowchart_blank,
 
 
- Compound Quotes (CQ's):   102 "Randomized", flowchart_blank
+ Compound Quotes (CQ's):   "rblock1_line1" 97 "This is one line, \\ of a block."
 
- Entire Statement (With CQ's):  "randomized" 102 "Randomized", flowchart_blank
+ Entire Statement (With CQ's):  flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
 
 TOKENS:
 
-1=|      % Row - random|, 2=||, 3=|| indent=||
+1=|      % Row - rownametest4|, 2=||, 3=|| indent=||
 BLOCK START ----         [blockparse: center]
-1: writerow(random):
+1: writerow(rownametest4):
 BLOCK START ----         [blockparse: center]
-2: randomized
+2: flowchart_blank,
+1=|      % -- Blank Center Block|, 2=||, 3=|| indent=||
+BLOCK START ----         [blockparse: left]
+3: rblock1_line1
+          [blockparse: left]
+                      LA:  
+ ---- NEW LINE
+       token: 3
+        desc: rblock1_line1
+       token: 4
+        lnum: 97
+       token: 5
+        desc: This is one line, \\ of a block.
+   Added to Block - Line 1: 
+       --- Singleton Lead-line on Left Block With Blank Center Block (so k=1) and Singleton Left Block (so LA is Blank): tdwriteline - [content] [lead] [singleton] [end]
+      [blockparse: left] [ i#: 5] [ token: This is one line, \\ of a block.] [ k: 1]
+Blockfield Linestring:       & \node [block_left] (rownametest4_left) { This is one line, \\ of a block. (n=\figvalue{rblock1_line1})}; \\
+ ---- END OF LINE
+
+                      LA:  
+
+.         * To do: Print '\\' at the end of this singleton's line.
+.         
+. * |||||| TEST5: Row with Singleton Lead-Line in the left-block and No right-block
+. flowchart writerow(rownametest5): "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+
+COMMAND PARSING: 
+Subcommand via GetToken: :
+Subcommand via Syntax: writerow(rownametest5):
+Subcommand with Parameter:  writerow(rownametest5)
+Compound Quotes (CQ's):   "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+Subparameter via String Parse (CQs):  rownametest5
+Subcommand via String Parse (CQs):  writerow
+
+ROW CONTENT: 
+
+ First Variable: lblock1_line1
+
+
+ Compound Quotes (CQ's):   46 "This is one line, \\ of a block.", flowchart_blank
+
+ Entire Statement (With CQ's):  "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+
+TOKENS:
+
+1=|      % Row - rownametest5|, 2=||, 3=|| indent=||
+BLOCK START ----         [blockparse: center]
+1: writerow(rownametest5):
+BLOCK START ----         [blockparse: center]
+2: lblock1_line1
           [blockparse: center]
                       LA: , 
  ---- NEW LINE
        token: 2
-        desc: randomized
+        desc: lblock1_line1
        token: 3
-        lnum: 102
+        lnum: 46
        token: 4
-        desc: Randomized
+        desc: This is one line, \\ of a block.
    Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (random_center) { Randomized (n=\figvalue{randomized})}; 
+       --- Singleton Lead-line on Center Block (k=1, LA is Comma): tdwriteline - [content] [lead] [singleton]
+      [blockparse: center] [ i#: 4] [ token: This is one line, \\ of a block.] [ k: 1]
+Blockfield Linestring:       \node [block_center] (rownametest5_center) { This is one line, \\ of a block. (n=\figvalue{lblock1_line1})}; 
  ---- END OF LINE
 
                       LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
 BLOCK START ----         [blockparse: left]
 6: flowchart_blank
           [blockparse: left]
                       LA:  
  ---- NEW LINE
        FLOWCHART_BLANK [blockparse: left] [ i#: 6] [ token: flowchart_blank] [ k: 1]
-       token: 6
-        desc: flowchart_blank
-       token: 7
-        lnum: 
-       token: 8
-        desc: 
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (random_left) {  (n=\figvalue{flowchart_blank}): \\
- ---- END OF LINE
+1=|      & \\ % -- Blank Left Block|, 2=||, 3=|| indent=||
 
-                      LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-
+.         * To do: Print '& \\' at the end of this singleton's line.
 . 
-. flowchart writerow(allocgroup): ///
->         "alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
->         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(allocgroup):
-Subcommand with Parameter:  writerow(allocgroup)
-Compound Quotes (CQ's):           "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-Subparameter via String Parse (CQs):  allocgroup
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: alloc_interventiongroup
-
-
- Compound Quotes (CQ's):   51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
- Entire Statement (With CQ's):          "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-TOKENS:
-
-1=|      % Row - allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(allocgroup):
-BLOCK START ----         [blockparse: center]
-2: alloc_interventiongroup
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: alloc_interventiongroup
-       token: 3
-        lnum: 51
-       token: 4
-        desc: {Allocated to Intervention group
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (allocgroup_center) { {Allocated to Intervention group (n=\figvalue{alloc_interventiongroup})}; 
- ---- END OF LINE
-
-                      LA: Allocated to Wait-list control group 
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: alloc_waitlistgroup
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       token: 6
-        desc: alloc_waitlistgroup
-       token: 7
-        lnum: 51
-       token: 8
-        desc: Allocated to Wait-list control group
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (allocgroup_left) { Allocated to Wait-list control group (n=\figvalue{alloc_waitlistgroup}): \\
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-
-. flowchart_debug, off    
-|||||| DebugLog Off
-
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      name:  DebugLog
-       log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\DebugLog.log
-  log type:  text
- opened on:  31 Jul 2017, 13:14:20
-
-. 
-. flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(random):
-Subcommand with Parameter:  writerow(random)
-Compound Quotes (CQ's):   "randomized" 102 "Randomized", flowchart_blank
-Subparameter via String Parse (CQs):  random
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: randomized
-
-
- Compound Quotes (CQ's):   102 "Randomized", flowchart_blank
-
- Entire Statement (With CQ's):  "randomized" 102 "Randomized", flowchart_blank
-
-TOKENS:
-
-1=|      % Row - random|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(random):
-BLOCK START ----         [blockparse: center]
-2: randomized
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: randomized
-       token: 3
-        lnum: 102
-       token: 4
-        desc: Randomized
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (random_center) { Randomized (n=\figvalue{randomized})}; 
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: flowchart_blank
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       FLOWCHART_BLANK [blockparse: left] [ i#: 6] [ token: flowchart_blank] [ k: 1]
-       token: 6
-        desc: flowchart_blank
-       token: 7
-        lnum: 
-       token: 8
-        desc: 
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (random_left) {  (n=\figvalue{flowchart_blank}): \\
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-
-. 
-. flowchart writerow(allocgroup): ///
->         "alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
->         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(allocgroup):
-Subcommand with Parameter:  writerow(allocgroup)
-Compound Quotes (CQ's):           "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-Subparameter via String Parse (CQs):  allocgroup
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: alloc_interventiongroup
-
-
- Compound Quotes (CQ's):   51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
- Entire Statement (With CQ's):          "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-TOKENS:
-
-1=|      % Row - allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(allocgroup):
-BLOCK START ----         [blockparse: center]
-2: alloc_interventiongroup
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: alloc_interventiongroup
-       token: 3
-        lnum: 51
-       token: 4
-        desc: {Allocated to Intervention group
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (allocgroup_center) { {Allocated to Intervention group (n=\figvalue{alloc_interventiongroup})}; 
- ---- END OF LINE
-
-                      LA: Allocated to Wait-list control group 
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: alloc_waitlistgroup
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       token: 6
-        desc: alloc_waitlistgroup
-       token: 7
-        lnum: 51
-       token: 8
-        desc: Allocated to Wait-list control group
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (allocgroup_left) { Allocated to Wait-list control group (n=\figvalue{alloc_waitlistgroup}): \\
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-
-. flowchart_debug, off    
-|||||| DebugLog Off
-
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      name:  DebugLog
-       log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\DebugLog.log
-  log type:  text
- opened on:  31 Jul 2017, 13:14:58
-
-. 
-. flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(random):
-Subcommand with Parameter:  writerow(random)
-Compound Quotes (CQ's):   "randomized" 102 "Randomized", flowchart_blank
-Subparameter via String Parse (CQs):  random
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: randomized
-
-
- Compound Quotes (CQ's):   102 "Randomized", flowchart_blank
-
- Entire Statement (With CQ's):  "randomized" 102 "Randomized", flowchart_blank
-
-TOKENS:
-
-1=|      % Row - random|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(random):
-BLOCK START ----         [blockparse: center]
-2: randomized
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: randomized
-       token: 3
-        lnum: 102
-       token: 4
-        desc: Randomized
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (random_center) { Randomized (n=\figvalue{randomized})}; 
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: flowchart_blank
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       FLOWCHART_BLANK [blockparse: left] [ i#: 6] [ token: flowchart_blank] [ k: 1]
-       token: 6
-        desc: flowchart_blank
-       token: 7
-        lnum: 
-       token: 8
-        desc: 
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (random_left) {  (n=\figvalue{flowchart_blank}): \\
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-
-. 
-. flowchart writerow(allocgroup): ///
->         "alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
->         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(allocgroup):
-Subcommand with Parameter:  writerow(allocgroup)
-Compound Quotes (CQ's):           "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-Subparameter via String Parse (CQs):  allocgroup
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: alloc_interventiongroup
-
-
- Compound Quotes (CQ's):   51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
- Entire Statement (With CQ's):          "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-TOKENS:
-
-1=|      % Row - allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(allocgroup):
-BLOCK START ----         [blockparse: center]
-2: alloc_interventiongroup
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: alloc_interventiongroup
-       token: 3
-        lnum: 51
-       token: 4
-        desc: {Allocated to Intervention group
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (allocgroup_center) { {Allocated to Intervention group (n=\figvalue{alloc_interventiongroup})}; 
- ---- END OF LINE
-
-                      LA: Allocated to Wait-list control group 
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: alloc_waitlistgroup
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       token: 6
-        desc: alloc_waitlistgroup
-       token: 7
-        lnum: 51
-       token: 8
-        desc: Allocated to Wait-list control group
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (allocgroup_left) { Allocated to Wait-list control group (n=\figvalue{alloc_waitlistgroup}): \\
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-
-. flowchart_debug, off    
-|||||| DebugLog Off
-
-
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-      name:  DebugLog
-       log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\DebugLog.log
-  log type:  text
- opened on:  31 Jul 2017, 13:27:43
-
-. 
-. flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(random):
-Subcommand with Parameter:  writerow(random)
-Compound Quotes (CQ's):   "randomized" 102 "Randomized", flowchart_blank
-Subparameter via String Parse (CQs):  random
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: randomized
-
-
- Compound Quotes (CQ's):   102 "Randomized", flowchart_blank
-
- Entire Statement (With CQ's):  "randomized" 102 "Randomized", flowchart_blank
-
-TOKENS:
-
-1=|      % Row - random|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(random):
-BLOCK START ----         [blockparse: center]
-2: randomized
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: randomized
-       token: 3
-        lnum: 102
-       token: 4
-        desc: Randomized
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (random_center) { Randomized (n=\figvalue{randomized})}; 
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: flowchart_blank
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       FLOWCHART_BLANK [blockparse: left] [ i#: 6] [ token: flowchart_blank] [ k: 1]
-1=|      %  Debug - End block for row: random|, 2=||, 3=|| indent=||
-
-. 
-. flowchart writerow(allocgroup): ///
->         "alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
->         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-COMMAND PARSING: 
-Subcommand via GetToken: :
-Subcommand via Syntax: writerow(allocgroup):
-Subcommand with Parameter:  writerow(allocgroup)
-Compound Quotes (CQ's):           "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-Subparameter via String Parse (CQs):  allocgroup
-Subcommand via String Parse (CQs):  writerow
-
-ROW CONTENT: 
-
- First Variable: alloc_interventiongroup
-
-
- Compound Quotes (CQ's):   51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
- Entire Statement (With CQ's):          "alloc_interventiongroup" 51 "{Allocated to Intervention group",         "alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-
-TOKENS:
-
-1=|      % Row - allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: center]
-1: writerow(allocgroup):
-BLOCK START ----         [blockparse: center]
-2: alloc_interventiongroup
-          [blockparse: center]
-                      LA: , 
- ---- NEW LINE
-       token: 2
-        desc: alloc_interventiongroup
-       token: 3
-        lnum: 51
-       token: 4
-        desc: {Allocated to Intervention group
-   Added to Block - Line 1: 
-Blockfield Linestring:       \node [block_center] (allocgroup_center) { {Allocated to Intervention group (n=\figvalue{alloc_interventiongroup})}; 
- ---- END OF LINE
-
-                      LA: Allocated to Wait-list control group 
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-BLOCK START ----         [blockparse: left]
-6: alloc_waitlistgroup
-          [blockparse: left]
-                      LA:  
- ---- NEW LINE
-       token: 6
-        desc: alloc_waitlistgroup
-       token: 7
-        lnum: 51
-       token: 8
-        desc: Allocated to Wait-list control group
-   Added to Block - Line 1: 
-Blockfield Linestring:       & \node [block_left] (allocgroup_left) { Allocated to Wait-list control group (n=\figvalue{alloc_waitlistgroup}): \\
- ---- END OF LINE
-
-                      LA:  
-1=|      %  Debug - End block for row: allocgroup|, 2=||, 3=|| indent=||
-
-. flowchart_debug, off    
+. flowchart_debug, off
 |||||| DebugLog Off
 
 

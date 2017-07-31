@@ -115,7 +115,7 @@ flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block
 {marker troubleshooting}{. . .}
 {title:Troubleshooting}
 
-Here are a list of known problems that can arise in using this program and their quick-fix solutions.
+Here is a list of known problems that can arise in using this program and their quick-fix solutions.
 
 {phang}{cmd: STATA: unrecognized command:  Flowchart_Blank r(199);}{p_end}
 	This is likely because you forgot to wrap a line where there is a blank.
@@ -129,5 +129,9 @@ Here are a list of known problems that can arise in using this program and their
 LATEX: Argument of \@dtl@lop@ff has an extra }. ...<filename of data file>.data"}
 
 	This is likely because you tried to use the Flowchart_Blank keyword but actually misspelled the 'Flowchart_Blank' keyword. Go back and edit the keyword and try again.
+{phang}{cmd: TIKZ Package pgf Error}{p_end}
+Package pgf Error: No shape named <blockname_orientation> is known. \path (<blockname_orientation>)
+
+	This is likely due to an error in using the 'flowchart connect' command where you referred to a block that does not exist. If a row does not have an accompanying block, whether left or center oriented, it cannot be connected to any other blocks. Therefore, try reviewing the connection to determine if you may be connecting an arrow to a block that is blank.
 	
 For problems not resolved through this list, please open an issue/bug.

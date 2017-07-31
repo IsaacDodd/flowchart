@@ -1,11 +1,7 @@
 
-* DISPOSITION SUBANALYSIS: Analyze and setup the subject disposition.
-
-
-* DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
-
-capture program drop flowchart
 *! version 0.0.1  28jul2017  Isaac M. E. Dodd
+* FLOWCHART ---------------------------------------------------------------------
+capture program drop flowchart
 program define flowchart
 	version 13
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
@@ -132,6 +128,7 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'	// Row Command with Su
 				else if(trim("``i''") == "," | ((lower(trim("``i''")) == "flowchart_blank" | lower(trim("``i''")) == "flowchart_blank,") & "`blockparse'" == "center") ) {
 					* If a comma is encountered, or the block is blank/empty on the first block (default center), switch the blockparse flag to parse the left block (lblock) instead of the default center block (cblock).
 					local blockparse = "left"
+flowchart_tdwrite_blockfield `"      % -- Blank Center Block"'	// flowchart_blank detected at the start of a new row, the center block.
 					local i = `i' + 1	// Move to the next token after the loop continues.
 					continue
 				}
@@ -168,10 +165,11 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'	// Row Command with Su
 						local stop = "stop"
 						break
 					}
-					if("$Flowchart_Debug" == "on" & trim("``i''") == "flowchart_blank" ) {
-						display "	FLOWCHART_BLANK [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
-					}
-					if( trim("``i''") == "flowchart_blank" & "`blockparse'" == "left") {
+					if( trim("``i''") == "flowchart_blank" & "`blockparse'" == "left") {						
+						if("$Flowchart_Debug" == "on") {
+							display "	FLOWCHART_BLANK [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+						}
+flowchart_tdwrite_blockfield `"      & \\ % -- Blank Left Block"'	// flowchart_blank detected at the start of a new row, the center block.
 						local stop = "stop"
 						continue, break
 					}
@@ -200,9 +198,24 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'	// Row Command with Su
 					}
 					if(`k' == 1) {
 						if(trim("``ilookahead''") == ",") {
+							if("$Flowchart_Debug" == "on") {
+								display "	--- Singleton Lead-line on Center Block (k=1, LA is Comma): tdwriteline - [content] [lead] [singleton]"
+								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+							}
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead(`"`blockparsetoken'"') singleton
 						}
+						else if(trim("``ilookahead''") == "") {
+							if("$Flowchart_Debug" == "on") {
+								display "	--- Singleton Lead-line on Left Block With Blank Center Block (so k=1) and Singleton Left Block (so LA is Blank): tdwriteline - [content] [lead] [singleton] [end]"
+								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+							}
+							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead(`"`blockparsetoken'"') singleton end
+						}
 						else {
+							if("$Flowchart_Debug" == "on") {
+								*display "	--- Singleton Lead-line on Left Block With Blank Center Block (so k=1) and Singleton Left Block (so LA is Blank): tdwriteline - [content] [lead] [singleton] [end]"
+								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+							}
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead(`"`blockparsetoken'"')
 						}
 					}
@@ -267,8 +280,8 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'	// Row Command with Su
 						
 				} // elihw: End of LineWhileLoop
 	
-if("$Flowchart_Debug" == "on") {
-	flowchart_tdwrite_blockfield `"      % 	Debug - End block for row: `subparam'"'	// End of the Row
+if("$Flowchart_Debug" == "tikz") {
+	flowchart_tdwrite_blockfield `"      %  +- Debug - End block for row: `subparam'"'	// End of the Row
 }
 				local i = `i' + 1
 			} // elihw: End of TokenWhile
@@ -277,7 +290,7 @@ if("$Flowchart_Debug" == "on") {
 end
 capture program drop flowchart_debug
 program define flowchart_debug 
-	syntax [anything] [, on off]
+	syntax [anything] [, on off tikz logreset]
 	if("`on'" == "on") {
 		global Flowchart_Debug = "on"
 		
@@ -305,9 +318,20 @@ program define flowchart_debug
 		display ""
 		capture log off DebugLog
 	}
+	else if("`tikz'" == "tikz") {
+		global Flowchart_Debug = "tikz"
+		display "|||||| DebugLog Mode: Tikz"
+		display ""
+		display ""
+	}
 	else {
 		global Flowchart_Debug = "off"
 		capture log close DebugLog
+	}
+	
+	if("`logreset'" != "") {
+		capture log close DebugLog
+		display "...DebugLog reset."
 	}
 end
 capture program drop flowchart_init
@@ -364,7 +388,7 @@ capture program drop flowchart_tdwrite_blockfield
 program define flowchart_tdwrite_blockfield
 	syntax [anything] [, indent]
 	global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
-	.blockfields.list[$Flowchart_IteratorBlockfields] = `"`linestring'"'
+	.blockfields.list[$Flowchart_IteratorBlockfields] = `"`1'"'
 	if("$Flowchart_Debug" == "on") {
 		display  "1=|`1'|, 2=|`2'|, 3=|`3'| indent=|`indent'|"
 	}
@@ -386,7 +410,12 @@ program define flowchart_tdwriteline
 	syntax [anything] [, indent lead(string) singleton end endblank newrow name(string) num(string) desc(string)]
 	if("`lead'" != "") {
 		if("`singleton'" != "") {
-			local linestring = `"`lead' `desc' (n=\figvalue{`name'})}; "'
+			if("`end'" != "") {
+				local linestring = `"`lead' `desc' (n=\figvalue{`name'})}; \\"'	// Usually, a left-block that has only 1 line (a singleton) when the center-block was blank.
+			}
+			else {
+				local linestring = `"`lead' `desc' (n=\figvalue{`name'})}; "'
+			}
 		}
 		else {
 			local linestring = `"`lead' `desc' (n=\figvalue{`name'}): \\"'
@@ -440,6 +469,11 @@ end
 
 
 * ---------------------------------------------------------------------
+
+* DISPOSITION SUBANALYSIS: Analyze and setup the subject disposition.
+
+
+* DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
 
 flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
 
@@ -520,27 +554,40 @@ flowchart writerow(analyzed): ///
 
 * DEBUGGING
 * |||||| TEST1: Dummy Row
-flowchart writerow(rownametest1): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
-	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+flowchart writerow(rownametest1): "lblock1_line1" 46 "This is one line, \\ of a block." ///
+	"lblock1_line2" 43 "This is another line, of a block" ///
+	"lblock1_line3" 3 "This is another line, of a block", ///
+	"rblock1_line1" 97 "This is one line, of a block." ///
+	"rblock1_line2" 33 "This is another line, of a block" ///
+	"rblock1_line3" 44 "This is another line, of a block"
 
 * |||||| TEST2: Row with No left-block
-flowchart writerow(rownametest2): flowchart_blank, "rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+flowchart writerow(rownametest2): flowchart_blank, ///
+	"rblock1_line1" 97 "This is one line, of a block." ///
+	"rblock1_line2" 33 "This is another line, of a block" ///
+	"rblock1_line3" 44 "This is another line, of a block"
 
 * |||||| TEST3: Row with No right-block
-flowchart writerow(rownametest3): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", flowchart_blank
+flowchart writerow(rownametest3): "lblock1_line1" 46 "This is one line, \\ of a block." ///
+	"lblock1_line2" 43 "This is another line, of a block" ///
+	"lblock1_line3" 3 "This is another line, of a block", flowchart_blank
 
 flowchart_debug, on
 * |||||| TEST4: Row with No left-block and a Singleton Lead-Line in the right-block
 flowchart writerow(rownametest4): flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
-
+	* To do: Print '\\' at the end of this singleton's line.
+	
 * |||||| TEST5: Row with Singleton Lead-Line in the left-block and No right-block
 flowchart writerow(rownametest5): "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+	* To do: Print '& \\' at the end of this singleton's line.
+
+flowchart_debug, off
 
 flowchart connect rownametest1_center rownametest1_left
 flowchart connect rownametest1_left rownametest2_left
 flowchart connect rownametest1_center rownametest3_center
 flowchart connect rownametest3_center rownametest5_center
-flowchart connect rownametest2_center rownametest4_center
+flowchart connect rownametest2_left rownametest4_left
 
 /*
 flowchart connect enrollment_center enrollment_left

@@ -628,3 +628,92 @@ forval index=1/`=`.blockfields.list.arrnels'' {
 
 
 
+ \begin{tikzpicture}[auto,
+     block_center/.style ={rectangle, draw=black, thick, fill=white,
+       text width=8em, text centered,
+       minimum height=4em},
+     block_left/.style ={rectangle, draw=black, thick, fill=white,
+       text width=16em, text ragged, minimum height=4em, inner sep=6pt},
+     block_noborder/.style ={rectangle, draw=none, thick, fill=none,
+       text width=18em, text centered, minimum height=1em},
+     block_assign/.style ={rectangle, draw=black, thick, fill=white,
+       text width=18em, text ragged, minimum height=3em, inner sep=6pt},
+     block_lost/.style ={rectangle, draw=black, thick, fill=white,
+       text width=16em, text ragged, minimum height=3em, inner sep=6pt},
+       line/.style ={draw, thick, -latex', shorten >=0pt}]
+   % Outlining the flowchart using the PGF/TikZ matrix function
+   \matrix [column sep=5mm,row sep=3mm] {
+      \node [block_center] (rownametest1_center) { This is one line, \\ of a block. (n=\figvalue{lblock1_line1}): \\
+        \h This is another line, of a block (n=\figvalue{lblock1_line2}) \\
+        \h This is another line, of a block (n=\figvalue{lblock1_line3}) };
+      & \node [block_left] (rownametest1_left) { This is one line, of a block. (n=\figvalue{rblock1_line1}): \\
+        \h This is another line, of a block (n=\figvalue{rblock1_line2}) \\
+        \h This is another line, of a block (n=\figvalue{rblock1_line3}) }; \\
+      % Blank
+      & \node [block_left] (rownametest2_left) { This is one line, of a block. (n=\figvalue{rblock1_line1}): \\
+        \h This is another line, of a block (n=\figvalue{rblock1_line2}) \\
+        \h This is another line, of a block (n=\figvalue{rblock1_line3}) }; \\
+      \node [block_center] (rownametest3_center) { This is one line, \\ of a block. (n=\figvalue{lblock1_line1}): \\
+        \h This is another line, of a block (n=\figvalue{lblock1_line2}) \\
+        \h This is another line, of a block (n=\figvalue{lblock1_line3}) }; \\
+      & \\
+      % Blank 2
+      & \node [block_left] (rownametest4_left) { This is one line, \\ of a block. (n=\figvalue{rblock1_line1})}; \\
+      \node [block_center] (rownametest5_center) { This is one line, \\ of a block. (n=\figvalue{lblock1_line1})}; 
+      & \\
+   };% End Matrix
+   % Connecting nodes with paths
+   \begin{scope}[every path/.style=line]
+      \path (rownametest1_center) -- (rownametest1_left);
+      \path (rownametest1_left) -- (rownametest2_left);
+      \path (rownametest1_center) -- (rownametest3_center);
+      \path (rownametest3_center) -- (rownametest5_center);
+      \path (rownametest2_left) -- (rownametest4_left);
+   \end{scope}
+\end{tikzpicture}
+
+
+
+
+
+* DEBUGGING
+* |||||| TEST1: Dummy Row
+flowchart writerow(rownametest1): "lblock1_line1" 46 "This is one line, \\ of a block." ///
+	"lblock1_line2" 43 "This is another line, of a block" ///
+	"lblock1_line3" 3 "This is another line, of a block", ///
+	"rblock1_line1" 97 "This is one line, of a block." ///
+	"rblock1_line2" 33 "This is another line, of a block" ///
+	"rblock1_line3" 44 "This is another line, of a block"
+
+* |||||| TEST2: Row with No left-block
+flowchart writerow(rownametest2): flowchart_blank, ///
+	"rblock1_line1" 97 "This is one line, of a block." ///
+	"rblock1_line2" 33 "This is another line, of a block" ///
+	"rblock1_line3" 44 "This is another line, of a block"
+
+* |||||| TEST3: Row with No right-block
+flowchart writerow(rownametest3): "lblock1_line1" 46 "This is one line, \\ of a block." ///
+	"lblock1_line2" 43 "This is another line, of a block" ///
+	"lblock1_line3" 3 "This is another line, of a block", flowchart_blank
+
+flowchart_debug, off
+* |||||| TEST4: Row with No left-block and a Singleton Lead-Line in the right-block
+flowchart writerow(rownametest4): flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
+	* To do: Print '\\' at the end of this singleton's line.
+	
+* |||||| TEST5: Row with Singleton Lead-Line in the left-block and No right-block
+flowchart writerow(rownametest5): "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+	* To do: Print '& \\' at the end of this singleton's line.
+
+flowchart_debug, off
+
+flowchart connect rownametest1_center rownametest1_left
+flowchart connect rownametest1_left rownametest2_left
+flowchart connect rownametest1_center rownametest3_center
+flowchart connect rownametest3_center rownametest5_center
+flowchart connect rownametest2_left rownametest4_left
+
+flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz")
+
+
+
