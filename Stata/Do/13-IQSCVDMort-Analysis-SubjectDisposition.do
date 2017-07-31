@@ -475,8 +475,14 @@ end
 
 * ---------------------------------------------------------------------
 
+********************
+* EXAMPLE:
+********************
+
 * DISPOSITION SUBANALYSIS: Analyze and setup the subject disposition.
 
+	*** Subanalysis Data is performed here where the numbers and data to produce the flowchart are created. 
+	*** Rows can be created using macros to fill in each row as the data for the analysis are changed.
 
 * DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
 
