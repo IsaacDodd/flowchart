@@ -21,7 +21,11 @@ tex*/
 texdoc write    % Outlining the flowchart using the PGF/TikZ matrix function
 
 texdoc write    \matrix [column sep=5mm,row sep=3mm] {
-	/*tex
+
+forval index=1/`=`.blockfields.list.arrnels'' {
+	texdoc write `.blockfields.list[`index']'
+}
+	/*
       % Enrollment - row 1
       \node [block_center] (referred) {Referred (n=\figvalue{referred})};
       & \node [block_left] (excluded1) {Excluded (n=\figvalue{referred_excluded}): \\
@@ -86,12 +90,17 @@ texdoc write    \matrix [column sep=5mm,row sep=3mm] {
       % Analysis - row 10
       \node [block_assign] (i_ana) {Analysed (n=\figvalue{intervention_analyzed})}; 
       & \node [block_assign] (wlc_ana) {Analysed (n=\figvalue{postwaitlist_analyzed})}; \\
-	tex*/
+	*/
+	
 texdoc write    };% End Matrix
 
 texdoc write    % Connecting nodes with paths
 texdoc write    \begin{scope}[every path/.style=line]
-	/*tex
+
+forval index=1/`=`.pathfields.list.arrnels'' {
+	texdoc write `.pathfields.list[`index']'
+}
+	/*
       % Paths for enrollment rows
       \path (referred)   -- (excluded1);
       \path (referred)   -- (assessment);
@@ -111,7 +120,7 @@ texdoc write    \begin{scope}[every path/.style=line]
       \path (wlc_T36)    -- (wlc_T6);
       \path (wlc_T6)     -- (wlc_T9);
       \path (wlc_T9)     -- (wlc_ana);
-	tex*/
+	*/
 
 texdoc write    \end{scope}
 texdoc write \end{tikzpicture}

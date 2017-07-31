@@ -11,7 +11,14 @@ program define flowchart
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
 	
 	if("`1'" == "init" | "`1'" == "init,") {
-		global Flowchart_Settings = ""
+		global Flowchart_Settings = ""	// Stores settings in a space-delimited string.
+		global Flowchart_IteratorBlockfields = 0
+		global Flowchart_IteratorPathfields = 0
+		.Global.blockfields=.object.new
+		.Global.pathfields=.object.new
+		.Global.blockfields.Declare array list
+		.Global.pathfields.Declare array list
+		
 		capture file close FlowchartFile
 		file open FlowchartFile using "`using'", write text replace
 		flowchart_init
@@ -43,12 +50,21 @@ program define flowchart
 		if("`arrow'" != "") {
 			if("`arrow'" == "angled" | "`arrow'" == "angle") {
 				local arrow = "-|"
+				if("$Flowchart_Debug" == "on") {
+					display "`3'"
+				}
+				if(strpos(trim("`3'"), ",") > 0) {					
+					local 3 = substr(trim("`3'"), 1, strpos(trim("`3'"), ",")-1)
+					if("$Flowchart_Debug" == "on") {
+						display "`3'"
+					}
+				}					
 			}
 		}
 		else {
 			local arrow = "--"
 		}
-		flowchart_tdwrite `"      \path (`2')   `arrow' (`3');"'
+		flowchart_tdwrite_pathfield `"      \path (`2')   `arrow' (`3');"'
 	}
 	else {
 		*Sub-Commands that Require More Advanced Parsing
@@ -98,7 +114,7 @@ program define flowchart
 			
 			local i = 1		// Token Iterator
 			local blockparse = "center"
-flowchart_tdwrite `"      % Row - `subparam'"'
+flowchart_tdwrite_blockfield `"      % Row - `subparam'"'
 
 			while "``i''" != "" {
 				if("$Flowchart_Debug" == "on") {
@@ -163,8 +179,19 @@ flowchart_tdwrite `"      % Row - `subparam'"'
 						}
 					}
 					else if(trim("``ilookahead''") == "," | trim("``ilookahead''") == "" ) {
+						local ilookaheadx2 = `ilookahead' + 1
+							if("$Flowchart_Debug" == "on") {
+								display "Look Ahead x 1: ``ilookahead''"
+								display "Look Ahead x 2: ``ilookaheadx2''"
+							}
 						if(trim("``ilookahead''") == "") {
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') newrow end
+						}
+						else if(trim("``ilookahead''") == "," & trim("``ilookaheadx2''") == "") {
+							if("$Flowchart_Debug" == "on") {
+								display "...EndBlank..."
+							}
+							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') newrow end endblank
 						}
 						else {
 							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') end
@@ -191,7 +218,7 @@ flowchart_tdwrite `"      % Row - `subparam'"'
 				} // elihw: End of LineWhile
 	
 if("$Flowchart_Debug" == "on") {
-	flowchart_tdwrite `"      % 	end block for row: `subparam'"'	// End of the Row
+	flowchart_tdwrite_blockfield `"      % 	end block for row: `subparam'"'	// End of the Row
 }
 				local i = `i' + 1
 			} // elihw: End of TokenWhile
@@ -261,19 +288,30 @@ program define flowchart_tdfinalize
 end
 
 
-capture program drop flowchart_tdwrite
-program define flowchart_tdwrite
+capture program drop flowchart_tdwrite_blockfield
+program define flowchart_tdwrite_blockfield
 	syntax [anything] [, indent]
-	display  "`1'"
+	global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
+	.blockfields.list[$Flowchart_IteratorBlockfields] = `"`linestring'"'
 	if("$Flowchart_Debug" == "on") {
 		display  "1=|`1'|, 2=|`2'|, 3=|`3'| indent=|`indent'|"
 	}
 *	texdoc write "`varname'"
 end
 
+capture program drop flowchart_tdwrite_pathfield
+program define flowchart_tdwrite_pathfield
+	syntax [anything] [, indent]
+	global Flowchart_IteratorPathfields = $Flowchart_IteratorPathfields + 1
+	.pathfields.list[$Flowchart_IteratorPathfields] = `"`1'"'
+	if("$Flowchart_Debug" == "on") {
+		display  "1=|`1'|, 2=|`2'|, 3=|`3'| indent=|`indent'|"
+	}
+*	texdoc write "`varname'"
+end
 capture program drop flowchart_tdwriteline
 program define flowchart_tdwriteline
-	syntax [anything] [, indent lead(string) singleton end newrow name(string) num(string) desc(string)]
+	syntax [anything] [, indent lead(string) singleton end endblank newrow name(string) num(string) desc(string)]
 	if("`lead'" != "") {
 		if("`singleton'" != "") {
 			local linestring = `"`lead' `desc' (n=\figvalue{`name'})}; "'
@@ -286,7 +324,12 @@ program define flowchart_tdwriteline
 		* Determine ending first (suffix)
 		if("`end'" != "") {
 			if("`newrow'" != "") {
-				local suffix = "}; \\"
+				if("`endblank'" != "") {
+					local suffix = "}; \\" + "      & \\"
+				}
+				else {
+					local suffix = "}; \\"
+				}
 			}
 			else {
 				local suffix = "};"
@@ -303,7 +346,9 @@ program define flowchart_tdwriteline
 			local linestring = `"        \h `desc' (n=\figvalue{`name'}) `suffix'"'
 		}
 	}
-flowchart_tdwrite `"`linestring'"'
+global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
+.blockfields.list[$Flowchart_IteratorBlockfields] = `"`linestring'"'
+*flowchart_tdwrite_blockfield `"`linestring'"'
 *	texdoc write "`varname'"
 end
 
@@ -329,60 +374,96 @@ flowchart writerow(enrollment): ///
 	"referred_excluded_other" 3 "c) Other reasons"
 	
 flowchart writerow(assessment): ///
-	"assessed" 156 "" ///
-	"assessed_excluded" 54 "" ///
-	"assessed_excluded_inclusioncritunmet" 22 "" ///
-	"assessed_excluded_exclusioncritmet" 13 "" ///
-	"assessed_excluded_unsuitedgroup" 7 "" ///
-	"assessed_excluded_unsuitedtx" 2 "" ///
-	"assessed_excluded_othertx" 3 "" ///
-	"assessed_excluded_other" 7 ""
+	"assessed" 156 "{Assessed for Eligibility", ///
+	"assessed_excluded" 54 "Excluded" ///
+	"assessed_excluded_inclusioncritunmet" 22 "a) Inclusion criteria not met" ///
+	"assessed_excluded_exclusioncritmet" 13 "b) Exclusion criteria met" ///
+	"assessed_excluded_unsuitedgroup" 7 "c) Not suited for waitlist group" ///
+	"assessed_excluded_unsuitedtx" 2 "d) Not suited for intervention" ///
+	"assessed_excluded_othertx" 3 "e) Sought other treatment" ///
+	"assessed_excluded_other" 7 "f) Other reasons"
 	
-flowchart writerow(random): ///
-	"randomized" 102 "" ///
-	
+flowchart_debug, on
+display "Start Isaac"
+flowchart writerow(random): "randomized" 102 "Randomized", 
+	// Blank Row
+
 flowchart writerow(allocgroup): ///
-	"alloc_interventiongroup" 51 "" ///
-	"alloc_waitlistgroup" 51 ""
-	
+	"alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
+	"alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
+flowchart_debug, off	
 flowchart writerow(allocdetails): ///
-	"intervention_received" 49 "" ///
-	"intervention_unreceived" 2 "" ///
-	"intervention_unreceived_exclusioncrit" 1 "" ///
-	"intervention_unreceived_notime" 1 "" ///
-	"waitlist_stayedon" 48 "" ///
-	"waitlist_didnotstay" 3 "" ///
-	"waitlist_didnotstay_selfinduced" 2 "" ///
-	"waitlist_didnotstay_leftarea" 1 ""
+	"intervention_received" 49 "Received intervention" ///
+	"intervention_unreceived" 2 "Did not receive intervention" ///
+	"intervention_unreceived_exclusioncrit" 1 "With exclusionary criteria" ///
+	"intervention_unreceived_notime" 1 "Could not find time to participate", ///
+	"waitlist_stayedon" 48 "Stayed on wait-list" ///
+	"waitlist_didnotstay" 3 "Did not stay on wait-list" ///
+	"waitlist_didnotstay_selfinduced" 2 "Lost motivation" ///
+	"waitlist_didnotstay_leftarea" 1 "Was offered treatment elsewhere"
 	
-flowchart writerow(allocpost): ///
-	"postintervention_lost" 5 "" ///
-	"postintervention_lost_droppedout" 2 "" ///
-	"postintervention_lost_nomeasurement" 3 "" ///
-	"postwaitlist_lost" 6 "" ///
-	"postwaitlist_lost_droppedout" 3 "" ///
-	"postwaitlist_lost_nomeasurement" 3 "" ///
-	"postwaitlist_intervention_allocated" 48 "" ///
-	"postwaitlist_intervention_received" 46 "" ///
-	"postwaitlist_intervention_didnotreceive" 2 "" ///
-	"postwaitlist_intervention_dnr_lowmotivation" 1 "" ///
-	"postwaitlist_intervention_dnr_notime" 1 ""
+flowchart writerow(postmeasurement): ///
+	"postintervention_lost" 5 "Post-intervention measurement" ///
+	"postintervention_lost_droppedout" 2 "Dropped out of the intervention" ///
+	"postintervention_lost_nomeasurement" 3 "Did not complete measurement", ///
+	"postwaitlist_lost" 6 "Post-wait-list measurement" ///
+	"postwaitlist_lost_droppedout" 3 "Dropped out of the wait-list" ///
+	"postwaitlist_lost_nomeasurement" 3 "Did not complete measurement" ///
 	
-flowchart writerow(alloc3month): ///
-	"intervention_3monthfollowup" 9 "" ///
-	"postwaitlist_postintervention_losstofollowup" 5 "" ///
-	"postwaitlist_postintervention_losstofollowup_droppedout" 2 "" ///
-	"postwaitlist_postintervention_losstofollowup_incomplete" 3 "" ///
-	"postwaitlist_3monthfollowup" 2 ""
+flowchart writerow(wlistintervention): , ///	
+	"postwaitlist_intervention_allocated" 48 "Allocated to intervention" ///
+	"postwaitlist_intervention_received" 46 "Received intervention" ///
+	"postwaitlist_intervention_didnotreceive" 2 "Did not receive intervention" ///
+	"postwaitlist_intervention_dnr_lowmotivation" 1 "Reported low motivation" ///
+	"postwaitlist_intervention_dnr_notime" 1 "Could not find time to participate"
+	
+flowchart writerow(measurement3monpostint): ///
+	"intervention_3monthfollowup" 9 "3-months follow-up measurement: \\ \h Loss to follow-up", ///
+	"postwaitlist_postintervention_losstofollowup" 5 "Post-intervention measurement: \\ \h Loss to follow-up" ///
+	"postwaitlist_postintervention_losstofollowup_droppedout" 2 "Dropped out of the intervention" ///
+	"postwaitlist_postintervention_losstofollowup_incomplete" 3 "Did not complete measurement"
+
+flowchart writerow(wlist3mon): , ///
+	"postwaitlist_3monthfollowup" 2 "3-months follow-up measurement \\ \h Did not complete measurement"
 	
 flowchart writerow(analyzed): ///
-	"intervention_analyzed" 51 "" ///
-	"postwaitlist_analyzed" 51 ""
-	
-*flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
-*	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+	"intervention_analyzed" 51 "Analyzed", ///
+	"postwaitlist_analyzed" 51 "Analyzed"
+
+
+* Dummy Row
 *flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
 *	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
 
+* Row with No left-block
+*flowchart writerow(rowname): , "rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+
+* Row with No right-block
+*flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", 
+
+* Format: [rowname_center] --> [rowname_left] - Connect a center block to a left block for horizontal arrows across rows.
+	* [rowname_center] --> [rowname_center] - Connect a center block to a center block for vertical across within the same column for blocks in the center.
+	* [rowname_left] --> [rowname_left] - Connect a left block to a left block for vertical across within the same column for blocks on the left.
+	* , angled - This option makes the arrow make a 90 degree angle. Use this across a blank row.
+* Column Orientation: 
+* The sides of the diagram are initially counter-intuitive. Think of it like reading a chest x-ray: when interpreting the x-ray the patient's left is on the right of the page and the patient's right is on the left of the page -- the orientation being
+* 	relative to a patient facing out of the plane of the x-ray. Likewise, the column that is immediately to the left of the page as the center column and the column that is immediately to the right of the page is the left column.
+*	Connect each row's block with an underscore and then the column-orientation corresponding to its side in this manner.
 flowchart connect enrollment_center enrollment_left
+flowchart connect enrollment_center assessment_center
+flowchart connect assessment_center assessment_left
+flowchart connect assessment_center random_center
+flowchart connect random_center allocgroup_center
+flowchart connect random_center allocgroup_left, arrow(angled)
+flowchart connect allocgroup_center allocdetails_center
+flowchart connect allocgroup_left allocdetails_left
+flowchart connect allocdetails_center postmeasurement_center
+flowchart connect allocdetails_left postmeasurement_left
+flowchart connect postmeasurement_center measurement3monpostint_center
+flowchart connect measurement3monpostint_center analyzed_center
+flowchart connect postmeasurement_left wlistintervention_left
+flowchart connect wlistintervention_left measurement3monpostint_left
+flowchart connect measurement3monpostint_left wlist3mon_left
+flowchart connect wlist3mon_left analyzed_left
+
 flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz")

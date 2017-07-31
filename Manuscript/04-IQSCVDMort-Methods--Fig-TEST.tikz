@@ -13,91 +13,79 @@
        line/.style ={draw, thick, -latex', shorten >=0pt}]
    % Outlining the flowchart using the PGF/TikZ matrix function
    \matrix [column sep=5mm,row sep=3mm] {
-      % Enrollment - row 1
-      \node [block_center] (referred) {Referred (n=\figvalue{referred})};
-      & \node [block_left] (excluded1) {Excluded (n=\figvalue{referred_excluded}): \\
-        a) Did not wish to participate (n=\figvalue{referred_excluded_nopartic}) \\
-        b) Did not show for interview (n=\figvalue{referred_excluded_noshow}) \\
-        c) Other reasons (n=\figvalue{referred_excluded_other})}; \\
-      % Enrollment - row 2
-      \node [block_center] (assessment) {Assessed for Eligibility (n=\figvalue{assessed})}; 
-      & \node [block_left] (excluded2) {Excluded (n=\figvalue{assessed_excluded}): \\
-        a) Inclusion criteria not met (n=\figvalue{assessed_excluded_inclusioncritunmet}) \\
-        b) Exclusion criteria(s) met (n=\figvalue{assessed_excluded_exclusioncritmet}) \\
-        c) Not suited for group (n=\figvalue{assessed_excluded_unsuitedgroup}) \\
-        d) Not suited for intervention (n=\figvalue{assessed_excluded_unsuitedtx}) \\
-        e) Sought other treatment (n=\figvalue{assessed_excluded_othertx}) \\
-        f) Other reasons (n=\figvalue{assessed_excluded_other})}; \\
-      % Enrollment - row 3
-      \node [block_center] (random) {Randomized (n=\figvalue{randomized})};
-      & \\
-      % Follow-up - row 4
-      \node [block_noborder] (i) {Intervention group}; 
-      & \node [block_noborder] (wlc) {Wait-list control group}; \\
-      % Follow-up - row 5
-      \node [block_assign] (i_T0) {Allocated to intervention (n=\figvalue{alloc_interventiongroup}): \\
-      \h Received intervention (n=\figvalue{intervention_received}) \\
-      \h Did not receive intervention (n=\figvalue{intervention_unreceived}, \\
-      \hh \figvalue{intervention_unreceived_exclusioncrit} with exclusionary criteria, \\
-      \hh \figvalue{intervention_unreceived_notime} could not find time to participate)}; 
-	  & \node [block_assign] (wlc_T0) {Allocated to wait-list (n=\figvalue{alloc_waitlistgroup}): \\
-      \h Stayed on wait-list (n=\figvalue{waitlist_stayedon}) \\
-      \h Did not stay on wait-list (n=\figvalue{waitlist_didnotstay}, \\
-      \hh \figvalue{waitlist_didnotstay_selfinduced} lost motivation, \\
-      \hh \figvalue{waitlist_didnotstay_leftarea} was offered treatment elsewhere)}; \\
-      % Follow-up - row 6
-      \node [block_lost] (i_T3) {Post-intervention measurement: \\
-      \h Lost to follow-up (n=\figvalue{postintervention_lost}, \\
-      \hh \figvalue{postintervention_lost_droppedout} dropped out of the intervention, \\
-      \hh \figvalue{postintervention_lost_nomeasurement} did not complete measurement)}; 
-	  & \node [block_lost] (wlc_T3) {Post-wait-list measurement: \\
-      \h Lost to follow-up (n=\figvalue{postwaitlist_lost}, \\
-      \hh \figvalue{postwaitlist_lost_droppedout} dropped out of the wait-list, \\
-      \hh \figvalue{postwaitlist_lost_nomeasurement} did not complete measurement)}; \\
-      % Follow-up - row 7
-      % 	Empty first column for intervention group 
-      & \node [block_assign] (wlc_T36) {Allocated to intervention (n=\figvalue{postwaitlist_intervention_allocated}): \\
-      \h Received intervention (n=\figvalue{postwaitlist_intervention_received}) \\
-      \h Did not receive intervention (n=\figvalue{postwaitlist_intervention_didnotreceive}, \\
-      \hh \figvalue{postwaitlist_intervention_dnr_lowmotivation} reported low motivation, \\
-      \hh \figvalue{postwaitlist_intervention_dnr_notime} could not find time to participate)}; \\
-      % Follow-up - row 8
-      \node [block_lost] (i_T6) {3-months follow-up measurement: \\
-      \h Lost to follow-up (n=\figvalue{intervention_3monthfollowup}, \\
-      \hh did not complete measurement)}; 
-      & \node [block_lost] (wlc_T6) {Post-intervention measurement: \\
-      \h Lost to follow-up (n=\figvalue{postwaitlist_postintervention_losstofollowup}, \\
-      \hh \figvalue{postwaitlist_postintervention_losstofollowup_droppedout} dropped out of the intervention, \\
-      \hh \figvalue{postwaitlist_postintervention_losstofollowup_incomplete} did not complete measurement)}; \\
-      % Follow-up - row 9
-      % 	Empty first column for intervention group 
-      & \node [block_lost] (wlc_T9) {3-months follow-up measurement \\
-      \h Lost to follow-up (n=\figvalue{postwaitlist_3monthfollowup}, \\
-      \hh did not complete measurement)}; \\
-      % Analysis - row 10
-      \node [block_assign] (i_ana) {Analysed (n=\figvalue{intervention_analyzed})}; 
-      & \node [block_assign] (wlc_ana) {Analysed (n=\figvalue{postwaitlist_analyzed})}; \\
+
+      \node [block_center] (enrollment_center) { Referred (n=\figvalue{referred})}; 
+      & \node [block_left] (enrollment_left) { Excluded (n=\figvalue{referred_excluded}): \\
+        \h a) Did not wish to participate (n=\figvalue{referred_excluded_nopartic}) \\
+        \h b) Did not show for interview (n=\figvalue{referred_excluded_noshow}) \\
+        \h c) Other reasons (n=\figvalue{referred_excluded_other}) }; \\
+
+      \node [block_center] (assessment_center) { {Assessed for Eligibility (n=\figvalue{assessed})}; 
+      & \node [block_left] (assessment_left) { Excluded (n=\figvalue{assessed_excluded}): \\
+        \h a) Inclusion criteria not met (n=\figvalue{assessed_excluded_inclusioncritunmet}) \\
+        \h b) Exclusion criteria met (n=\figvalue{assessed_excluded_exclusioncritmet}) \\
+        \h c) Not suited for waitlist group (n=\figvalue{assessed_excluded_unsuitedgroup}) \\
+        \h d) Not suited for intervention (n=\figvalue{assessed_excluded_unsuitedtx}) \\
+        \h e) Sought other treatment (n=\figvalue{assessed_excluded_othertx}) \\
+        \h f) Other reasons (n=\figvalue{assessed_excluded_other}) }; \\
+
+      \node [block_center] (random_center) { Randomized (n=\figvalue{randomized})}; 
+	  & \\
+
+      \node [block_center] (allocgroup_center) { {Allocated to Intervention group (n=\figvalue{alloc_interventiongroup})}; 
+
+      & \node [block_left] (allocgroup_left) { Allocated to Wait-list control group (n=\figvalue{alloc_waitlistgroup})};
+
+      \node [block_center] (allocdetails_center) { Received intervention (n=\figvalue{intervention_received}): \\
+        \h Did not receive intervention (n=\figvalue{intervention_unreceived}) \\
+        \h With exclusionary criteria (n=\figvalue{intervention_unreceived_exclusioncrit}) \\
+        \h Could not find time to participate (n=\figvalue{intervention_unreceived_notime}) };
+      & \node [block_left] (allocdetails_left) { Stayed on wait-list (n=\figvalue{waitlist_stayedon}): \\
+        \h Did not stay on wait-list (n=\figvalue{waitlist_didnotstay}) \\
+        \h Lost motivation (n=\figvalue{waitlist_didnotstay_selfinduced}) \\
+        \h Was offered treatment elsewhere (n=\figvalue{waitlist_didnotstay_leftarea}) }; \\
+
+      \node [block_center] (postmeasurement_center) { Post-intervention measurement (n=\figvalue{postintervention_lost}): \\
+        \h Dropped out of the intervention (n=\figvalue{postintervention_lost_droppedout}) \\
+        \h Did not complete measurement (n=\figvalue{postintervention_lost_nomeasurement}) };
+      & \node [block_left] (postmeasurement_left) { Post-wait-list measurement (n=\figvalue{postwaitlist_lost}): \\
+        \h Dropped out of the wait-list (n=\figvalue{postwaitlist_lost_droppedout}) \\
+        \h Did not complete measurement (n=\figvalue{postwaitlist_lost_nomeasurement}) }; \\
+
+      & \node [block_left] (wlistintervention_left) { Allocated to intervention (n=\figvalue{postwaitlist_intervention_allocated}): \\
+        \h Received intervention (n=\figvalue{postwaitlist_intervention_received}) \\
+        \h Did not receive intervention (n=\figvalue{postwaitlist_intervention_didnotreceive}) \\
+        \h Reported low motivation (n=\figvalue{postwaitlist_intervention_dnr_lowmotivation}) \\
+        \h Could not find time to participate (n=\figvalue{postwaitlist_intervention_dnr_notime}) }; \\
+
+      \node [block_center] (measurement3monpostint_center) { 3-months follow-up measurement: \\ \h Loss to follow-up (n=\figvalue{intervention_3monthfollowup})}; 
+      & \node [block_left] (measurement3monpostint_left) { Post-intervention measurement: \\ \h Loss to follow-up (n=\figvalue{postwaitlist_postintervention_losstofollowup}): \\
+        \h Dropped out of the intervention (n=\figvalue{postwaitlist_postintervention_losstofollowup_droppedout}) \\
+        \h Did not complete measurement (n=\figvalue{postwaitlist_postintervention_losstofollowup_incomplete}) }; \\
+
+      & \node [block_left] (wlist3mon_left) { 3-months follow-up measurement \\ \h Did not complete measurement (n=\figvalue{postwaitlist_3monthfollowup})};
+
+      \node [block_center] (analyzed_center) { Analyzed (n=\figvalue{intervention_analyzed})}; 
+      & \node [block_left] (analyzed_left) { Analyzed (n=\figvalue{postwaitlist_analyzed})};
    };% End Matrix
    % Connecting nodes with paths
    \begin{scope}[every path/.style=line]
-      % Paths for enrollment rows
-      \path (referred)   -- (excluded1);
-      \path (referred)   -- (assessment);
-      \path (assessment) -- (excluded2);
-      \path (assessment) -- (random);
-      \path (random)     -- (i);
-      \path (random)     -| (wlc);
-      % Paths for i-group follow-up rows
-      \path (i)          -- (i_T0);
-      \path (i_T0)       -- (i_T3);
-      \path (i_T3)       -- (i_T6);
-      \path (i_T6)       -- (i_ana);
-      % Paths for wlc-group follow-up rows
-      \path (wlc)        -- (wlc_T0);
-      \path (wlc_T0)     -- (wlc_T3);
-      \path (wlc_T3)     -- (wlc_T36);
-      \path (wlc_T36)    -- (wlc_T6);
-      \path (wlc_T6)     -- (wlc_T9);
-      \path (wlc_T9)     -- (wlc_ana);
+      \path (enrollment_center)   -- (enrollment_left);
+      \path (enrollment_center)   -- (assessment_center);
+      \path (assessment_center)   -- (assessment_left);
+      \path (assessment_center)   -- (random_center);
+      \path (random_center)   -- (allocgroup_center);
+      \path (random_center)   -| (allocgroup_left);
+      \path (allocgroup_center)   -- (allocdetails_center);
+      \path (allocgroup_left)   -- (allocdetails_left);
+      \path (allocdetails_center)   -- (postmeasurement_center);
+      \path (postmeasurement_center) -- (measurement3monpostint_center);
+      \path (measurement3monpostint_center)   -- (analyzed_center);
+      \path (wlist3mon_center)   -- (analyzed_center);
+      \path (allocdetails_left)   -- (postmeasurement_left);
+      \path (postmeasurement_left)   -- (wlistintervention_left);
+      \path (wlistintervention_left)   -- (measurement3monpostint_left);
+      \path (measurement3monpostint_left)   -- (wlist3mon_left);
+      \path (wlist3mon_left)   -- (analyzed_left);
    \end{scope}
 \end{tikzpicture}

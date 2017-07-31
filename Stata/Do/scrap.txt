@@ -587,3 +587,44 @@ flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.t
 
 
 
+clear all
+.occup=.object.new
+.occup.Declare array list
+.occup.list[1]="Technology officer"
+.occup.list[2]="Arts and Media Personnel"
+.occup.list[3]="Records Management"
+.occup.list[4]="Security Personnel"
+.occup.list[5]="Front office"
+.occup.list[6]="Back office"
+
+display `"`.occup.list[1]'"'
+display `"`.occup.list[2]'"'
+
+forval f=1/`=`.occup.list.arrnels'' {
+  display `"`.occup.list[`f']'"'
+}
+
+
+
+
+.Global.blockfields=.object.new
+.Global.pathfields=.object.new
+.Global.blockfields.Declare array list
+.Global.pathfields.Declare array list
+forval index=1/`=`.blockfields.list.arrnels'' {
+	display `"`.blockfields.list[`index']'"'
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
