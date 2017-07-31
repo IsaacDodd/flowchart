@@ -64,7 +64,7 @@ program define flowchart
 		else {
 			local arrow = "--"
 		}
-		flowchart_tdwrite_pathfield `"      \path (`2')   `arrow' (`3');"'
+		flowchart_tdwrite_pathfield `"      \path (`2') `arrow' (`3');"'
 	}
 	else {
 		*Sub-Commands that Require More Advanced Parsing
@@ -172,8 +172,8 @@ flowchart_tdwrite_blockfield `"      % Row - `subparam'"'	// Row Command with Su
 						display "	FLOWCHART_BLANK [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
 					}
 					if( trim("``i''") == "flowchart_blank" & "`blockparse'" == "left") {
-						*local stop = "stop"
-						*break
+						local stop = "stop"
+						continue, break
 					}
 					local linename = `"``i''"'	// Field 1 of the Line is expected to be the line-name, which is also the variable_name.
 						if("$Flowchart_Debug" == "on") {
@@ -437,6 +437,8 @@ if("`addrowskip'" == "true") {
 *	texdoc write "`varname'"
 end
 
+
+
 * ---------------------------------------------------------------------
 
 flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
@@ -450,15 +452,6 @@ flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
 *display `" $Flowchart_Settings "'
 
 /*
-* Format: flowchart writerow([Name_of_row]): [Block_Center], [Block_Left]
-* 	The content within each block should be separated by a single comma (strings within a block can still use a comma, it just has to be within double-quotes).
-* 		The first block gets assigned the 'center' orientation and the second gets the 'left' orientation. 
-* 		Each block can have several lines, and each line has to have a triplet of 3 fields which should be separated by spaces.
-* 		A single line is a triplet of these 3 fields: "variable_name" n "Description of the variable name and number."
-* 		Multiple triplets can be separated by a \\\ at the end of the line for readability.
-* 	A blank block is a block with no lines or content (which won't be drawn in the final diagram) and should have the special keyword 'flowchart_blank' 
-* 		to indicate to the program's interpreter internally that there's no content for that block, otherwise the blocks will misalign and the .tex document 
-* 		will not compile the TikZ picture.
 flowchart writerow(enrollment): ///
 	"referred" 173 "Referred", ///
 	"referred_excluded" 17 "Excluded" ///
@@ -477,9 +470,8 @@ flowchart writerow(assessment): ///
 	"assessed_excluded_other" 7 "f) Other reasons"
 	
 flowchart_debug, on
-display "Start Isaac"
-flowchart writerow(random): "randomized" 102 "Randomized", 
-	flowchart_blank // Blank Row
+
+flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
 
 flowchart writerow(allocgroup): ///
 	"alloc_interventiongroup" 51 "{Allocated to Intervention group", ///
@@ -516,7 +508,7 @@ flowchart writerow(measurement3monpostint): ///
 	"postwaitlist_postintervention_losstofollowup_droppedout" 2 "Dropped out of the intervention" ///
 	"postwaitlist_postintervention_losstofollowup_incomplete" 3 "Did not complete measurement"
 
-flowchart writerow(wlist3mon): flowchart_blankblock, ///
+flowchart writerow(wlist3mon): flowchart_blank, ///
 	"postwaitlist_3monthfollowup" 2 "3-months follow-up measurement \\ \h Did not complete measurement"
 	
 flowchart writerow(analyzed): ///
@@ -525,26 +517,31 @@ flowchart writerow(analyzed): ///
 */
 
 
-flowchart_debug, on
 
+* DEBUGGING
 * |||||| TEST1: Dummy Row
-flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
+flowchart writerow(rownametest1): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", ///
 	"rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
 
 * |||||| TEST2: Row with No left-block
-flowchart writerow(rowname): flowchart_blank, "rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
+flowchart writerow(rownametest2): flowchart_blank, "rblock1_line1" 97 "This is one line, of a block." "rblock1_line2" 33 "This is another line, of a block" "rblock1_line3" 44 "This is another line, of a block"
 
 * |||||| TEST3: Row with No right-block
-flowchart writerow(rowname): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", flowchart_blank
+flowchart writerow(rownametest3): "lblock1_line1" 46 "This is one line, \\ of a block." "lblock1_line2" 43 "This is another line, of a block" "lblock1_line3" 3 "This is another line, of a block", flowchart_blank
 
-* Format: [rowname_center] --> [rowname_left] - Connect a center block to a left block for horizontal arrows across rows.
-	* [rowname_center] --> [rowname_center] - Connect a center block to a center block for vertical across within the same column for blocks in the center.
-	* [rowname_left] --> [rowname_left] - Connect a left block to a left block for vertical across within the same column for blocks on the left.
-	* , angled - This option makes the arrow make a 90 degree angle. Use this across a blank row.
-* Column Orientation: 
-* The sides of the diagram are initially counter-intuitive. Think of it like reading a chest x-ray: when interpreting the x-ray the patient's left is on the right of the page and the patient's right is on the left of the page -- the orientation being
-* 	relative to a patient facing out of the plane of the x-ray. Likewise, the column that is immediately to the left of the page as the center column and the column that is immediately to the right of the page is the left column.
-*	Connect each row's block with an underscore and then the column-orientation corresponding to its side in this manner.
+flowchart_debug, on
+* |||||| TEST4: Row with No left-block and a Singleton Lead-Line in the right-block
+flowchart writerow(rownametest4): flowchart_blank, "rblock1_line1" 97 "This is one line, \\ of a block."
+
+* |||||| TEST5: Row with Singleton Lead-Line in the left-block and No right-block
+flowchart writerow(rownametest5): "lblock1_line1" 46 "This is one line, \\ of a block.", flowchart_blank
+
+flowchart connect rownametest1_center rownametest1_left
+flowchart connect rownametest1_left rownametest2_left
+flowchart connect rownametest1_center rownametest3_center
+flowchart connect rownametest3_center rownametest5_center
+flowchart connect rownametest2_center rownametest4_center
+
 /*
 flowchart connect enrollment_center enrollment_left
 flowchart connect enrollment_center assessment_center
@@ -561,6 +558,7 @@ flowchart connect measurement3monpostint_center analyzed_center
 flowchart connect postmeasurement_left wlistintervention_left
 flowchart connect wlistintervention_left measurement3monpostint_left
 flowchart connect measurement3monpostint_left wlist3mon_left
-flowchart connect wlist3mon_left analyzed_left */
+flowchart connect wlist3mon_left analyzed_left 
+*/
 
 flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.texdoc") output("..\..\Manuscript\04-IQSCVDMort-Methods--Fig-TEST.tikz")
