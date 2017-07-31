@@ -26,17 +26,21 @@ program define flowchart
 		capture file close FlowchartFile 
 		flowchart_tdfinalize, input("`input'") output("`output'")
 	}
-	else if("`1'" == "write") {
-		if("`2'" == "box" | "`2'" == "box,") {
+	else if("`1'" == "set") {
+		if("`2'" == "layout" | "`2'" == "layout,") {
 			if("$Flowchart_Debug" == "on") {
 				display "Write: `2' `name' `value'"
+				* To Do: Not yet implemented, other options: Move the variable writing to finalize so that if the 
+				* 	user overrides default values they are committed afterwards. Use cond() to iterate through each 
+				* 	variable to determine if the user has specified a new layout variable to override the default.
 			}
-			flowchart_writevar, name("Test") value("Testing testing 1 2 3 5 6 7 8 9 10 ...")
+			flowchart_writevar, name(`"set_`name'"') value(`"`value'"')
 		}
-		else if("`2'" == "row" | "`2'" == "row,") {
+		else if("`2'" == "variable" | "`2'" == "variable,") {
 			if("$Flowchart_Debug" == "on") {
 				display "Write: `2' `name' `value'"
 			}
+			flowchart_writevar, name(`"`name'"') value(`"`value'"')
 		}
 	}
 	else if("`1'" == "connect") {
@@ -339,13 +343,14 @@ program define flowchart_init
 	flowchart_writevar, name("set_dummy") value("null")	// Set dummy variable since the first variable is not recognized by texdoc.
 	flowchart_writevar, name("set_draw") value("black")
 	flowchart_writevar, name("set_fill") value("white")
-	flowchart_writevar, name("set_center_textwidth") value("8em")
+	flowchart_writevar, name("set_center_textwidth") value("18em")
 	flowchart_writevar, name("set_center_textalign") value("centered")
 	flowchart_writevar, name("set_center_minheight") value("4em")
-	flowchart_writevar, name("set_left_textwidth") value("16em")
+	flowchart_writevar, name("set_left_textwidth") value("21em")
 	flowchart_writevar, name("set_left_textalign") value("ragged")
 	flowchart_writevar, name("set_left_minheight") value("4em")
 	flowchart_writevar, name("set_left_innersep") value("6pt")
+	/* To Do: Future Releases: Implement row-options - 'flowchart writerow(rowname,rowoption): ...' -- Allow noborder, assign, and lost-style boxes.
 	flowchart_writevar, name("set_noborder_textwidth") value("18em")
 	flowchart_writevar, name("set_noborder_textalign") value("centered")
 	flowchart_writevar, name("set_noborder_minheight") value("1em")
@@ -358,7 +363,7 @@ program define flowchart_init
 	flowchart_writevar, name("set_lost_textwidth") value("16em")
 	flowchart_writevar, name("set_lost_textalign") value("ragged")
 	flowchart_writevar, name("set_lost_minheight") value("3em")
-	flowchart_writevar, name("set_lost_innersep") value("6pt")
+	flowchart_writevar, name("set_lost_innersep") value("6pt")*/
 end
 capture program drop flowchart_writevar
 program define flowchart_writevar
@@ -411,14 +416,14 @@ program define flowchart_tdwriteline
 	if("`lead'" != "") {
 		if("`singleton'" != "") {
 			if("`end'" != "") {
-				local linestring = `"`lead' `desc' (n=\figvalue{`name'})}; \\"'	// Usually, a left-block that has only 1 line (a singleton) when the center-block was blank.
+				local linestring = `"`lead'`desc' (n=\figvalue{`name'})}; \\"'	// Usually, a left-block that has only 1 line (a singleton) when the center-block was blank.
 			}
 			else {
-				local linestring = `"`lead' `desc' (n=\figvalue{`name'})}; "'
+				local linestring = `"`lead'`desc' (n=\figvalue{`name'})}; "'
 			}
 		}
 		else {
-			local linestring = `"`lead' `desc' (n=\figvalue{`name'}): \\"'
+			local linestring = `"`lead'`desc' (n=\figvalue{`name'}): \\"'
 		}
 	}
 	else {
@@ -442,10 +447,10 @@ program define flowchart_tdwriteline
 		}
 
 		if("`indent'" != "") {
-			local linestring = `"        \h\h \figvalue{`name'} `desc' `suffix'"'
+			local linestring = `"      \h\h \figvalue{`name'} `desc' `suffix'"'
 		}
 		else {
-			local linestring = `"        \h `desc' (n=\figvalue{`name'}) `suffix'"'
+			local linestring = `"      \h `desc' (n=\figvalue{`name'}) `suffix'"'
 		}
 	}
 if("$Flowchart_Debug" == "on") {
@@ -476,15 +481,6 @@ end
 * DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
 
 flowchart init using "..\Data\Subanalysis Data\Methods--Fig-TEST.data"
-
-*flowchart write box, name("Test")
-*flowchart write box, name("TestBoxName") value("TestBoxValue")
-*flowchart write row, name("TestRow")
-*flowchart write row, name("TestRowName") value("TestRowValue")
-*flowchart write row
-
-*display `" $Flowchart_Settings "'
-
 
 flowchart writerow(enrollment): ///
 	"referred" 173 "Referred", ///
@@ -546,8 +542,8 @@ flowchart writerow(wlist3mon): flowchart_blank, ///
 	"postwaitlist_3monthfollowup" 2 "3-months follow-up measurement \\ \h Did not complete measurement"
 	
 flowchart writerow(analyzed): ///
-	"intervention_analyzed" 51 "Analyzed", ///
-	"postwaitlist_analyzed" 51 "Analyzed"
+	"intervention_analyzed" 51 "Analyzed in Intervention group", ///
+	"postwaitlist_analyzed" 51 "Analyzed in Wait-list control group"
 
 flowchart connect enrollment_center enrollment_left
 flowchart connect enrollment_center assessment_center

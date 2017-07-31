@@ -51,6 +51,12 @@ default is {cmd:separator(5)}{p_end}
 		\usepackage{datatool}	% DataTool Package - Loads Subanalysis Data to generate flowchart
 			\DTLsetseparator{ = }% Delimiter
 	This will load the datatool and TikZ package.
+{cmd:flowchart set variable}, name([name_of_setting]) value([valuealphanumeric])
+This will write a variable to the variable file loaded by the datatool in LaTeX to populate the LaTeX with a variable. Access it in LaTeX using \figvalue{variablename}
+To set layout variables:
+	flowchart set layout, name(center_textwidth) value(12)
+	flowchart set layout, name(left_textwidth) value(18)
+	The name is prepended with set_ and written to the file.
 {cmd:flowchart writerow(rowname): } 
 Format: flowchart writerow([Name_of_row]): [Block_Center], [Block_Left]
 	The content within each block should be separated by a single comma (strings within a block can still use a comma, it just has to be within double-quotes).
