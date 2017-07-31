@@ -50418,3 +50418,23 @@ end of do-file
 . 
 end of do-file
 
+. 
+. 
+. 
+. 
+. 
+. Trajectory: Update flowchart_writevar to write the variables on finalize so that any new variables that the user creates or new layout settings override the default ones.
+unrecognized command:  Trajectory
+r(199);
+
+. * Trajectory: Update flowchart_writevar to write the variables on finalize so that any new variables that the user creates or new layout settings override the default ones. Use cond() to quickly look through all of the defaults and perform this check.
+
+. * Use a global object with an array list to do so.
+
+. 
+. 
+. 
+. 
+. 
+. 
+. exit, clear

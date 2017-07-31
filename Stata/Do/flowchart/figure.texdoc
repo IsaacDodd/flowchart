@@ -1,0 +1,44 @@
+/* DO NOT EDIT THIS DOCUMENT: This file is used to automatically generate the TikZ picture using texdoc. */
+
+texdoc local settings_substitutions = `"$Flowchart_Settings"'
+
+texdoc substitute `settings_substitutions'
+
+/*tex
+ \begin{tikzpicture}[auto,
+     block_center/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_center_textwidth, text @set_center_textalign,
+       minimum height=@set_center_minheight},
+     block_left/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_left_textwidth, text @set_left_textalign, minimum height=@set_left_minheight, inner sep=@set_left_innersep},
+       line/.style ={draw, thick, -latex', shorten >=0pt}]
+tex*/
+
+/* To Do: Future Releases: Implement row-options - 'flowchart writerow(rowname,rowoption): ...' -- Allow noborder, assign, and lost-style boxes.
+     block_noborder/.style ={rectangle, draw=@set_noborder_draw, thick, fill=@set_noborder_fill,
+       text width=@set_noborder_textwidth, text @set_noborder_textalign, minimum height=@set_noborder_minheight},
+     block_assign/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_assign_textwidth, text @set_assign_textalign, minimum height=@set_assign_minheight, inner sep=@set_assign_innersep},
+     block_lost/.style ={rectangle, draw=@set_draw, thick, fill=@set_fill,
+       text width=@set_lost_textwidth, text @set_lost_textalign, minimum height=@set_lost_minheight, inner sep=@set_lost_innersep},
+*/
+
+texdoc write    % Outlining the flowchart using the PGF/TikZ matrix function
+
+texdoc write    \matrix [column sep=15mm,row sep=3mm] {
+
+forval index=1/`=`.blockfields.list.arrnels'' {
+	texdoc write `.blockfields.list[`index']'
+}
+	
+texdoc write    };% End Matrix
+
+texdoc write    % Connecting nodes with paths
+texdoc write    \begin{scope}[every path/.style=line]
+
+forval index=1/`=`.pathfields.list.arrnels'' {
+	texdoc write `.pathfields.list[`index']'
+}
+
+texdoc write    \end{scope}
+texdoc write \end{tikzpicture}
