@@ -1,4 +1,4 @@
-Flwochart: Copyright (C) 2017.  Isaac M. E. Dodd. All rights reserved.
+Flowchart: Copyright (c) 2017.  Isaac M. E. Dodd. All rights reserved.
 
                    GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007

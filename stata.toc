@@ -4,11 +4,19 @@ d FLOWCHART
 d Use this command to generate a publication-quality Subject Disposition Flowchart Diagram in LaTeX Format. This package uses Stata to generate the necessary TikZ code to run in LaTeX and produce the diagram as a PDF or any other format. 
 d The final diagram will be similar in style to the ones used in the CONSORT 2010 Statement or STROBE Statement Reporting Guidelines.
 d After installation, type {bf: help flowchart} for detailed instructions on how to get started.
+d 
 d {bf:Installation}
 d 	Type {bf: net install flowchart, from(https://raw.github.com/IsaacDodd/flowchart/issues/new/) }
 d {bf:Dependencies}
 d 	{bf:texdoc} - Install this by typing '. ssc install texdoc, replace' after installing flowchart.
 d 	The texdoc package (written by Ben Jann) is a dependency for the flowchart package which writes LaTeX-formatted files.
+d 
+d {bf:License}
+d   This program is licensed under the GNU LGPL 2007 which allows for proprietary programs to use this package 
+d	as a subroutine but has specific open source implications. 
+d 	Please see License.txt for the full license. 'Flowchart' comes with ABSOLUTELY NO WARRANTY. 
+d 	This is free software, and you are welcome to redistribute it under certain conditions.
+d 	The flowchart package is Copyright (C) 2017. Isaac M. E. Dodd. All rights reserved.
 d 
 l support https://github.org/IsaacDodd/flowchart/issues/new/ Support - Get support on the FLOWCHART package.
 l home https://github.org/IsaacDodd/flowchart/ Home - Follow changes to the FLOWCHART package.

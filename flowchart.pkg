@@ -8,6 +8,8 @@ d Requires: texdoc, at least Stata v13
 d 
 d Author:  Isaac M. E. Dodd
 d Support: github.com/IsaacDodd/flowchart/issues/new
+d Licensed: GNU LGPL 2007 - By installing this program you agree to this license.
+d
 f flowchart.ado
 f flowchart.sthlp
 f figure-flowchart.texdoc
