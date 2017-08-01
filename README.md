@@ -21,7 +21,7 @@ Contributions are greatly, greatly appreciated. Please send pull requests via th
 
 ## Issues/Bugs, Suggestions, & Feedback
 
-Please submit bugs using GitHub. It is very difficult to respond to issue requests via email. All comments, feedback, and suggestions are also greatly welcomed.
+Please submit bugs using [GitHub](https://github.com/IsaacDodd/flowchart/issues/new/ "Open a New Issue on Github for Flowchart"). It is very difficult to respond to issue requests via email. All comments, feedback, and suggestions are also greatly welcomed.
 
 ## License
 
