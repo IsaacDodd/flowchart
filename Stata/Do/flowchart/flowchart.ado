@@ -3,91 +3,6 @@
 *** FLOWCHART - FIGURE: SUBJECT DISPOSITION FLOW DIAGRAM                    ****
 ********************************************************************************
 *##############################################################################*
-* 
-* DEPENDENCIES: 
-*   1. texdoc - STATA Command
-*		Installation Instructions:
-*       In the STATA command-line, run the following 2 commands:
-*	       ssc install texdoc, replace
-*          net install sjlatex, from(http://www.stata-journal.com/production)
-* 	2. figure.texdoc = Ancillary File
-*		Installation Instructions:
-* 		In the STATA command-line, run the following command:
-* 		   net get flowchart, from(...) 
-*   3. LaTeX, Distribution (MiKTeX or TeXLive), Distribution Engine, & IDE Editor
-*         
-* EXPLANATION:
-*   The following details the suggested directory structure:
-* 
-* 	/Manuscript/
-* 		|
-*		|-- ##-[ProjectName]-[Section]-Fig-[FigureName].tex  <-- LaTeX Document
-*       +-- ##-[ProjectName]-[Section]-Fig-[FigureName].tikz <-- TikZ Picture
-* 
-*   /Stata/
-*       |
-*       |-- /Data/
-*       |     |
-*       |     +-- /Subanalysis Data/
-*       |           |
-*       |           +-- [Section]-Fig-[FigureName].data      <-- Suba. Data File
-*       +-- /Do/
-*             |
-*             |-- ##-[ProjectName]-PostProduction-[Section]--Fig-[FigureName].do
-*             |                                  Figure Do-File -------^
-*             \\   ...
-*             | 
-*             +-- ##-[ProjectName]-[Section]-[Main Analysis File].do
-*                                     Main Analysis File -----^
-*
-* 	Do File
-* 		This is the .do file that contains your analysis where you can use
-* 		the flowchart commands to generate the diagram.
-* 			See Example: example.do
-*   LaTeX Document
-*       This is a (.tex) file that contains a \begin{figure}...\end{figure} 
-* 		Environment command. STATA does not manipulate this file. It instead 
-* 		contains all of the design elements that arrange the TikZ picture 
-* 		appropriately in the Manuscrupt and also loads the Subanalysis Data 
-* 		(.data) in the Data file for generating the different components of the 
-* 		TikZ picture's diagram (e.g., data for the boxes of a 
-* 		Subject Disposition Flowchart).
-* 			See Example: Manuscript.tex
-*   Figure Texdoc Do File - Do Not Edit
-*       This Do file is a 'Texdoc Do File' which is to say it is invoked by the 
-* 		texdoc command in STATA in the Main Analysis File that is producing the 
-* 		Subanalysis Data off of the main analysis using the Dataset that is loaded.
-* 			See Example: figure-flowchart.texdoc
-*   TikZ Picture (Automatically regenerated)
-*       This is a 'picture' that is used by the TikZ package in LaTeX to 
-* 		generate a diagram in LaTeX.
-* 			See Example: Methods--Figure-Flowchart.tikz
-*   Subanalysis Data File (Automatically regenerated)
-*       The data for a figure is produced from a subanalysis and is assigned to 
-* 		variables. The Data file consists of variables with the generated data, 
-* 		as one variable assignment per line. A '=' sign is used as a delimiter 
-* 		to denote [variable] = [value] where the left-hand side is the 
-* 		variable-name and the right-hand side is the value or data produced in 
-* 		the subanalysis. The variables with data produced by the subanalysis 
-* 		have to have a unique name and are given a name in the do file that 
-* 		produces the figure. Data from the Dataset used in an analysis can be 
-* 		used to generate the data for the diagram.
-* 			See Example: Methods--Figure-Flowchart.data
-*
-* Overall
-*     Main Analysis File --> Runs the Figure Do-File (which is changed by the user to reflect the flow of data analysis )
-*     Figure Do-File --> Produces the boxes in the TikZ Picture and writes the equivalent values in the Subanalysis Data File
-*     LaTeX Document --> Changed by the user to arrange or re-arrange the TikZ picture in the Manuscript.
-*     
-* REFERENCES
-* 1. Texdoc Command Use Based On: 
-*    Citation: Jann, Ben (2016 Nov 27). Creating LaTeX documents from within Stata using texdoc. University of Bern Social Sciences Working Paper No. 14; The Stata Journal 16(2): 245-263. Reprinted with updates at ftp://ftp.repec.org/opt/ReDIF/RePEc/bss/files/wp14/jann-2015-texdoc.pdf Retrieved on July 28, 2017.
-* 2. TikzPicture Diagram Code Based On: 
-* 	 Citation: Willert, Morten Vejs (2011 Dec 31). "A CONSORT-style flowchart of a randomized controlled trial". TikZ Example (Texample.net). Retrieved from http://www.texample.net/tikz/examples/consort-flowchart/ 
-
-********************************************************************************
-****** DEPENDENCIES
-********************************************************************************
 
 *! version 0.0.2  31jul2017  Isaac M. E. Dodd
 * FLOWCHART ---------------------------------------------------------------------
@@ -95,6 +10,13 @@ capture program drop flowchart
 program define flowchart
 	version 13
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
+	
+	* Dependencies - Check Presence
+	capture which texdoc
+	if(_rc) {
+		display as error "Package 'texdoc' is required by flowchart command. Please run setup and try again."
+		exit 111
+	}
 	
 	if("`1'" == "init" | "`1'" == "init,") {
 		global Flowchart_Settings = ""	// Stores settings in a space-delimited string.
@@ -106,7 +28,13 @@ program define flowchart
 		.Global.pathfields.Declare array list
 		
 		capture file close FlowchartFile
+		if("$Flowchart_Debug" == "on") {
+			display _rc
+		}
 		file open FlowchartFile using "`using'", write text replace
+		if("$Flowchart_Debug" == "on") {
+			display _rc
+		}
 		flowchart_init
 	}
 	else if("`1'" == "close" | "`1'" == "finalize" | "`1'" == "close," | "`1'" == "finalize," ) {
@@ -115,6 +43,22 @@ program define flowchart
 		}
 		capture file close FlowchartFile 
 		flowchart_tdfinalize, input("`input'") output("`output'")
+	}
+	else if("`1'" == "setup" | "`1'" == "setup,") {
+		gettoken varfirst varothers : 0
+		if("$Flowchart_Debug" == "on") {
+			display " First Variable: `varfirst'"
+			display `" Other Variables:  `varothers'"'
+		}
+		flowchart_setup, `varothers'	// Setup Function
+	}
+	else if("`1'" == "debug" | "`1'" == "debug,") {
+		gettoken varfirst varothers : 0
+		if("$Flowchart_Debug" == "on") {
+			display " First Variable: `varfirst'"
+			display `" Other Variables:  `varothers'"'
+		}
+		flowchart_debug, `varothers'	// Debug Function
 	}
 	else if("`1'" == "set") {
 		if("`2'" == "layout" | "`2'" == "layout,") {
@@ -382,6 +326,42 @@ if("$Flowchart_Debug" == "tikz") {
 		} // fi: End of Writerow
 	} // fi: End of SyntaxCmdElse
 end
+capture program drop flowchart_setup
+program define flowchart_setup
+	syntax [anything] [, update]
+	
+	display "|||||| Setup"
+	if("`update'" != "") {
+		display "Updating 'flowchart'..."
+		capture net install flowchart, replace from("https://raw.github.com/IsaacDodd/flowchart/")
+		if (_rc) {
+			display as error "Setup could not be completed. Please connect to the internet and try again."
+			exit 499
+		}
+		else {
+			display "...Update to flowchart installed successfully."
+		}
+	}
+	display "Installing 'texdoc'..."
+	capture ssc install texdoc, replace
+	if (_rc) {
+		display as error "Setup could not be completed. Please connect to the internet and try again."
+		exit 499
+	}
+	else {
+		display "...Texdoc installed successfully."
+	}
+	display "Installing Ancillary Files..."
+	capture net get flowchart, from("https://raw.github.com/IsaacDodd/flowchart/")
+	if (_rc) {
+		display as error "Setup could not be completed. Please connect to the internet and try again."
+		exit 499
+	}
+	else {
+		display "...Ancillary files installed successfully."
+	}
+	display "|||||| Setup Complete"
+end
 capture program drop flowchart_debug
 program define flowchart_debug 
 	syntax [anything] [, on off tikz logreset]
@@ -389,24 +369,36 @@ program define flowchart_debug
 		global Flowchart_Debug = "on"
 		
 		set more off
-		set linesize 255
+		set linesize 161
 		local logid = subinstr("`c(current_date)'_`c(current_time)'", ":", "", .)
 		local logid = subinstr("`logid'", " ", "", .)
-		display "|||||| DebugLog Started: Log ID = `logid'"
 		capture log query DebugLog
 		* If a log has already been started, DebugLog will exist. If it is off (i.e., it was started but has been closed/turned off), 
 		* 	append to the existing log. If DebugLog does not exist (r(status) is blank) or it exists but is on already, replace the log.
+		display "Debugging On."
+		display ""
+		display "  Starting DebugLog..."
+		display ""
 		if("`r(status)'" == "off") {	
 			capture log close DebugLog
 			log using "DebugLog.log", name(DebugLog) append text
+			display ""
+			display "|||||| DebugLog Started: Log ID = `logid'"
+			display ""
+			display ""
 		}
 		else {
 			capture log close DebugLog
 			log using "DebugLog.log", name(DebugLog) replace text
+			display ""
+			display "|||||| DebugLog Resumed: Log ID = `logid'"
+			display ""
+			display ""
 		}
 	}
 	else if("`off'" == "off") {
 		global Flowchart_Debug = "off"
+		display ""
 		display "|||||| DebugLog Off"
 		display ""
 		display ""
@@ -414,12 +406,17 @@ program define flowchart_debug
 	}
 	else if("`tikz'" == "tikz") {
 		global Flowchart_Debug = "tikz"
+		display ""
 		display "|||||| DebugLog Mode: Tikz"
 		display ""
 		display ""
 	}
 	else {
 		global Flowchart_Debug = "off"
+		display ""
+		display "|||||| DebugLog Closed"
+		display ""
+		display ""
 		capture log close DebugLog
 	}
 	
@@ -543,22 +540,23 @@ program define flowchart_tdwriteline
 			local linestring = `"      \h `desc' (n=\figvalue{`name'}) `suffix'"'
 		}
 	}
-if("$Flowchart_Debug" == "on") {
-	display `"Blockfield Linestring: `linestring'"'
-}
-global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
-.blockfields.list[$Flowchart_IteratorBlockfields] = `"`linestring'"'
-
-if("`addrowskip'" == "true") {
-	global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
-	.blockfields.list[$Flowchart_IteratorBlockfields] = `"      & \\"'
-	macro drop addrowskip
+	
 	if("$Flowchart_Debug" == "on") {
-		display `"Blockfield Linestring:       & \\"'
+		display `"Blockfield Linestring: `linestring'"'
 	}
-}
-*flowchart_tdwrite_blockfield `"`linestring'"'
-*	texdoc write "`varname'"
+	global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
+	.blockfields.list[$Flowchart_IteratorBlockfields] = `"`linestring'"'
+
+	if("`addrowskip'" == "true") {
+		global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
+		.blockfields.list[$Flowchart_IteratorBlockfields] = `"      & \\"'
+		macro drop addrowskip
+		if("$Flowchart_Debug" == "on") {
+			display `"Blockfield Linestring:       & \\"'
+		}
+	}
+	*flowchart_tdwrite_blockfield `"`linestring'"'
+	*	texdoc write "`varname'"
 end
 
 

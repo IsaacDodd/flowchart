@@ -1,0 +1,238 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  DebugLog
+       log:  C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Log\DebugLog.log
+  log type:  text
+ opened on:   1 Aug 2017, 09:37:44
+
+|||||| DebugLog Resumed: Log ID = 1Aug2017_093744
+
+
+
+. flowchart init using "C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data"
+0
+0
+
+. flowchart init using "C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\FilenameWithoutSpaces.data"
+0
+0
+
+. flowchart init using C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\FilenameWithoutSpaces.data
+0
+0
+
+. flowchart init using C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data
+invalid 'With' 
+r(198);
+
+. flowchart init C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data
+0
+invalid file specification
+198
+file handle FlowchartFile not found
+r(111);
+
+. flowchart init C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data
+file handle FlowchartFile not found
+111
+invalid file specification
+198
+file handle FlowchartFile not found
+r(111);
+
+. flowchart init using C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data
+invalid 'With' 
+r(198);
+
+. flowchart init using "C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data"
+file handle FlowchartFile not found
+111
+0
+
+. help confirm
+
+. net install flowchart, replace from("C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart")
+checking flowchart consistency and verifying not already installed...
+
+the following files will be replaced:
+    c:\ado\plus\f\flowchart.ado
+
+installing into c:\ado\plus\...
+installation complete.
+
+. flowchart init using "C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data"
+0
+0
+
+. flowchart init using C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\FilenameWithoutSpaces.data
+0
+0
+
+. flowchart init using C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Filename With Spaces.data
+invalid 'With' 
+r(198);
+
+. help filenaming conventions
+
+. help filename
+
+. net search flowchart
+(contacting http://www.stata.com)
+no matches
+
+. net describe flowchart, from("C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart")
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+package flowchart from C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+TITLE
+      'FLOWCHART': Generates subject disposition flow diagram figures in LaTeX using PGF/TikZ to include in manuscripts
+
+DESCRIPTION/AUTHOR(S)
+      
+      Distribution-Date: 20170731
+      
+      Requires: texdoc, at least Stata v13
+      
+      Author:  Isaac M. E. Dodd
+      Support: github.com/IsaacDodd
+      p flowchart Download the Flowchart package.
+
+INSTALLATION FILES                            (type net install flowchart)
+      flowchart.ado
+      flowchart.sthlp
+
+ANCILLARY FILES                               (type net get flowchart)
+      figure-flowchart.texdoc
+      example.do
+      Manuscript.tex
+      Methods--Figure-Flowchart.data
+      Methods--Figure-Flowchart.tikz
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. net install flowchart, replace
+checking flowchart consistency and verifying not already installed...
+
+the following files will be replaced:
+    c:\ado\plus\f\flowchart.ado
+    c:\ado\plus\f\flowchart.sthlp
+
+installing into c:\ado\plus\...
+installation complete.
+
+. net get flowchart
+checking flowchart consistency and verifying not already installed...
+
+copying into current directory...
+      copying  figure-flowchart.texdoc
+      copying  example.do
+      copying  manuscript.tex
+      copying  methods--figure-flowchart.data
+      copying  methods--figure-flowchart.tikz
+ancillary files successfully copied.
+
+. pwd
+C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Log
+
+. flowchart setup
+
+COMMAND PARSING: 
+Subcommand via GetToken: 
+Subcommand via Syntax: setup
+Subcommand with Parameter:  setup
+Compound Quotes (CQ's):  
+Subparameter via String Parse (CQs):  setu
+Subcommand via String Parse (CQs):  
+
+. net install flowchart, replace
+checking flowchart consistency and verifying not already installed...
+
+the following files will be replaced:
+    c:\ado\plus\f\flowchart.ado
+
+installing into c:\ado\plus\...
+installation complete.
+
+. flowchart setup
+ First Variable: setup
+ Other Variables:  
+|||||| Setup
+Installing 'texdoc'...
+...Texdoc installed successfully.
+Setup complete.
+
+. net get flowchart, replace
+file http://fmwww.bc.edu/repec/bocode/t/flowchart.pkg not found
+could not load flowchart.pkg from http://fmwww.bc.edu/repec/bocode/t/
+r(601);
+
+. net get flowchart
+file http://fmwww.bc.edu/repec/bocode/t/flowchart.pkg not found
+could not load flowchart.pkg from http://fmwww.bc.edu/repec/bocode/t/
+r(601);
+
+. net describe flowchart, from("C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart")
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+package flowchart from C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+TITLE
+      'FLOWCHART': Generates subject disposition flow diagram figures in LaTeX using PGF/TikZ to include in manuscripts
+
+DESCRIPTION/AUTHOR(S)
+      
+      Distribution-Date: 20170731
+      
+      Requires: texdoc, at least Stata v13
+      
+      Author:  Isaac M. E. Dodd
+      Support: github.com/IsaacDodd
+
+INSTALLATION FILES                            (type net install flowchart)
+      flowchart.ado
+      flowchart.sthlp
+
+ANCILLARY FILES                               (type net get flowchart)
+      figure-flowchart.texdoc
+      example.do
+      Manuscript.tex
+      Methods--Figure-Flowchart.data
+      Methods--Figure-Flowchart.tikz
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. net get flowchart, from("C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart")
+checking flowchart consistency and verifying not already installed...
+
+copying into current directory...
+      copying  figure-flowchart.texdoc
+      copying  example.do
+      copying  manuscript.tex
+      copying  methods--figure-flowchart.data
+      copying  methods--figure-flowchart.tikz
+ancillary files successfully copied.
+
+. net get flowchart, from("C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart")
+checking flowchart consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. net install flowchart, from("C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart") replace
+checking flowchart consistency and verifying not already installed...
+
+the following files will be replaced:
+    c:\ado\plus\f\flowchart.ado
+
+installing into c:\ado\plus\...
+installation complete.
+
+. net install flowchart, from("C:\Users\Krist\Desktop\Isaac\JHSPH\Capstone\Stata\Do\flowchart") replace
+checking flowchart consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. flowchart debug off
+ First Variable: debug
+ Other Variables:   off
+
+|||||| DebugLog Off
+
+

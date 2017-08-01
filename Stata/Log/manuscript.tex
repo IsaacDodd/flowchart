@@ -1,0 +1,54 @@
+%% MANIFEST ====================
+% 		This is the main file that includes all of the other sections as typeset files in the manuscript.
+\documentclass[a4paper,11pt,onecolumn]{article}
+%% Package Declarations
+\usepackage[utf8]{inputenc} % Document Encoding
+%	\renewcommand{\rmdefault}{ppl}	% Font Changes - PPL = Palatino
+% Layout Management
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{multicols}
+% Design
+\usepackage{xcolor}		% Design - Custom Colors
+\usepackage{graphicx} 	% Design - Graphics Packages
+% 	Figures, Diagrams, and Other Graphics
+\usepackage{tikz}		% TikZ Package - Generates graphics (i.e., flowcharts)
+	\usetikzlibrary{shapes,arrows}
+	\newcommand*{\h}{\hspace{5pt}}% For indentation
+	\newcommand*{\hh}{\h\h}% Double indentation
+\usepackage{datatool}	% DataTool Package - Loads Subanalysis Data to generate flowchart
+	\DTLsetseparator{ = }% Delimiter
+% Biostatistics
+\usepackage{amsmath} 	% Equations - Handler
+	\usepackage{amsfonts} 	% Equations - Display
+	\usepackage{amssymb} 	% Equations - Symbols
+\usepackage{fontenc}
+%% Colophon
+\title{\Large\bfseries Title of my research study goes here.}
+\author{Lastname, Firstname, Lastname, Firstname, Lastname, Firstname}
+\date{}	% Blank to remove the default date
+\begin{document}
+	%% Front Matter - This will contain the title, authors, institution list, and other introductory text. If the publisher requires a title page, its contents go here.
+%	\input{01-ProjectName-FrontMatter.tex}
+%	%% Abstract
+%	\input{02-ProjectName-Abstract.tex}
+%	
+	\begin{multicols}{2}
+%		%% Introduction
+%		\input{03-ProjectName-Introduction.tex}
+%		%% Methods
+%		\input{04-ProjectName-Methods.tex}
+			\end{multicols} % Temporarily interrupt multicols (and later restart it) to accommodate a figure.
+			\input{Methods--Figure-Flowchart.tex}
+			\begin{multicols}{2}
+%		%% Results
+%		\input{05-ProjectName-Results.tex}
+%		%% Discussion
+%		\input{06-ProjectName-Discussion.tex}
+%		%% Conclusion
+%		\input{07-ProjectName-Conclusion.tex}
+%		%% Bibliography
+%		\input{08-ProjectName-Bibliography.tex}
+%		%% Back Matter - If the publisher requires additional statements (acknowledgements, conflicts of interest statements, financial disclosures, etc.)
+%		\input{09-ProjectName-BackMatter.tex}
+	\end{multicols}
+\end{document}

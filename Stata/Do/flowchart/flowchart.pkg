@@ -1,19 +1,22 @@
 v 3
 * Reference http://www.stata.com/manuals13/rnet.pdf
-d 'FLOWCHART': Function to generate subject disposition flow diagram figures in LaTeX using PGF/TikZ to include in manuscripts
+d 'FLOWCHART': Generates subject disposition flow diagram figures in LaTeX using PGF/TikZ to include in manuscripts
 d 
 d Distribution-Date: 20170731
 d
 d Requires: texdoc, at least Stata v13
 d 
-d Author: Isaac M. E. Dodd
-d Email: imedodd@gmail.com
-p flowchart Download the Flowchart package.
+d Author:  Isaac M. E. Dodd
+d Support: github.com/IsaacDodd/flowchart/issues/new
 f flowchart.ado
 f flowchart.sthlp
 f figure-flowchart.texdoc
-f example.do
-f Manuscript.tex
-f Methods--Figure-Flowchart.data
-f Methods--Figure-Flowchart.tikz
+f example1.do
+f example2.do
+f manuscript.tex
+f methods--figure-flowchart.data
+f methods--figure-flowchart.tikz
+f example1output.pdf
+f example2output.pdf
+f license.txt
 e

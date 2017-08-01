@@ -717,3 +717,57 @@ flowchart finalize, input("98-IQSCVDMort-PostProduction-Methods--Fig-Flowchart.t
 
 
 
+
+
+
+
+
+		capture file close FlowchartFile
+		capture confirm file open FlowchartFile using "`using'", write text replace
+		if c(rc) != 0 {
+			display "Invalid File Specification: Please specify a subanalysis data file to initiate."
+			display `"	Example: flowchart init using "Methods--Figure-Flowchart.data" "'
+			display `"	Guidance: If the filename has spaces in it, put it in "doublequotes" "'
+			display `"	Help: For more assistance, type "flowchart help""'
+			display as error "Invalid File Specification"
+			exit 198
+		}
+		flowchart_init
+		
+
+		if c(rc) != 0 {
+			display "Invalid File Specification: Please specify a subanalysis data file to initiate."
+			display `"	Example: flowchart init using "Methods--Figure-Flowchart.data" "'
+			display `"	Guidance: If the filename has spaces in it, put it in "doublequotes" "'
+			display `"	Help: For more assistance, type "flowchart help""'
+			display as error "Invalid File Specification"
+			exit 198
+		}
+		
+		
+		
+		
+{p 8 17 2}
+{cmdab:flo:wchart}
+[{command}]
+[{cmd:,}
+{it:options}]
+
+{synoptset 20 tabbed}{...}
+{synopthdr}
+{synoptline}
+{syntab:Commands}
+{synopt:{opt i:nit using} {it:filename.data}}Initialize the diagram by specifying a filename (or filename with filepath) where the data file to store variables will reside. This file is used by the LaTeX datatool package to generate numerical data within the diagram.{p_end}
+{synopt:{opt wri:terow}({it:rowname}): {it:center-block}, {it:left-block}}Create a new row in the diagram. A detailed explanation is below.{p_end}
+{synopt:{opt con:nect} rowname_{it:blockorientation} rowname_{it:blockorientation}, [arrow({it:type})]}Draws arrows between the blocks across or between rows by specifying the rowname underscore block-orientation. Options to change the arrow characteristics can be specified.{p_end}
+{synopt:{opt fin:alize}, input("{it:filename.texdoc}") output("{it:filename.tikz}")}Takes the prespecified texdoc syntax in {it:filename.texdoc} and writes into it the TikZ code into {it:filename.tikz} to be included in a manuscript's LaTeX document. {p_end}
+{synopt:{opt setu:p}, [{it:update}]}Installs texdoc and any other dependencies and replaces the current flowchart installation. Alternatively, option [, {it:update}] can be specified to update the flowchart package installation.{p_end}
+{synopt:{opt deb:ug}, [{it:on off logreset}]}Turns on or off the debugging features and produces a DebugLog.log that can be used when support is needed.
+Alternatively, option [{it:, tikz}] can be specified to produce debugging strings in the final TikZ file. Turn on and off debugging before and after respectively any code that produces errors; or, turn it on at the start of the document.{p_end}
+{synoptline}
+{p2colreset}{...}
+{p 4 6 2}
+{cmd:filename} is the path to generate a new datatool file; see {help filename} for more detailed syntax information.{p_end}
+{p 4 4 2}
+{cmd:by} is not allowed; see {manhelp by D}.{p_end}'
+

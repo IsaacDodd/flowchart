@@ -10,7 +10,7 @@
 * DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
  	* All files are relative to the current working directory.
 
-flowchart init using "Methods--Figure-Flowchart.data"
+flowchart init using "methods--figure-flowchart.data"
 
 flowchart writerow(enrollment): ///
 	"referred" 173 "Referred", ///
@@ -28,15 +28,13 @@ flowchart writerow(assessment): ///
 	"assessed_excluded_unsuitedtx" 2 "d) Not suited for intervention" ///
 	"assessed_excluded_othertx" 3 "e) Sought other treatment" ///
 	"assessed_excluded_other" 7 "f) Other reasons"
-	
-flowchart_debug, off
 
 flowchart writerow(random): "randomized" 102 "Randomized", flowchart_blank // Blank Row
 
 flowchart writerow(allocgroup): ///
 	"alloc_interventiongroup" 51 "Allocated to Intervention group", ///
 	"alloc_waitlistgroup" 51 "Allocated to Wait-list control group"
-flowchart_debug, off	
+
 flowchart writerow(allocdetails): ///
 	"intervention_received" 49 "Received intervention" ///
 	"intervention_unreceived" 2 "Did not receive intervention" ///
@@ -92,7 +90,7 @@ flowchart connect wlistintervention_left measurement3monpostint_left
 flowchart connect measurement3monpostint_left wlist3mon_left
 flowchart connect wlist3mon_left analyzed_left 
 
-flowchart finalize, input("figure-flowchart.texdoc") output("Methods--Figure-Flowchart.tikz")
+flowchart finalize, input("figure-flowchart.texdoc") output("methods--figure-flowchart.tikz")
 
 /*
 * TESTS: Uncomment the following lines to run tests. Alternatively, use this as a template to follow:
