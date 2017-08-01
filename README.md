@@ -71,13 +71,18 @@ flowchart connect rownametest2_left rownametest4_left
 flowchart finalize, input("figure.texdoc") output("figure.tikz")
 ```
 	
+## Resources
+
+As they are identified, useful resources to produce visuals and diagrams will be listed here.
+1. Too curious to sit still (23 Aug. 2014.). Stata: CONSORT Flowchart. Too curious to sit still. Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/
+
 ## Contributions
 
-Contributions are greatly, greatly appreciated. Please send pull requests via the conventional means on GitHub for review. Please feel free to make this project your own by contributing code, new features, and fixes rather than making forks.
+Contributions are greatly, greatly appreciated, and a major goal for this package is for *flowchart* to become a community-driven package. Please send pull requests via the conventional means here on GitHub for review. Please feel free to make this project your own by contributing code, new features, and fixes rather than developing them within separate forks. Collaborations are greatly welcomed.
 
 ## Issues/Bugs, Suggestions, & Feedback
 
-Please submit bugs using [GitHub](https://github.com/IsaacDodd/flowchart/issues/new/ "Open a New Issue on Github for Flowchart"). It is very difficult to respond to issue requests via email. All comments, feedback, and suggestions are also greatly welcomed.
+Please submit bugs using [GitHub](https://github.com/IsaacDodd/flowchart/issues/new/ "Open a New Issue on GitHub for Flowchart"). It is very difficult to respond to issue requests via email. All comments, feedback, and suggestions are also greatly welcomed.
 
 ## Credit
 
