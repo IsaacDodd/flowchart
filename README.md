@@ -2,8 +2,13 @@
 
 ## Introduction
 
-Use this command to generate a publication-quality Subject Disposition Flowchart Diagram in LaTeX Format. This package uses Stata to generate the necessary TikZ code to run in LaTeX and produce the diagram as a PDF or any other format. 
+Use the **_flowchart_** command to generate a publication-quality **Subject Disposition Flowchart Diagram** in LaTeX Format. This package uses Stata to generate the necessary TikZ code to run in LaTeX and produce the diagram as a PDF or any other format. 
 The final diagram will be similar in style to the ones used in the CONSORT 2010 Statement or STROBE Statement Reporting Guidelines.
+
+For an example of the package's output, please see [Example1Output.pdf](https://github.com/IsaacDodd/flowchart/blob/master/example1output.pdf "Example1Output.pdf")
+![Example1Output](https://github.com/IsaacDodd/flowchart/blob/master/PreviousVersions/example1output.png "Example 1 Output")
+
+The format follows closely the example of a [CONSORT-style flow diagram at TeXample](www.texample.net/tikz/examples/consort-flowchart/) which was written in PGF/TikZ by Morten Willert. The example code to generate the above diagram is incldued in the Ancillary Files installed with *flowchart*.
 
 ## Install
 
@@ -12,7 +17,9 @@ In Stata, install flowchart and its main dependency in your system's ado filepat
 	. net install flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/) replace
 	. net get flowchart, replace
 	. ssc install texdoc, replace
-	
+
+## How to Use
+
 After installation, type **help flowchart** for detailed instructions on how to get started. Study the example1.do and example2.do files for very carefully laid out examples of its usage and a very detailed, thorough explanation.
 	
 ## Contributions
