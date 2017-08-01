@@ -27,3 +27,7 @@ Please submit bugs using [GitHub](https://github.com/IsaacDodd/flowchart/issues/
 
 By installing this program you agree to the GNU LGPL under which this program is licensed. Please see License.txt for the full license of the GNU LGPL 2007, which allows for the incorporation of this program in proprietary software if necessary but without warranty.
 Note: 'Flowchart' comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions.
+
+## Credit
+
+Credit to Ben Jann, whose texdoc package is a dependency in flowchart, and Morten Willert, whose example of a flowchart diagram in TikZ was studied and used heavily to generate similar flowcharts in this package.
