@@ -1,17 +1,18 @@
-# FLOWCHART #
+## Install
+In Stata, to install the package, type the following:
 
-Use this command to generate a publication-quality Subject Disposition Flowchart Diagram, similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format.
+	. net install flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/) replace
+	. ssc install texdoc, replace
 
-### Introduction ###
+## Contributions
 
-* **Flowchart** - Use this command to generate a publication-quality Subject Disposition Flowchart Diagram, similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format. It is a command that generates a Subject Disposition Flowchart Diagram. This is similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format using data from a dataset. This command uses the 'texdoc' command (written by Ben Jann). Install it first by typing into Stata: 'net install texdoc, replace'.
-* Version v0.0.1
+Contributions are greatly, greatly appreciated. Please send pull requests via the conventional means on GitHub for review. Please feel free to make this project your own by contributing code, new features, and fixes rather than making forks.
 
-### How to install Flowchart ###
+## Issues/Bugs, Suggestions, & Feedback
 
-* This command is still in its pre-alpha infancy and therefore is not yet ready to be used for serious projects.
-* In the Stata command-line, run 'net install flowchart, from(http://github.com/IsaacDodd/Flowchart)'
+Please submit bugs using GitHub. It is very difficult to respond to issue requests via email. All comments, feedback, and suggestions are also greatly welcomed.
 
-### Contribution guidelines ###
+## License
 
-* Send a pull request.
+Please see License.txt for the full license of the GNU LGPL 2007, which allows for the incorporation of this program in proprietary software if necessary but without warranty.
+Note: 'Flowchart' comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions.
