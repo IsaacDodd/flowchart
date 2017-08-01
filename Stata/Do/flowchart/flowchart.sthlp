@@ -9,7 +9,7 @@
 {viewerjumpto "Examples" "flowchart##examples"}{. . .}
 {title:Introduction}
 {phang}
-{bf:flowchart} {hline 2} Flowchart - Use this command to generate a publication-quality Subject Disposition Flowchart Diagram, similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines, in LaTeX format
+{bf:flowchart} {hline 2} Flowchart - Use this command to generate a publication-quality Subject Disposition Flowchart Diagram in LaTeX format, similar in style to the ones used in the CONSORT 2010 Statement Reporting Guidelines. An example flowchart can be found here: http://www.texample.net/tikz/examples/consort-flowchart/ 
 {marker syntax}{. . .}
 {title:Syntax}
 {p 8 17 2}
@@ -152,3 +152,5 @@ References:
     Citation: Jann, Ben (2016 Nov 27). Creating LaTeX documents from within Stata using texdoc. University of Bern Social Sciences Working Paper No. 14; The Stata Journal 16(2): 245-263. Reprinted with updates at ftp://ftp.repec.org/opt/ReDIF/RePEc/bss/files/wp14/jann-2015-texdoc.pdf Retrieved on July 28, 2017.
 2. TikzPicture Diagram Code Based On: 
  	 Citation: Willert, Morten Vejs (2011 Dec 31). "A CONSORT-style flowchart of a randomized controlled trial". TikZ Example (Texample.net). Retrieved from http://www.texample.net/tikz/examples/consort-flowchart/ 
+	 
+Credit goes to Ben Jann, whose texdoc function is a dependency in flowchart, and Morten Willert, whose example of a flowchart diagram in TikZ was studied and used heavily to generate similar flowcharts in this function.
