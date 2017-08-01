@@ -5,7 +5,7 @@ Stata module to generate a publication-quality subject disposition flow diagram 
 ## Introduction
 
 Use the **_flowchart_** package in Stata to generate a publication-quality **Subject Disposition Flowchart Diagram** in LaTeX Format. This package gives Stata the ability to generate the necessary TikZ code to include in a LaTeX and produce the diagram as a PDF or any other format. 
-The final diagram will be similar in style to the ones used in the CONSORT 2010 Statement or STROBE Statement Reporting Guidelines, which are very commonly used within formal publications for clinical trial or cohort study research findings. 
+The final diagram will be similar in style to the ones used in the PRISMA Statement, CONSORT 2010 Statement, or STROBE Statement Reporting Guidelines, which are very commonly used within formal publications for systematic review, clinical trial, or cohort study research findings. 
 
 For an example of the package's output, please see [Example1Output.pdf](https://github.com/IsaacDodd/flowchart/blob/master/example1output.pdf "Example1Output.pdf"). Here is a low-resolution screenshot of the PDF:
 ![Example1Output](https://github.com/IsaacDodd/flowchart/blob/master/PreviousVersions/example1output.png "Example 1 Output")
