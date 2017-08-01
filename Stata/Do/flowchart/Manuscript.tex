@@ -2,19 +2,11 @@
 % 		This is the main file that includes all of the other sections as typeset files in the manuscript.
 \documentclass[a4paper,11pt,onecolumn]{article}
 %% Package Declarations
-%		All attempts have been made to declare packages very conservatively for low dependencies.
 \usepackage[utf8]{inputenc} % Document Encoding
 %	\renewcommand{\rmdefault}{ppl}	% Font Changes - PPL = Palatino
-%\usepackage[backend=biber]{biblatex} % Bibliography Management
-%	\addbibresource{Bibliography Database/IQSCVDMort-BibManifest.bib} % Bibliographic Details
-% 	Drafting
-\usepackage{lipsum} 	% Drafting - Random Text Filler
-	%	\usepackage{lineno}	% Drafting - Line Numbering (Must turn off Multicols)
-	%		\linenumbers
-	%	\usepackage[doublespacing]{setspace}	% Drafting - Double-Spacing
 % Layout Management
-\usepackage{multicol} 	% Selective Multiple Columns
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{multicols}
 % Design
 \usepackage{xcolor}		% Design - Custom Colors
 \usepackage{graphicx} 	% Design - Graphics Packages
@@ -29,43 +21,34 @@
 \usepackage{amsmath} 	% Equations - Handler
 	\usepackage{amsfonts} 	% Equations - Display
 	\usepackage{amssymb} 	% Equations - Symbols
-	\graphicspath{{./../Stata/Graph/}} % STATA Graphics path
 \usepackage{fontenc}
 %% Colophon
-	\newcommand*{\affilplace}[1]{\small{#1}}
-	\newcommand*{\affilauthor}[1][*]{\textsuperscript{#1}}
-\title{\Large\bfseries Isokinetic quadriceps strength as a predictor of cardiovascular mortality among older U.S. adults with diabetes mellitus}
-\author{Dodd, Isaac M. E.\affilauthor[1]\affilauthor[2], % 
-		Gillum, Richard F.\affilauthor[2]\affilauthor[3], % 
-		Matsushita, Kunihiro\affilauthor[1]\\
-		\affilplace{\affilauthor[1]Johns Hopkins Bloomberg School of Public Health, Baltimore, MD}\\
-		\affilplace{\affilauthor[2]Howard University College of Medicine, Washington, DC}\\
-		\affilplace{\affilauthor[3]Howard University Hospital, Washington, DC}
-	}
-\date{}	% Remove the default date
+\title{\Large\bfseries Title of my research study goes here.}
+\author{Lastname, Firstname, Lastname, Firstname, Lastname, Firstname}
+\date{}	% Blank to remove the default date
 \begin{document}
 	%% Front Matter - This will contain the title, authors, institution list, and other introductory text. If the publisher requires a title page, its contents go here.
-%	\input{01-IQSCVDMort-FrontMatter.tex}
+%	\input{01-ProjectName-FrontMatter.tex}
 %	%% Abstract
-%	\input{02-IQSCVDMort-Abstract.tex}
+%	\input{02-ProjectName-Abstract.tex}
 %	
 	\begin{multicols}{2}
 %		%% Introduction
-%		\input{03-IQSCVDMort-Introduction.tex}
+%		\input{03-ProjectName-Introduction.tex}
 %		%% Methods
-%		\input{04-IQSCVDMort-Methods.tex}
+%		\input{04-ProjectName-Methods.tex}
 			\end{multicols} % Temporarily interrupt multicols (and later restart it) to accommodate a figure.
-			\input{04-IQSCVDMort-Methods--Fig-Flowchart.tex}
+			\input{Methods--Figure-Flowchart.tex}
 			\begin{multicols}{2}
 %		%% Results
-%		\input{05-IQSCVDMort-Results.tex}
+%		\input{05-ProjectName-Results.tex}
 %		%% Discussion
-%		\input{06-IQSCVDMort-Discussion.tex}
+%		\input{06-ProjectName-Discussion.tex}
 %		%% Conclusion
-%		\input{07-IQSCVDMort-Conclusion.tex}
+%		\input{07-ProjectName-Conclusion.tex}
 %		%% Bibliography
-%		\input{08-IQSCVDMort-Bibliography.tex}
-%		%% Back Matter - If the publisher requires additional statements (acknowledgements, conflicts of interest statements, financial disclosures, etc.), its contents go here.
-%		\input{09-IQSCVDMort-BackMatter.tex}
+%		\input{08-ProjectName-Bibliography.tex}
+%		%% Back Matter - If the publisher requires additional statements (acknowledgements, conflicts of interest statements, financial disclosures, etc.)
+%		\input{09-ProjectName-BackMatter.tex}
 	\end{multicols}
 \end{document}

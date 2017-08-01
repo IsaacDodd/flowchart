@@ -40,6 +40,10 @@
 *             +-- ##-[ProjectName]-[Section]-[Main Analysis File].do
 *                                     Main Analysis File -----^
 *
+* 	Do File
+* 		This is the .do file that contains your analysis where you can use
+* 		the flowchart commands to generate the diagram.
+* 			See Example: example.do
 *   LaTeX Document
 *       This is a (.tex) file that contains a \begin{figure}...\end{figure} 
 * 		Environment command. STATA does not manipulate this file. It instead 
@@ -48,10 +52,16 @@
 * 		(.data) in the Data file for generating the different components of the 
 * 		TikZ picture's diagram (e.g., data for the boxes of a 
 * 		Subject Disposition Flowchart).
-*   Figure Do File (Texdoc Do File)
-*       This Do file is a 'Texdoc Do File' which is to say it is invoked by the texdoc command in STATA in the Main Analysis File that is producing the Subanalysis Data off of the main analysis using the Dataset that is loaded.
+* 			See Example: Manuscript.tex
+*   Figure Texdoc Do File - Do Not Edit
+*       This Do file is a 'Texdoc Do File' which is to say it is invoked by the 
+* 		texdoc command in STATA in the Main Analysis File that is producing the 
+* 		Subanalysis Data off of the main analysis using the Dataset that is loaded.
+* 			See Example: figure-flowchart.texdoc
 *   TikZ Picture (Automatically regenerated)
-*       This is a 'picture' that is used by the TikZ package in LaTeX to generate a diagram in LaTeX. It relies upon 
+*       This is a 'picture' that is used by the TikZ package in LaTeX to 
+* 		generate a diagram in LaTeX.
+* 			See Example: Methods--Figure-Flowchart.tikz
 *   Subanalysis Data File (Automatically regenerated)
 *       The data for a figure is produced from a subanalysis and is assigned to 
 * 		variables. The Data file consists of variables with the generated data, 
@@ -62,6 +72,7 @@
 * 		have to have a unique name and are given a name in the do file that 
 * 		produces the figure. Data from the Dataset used in an analysis can be 
 * 		used to generate the data for the diagram.
+* 			See Example: Methods--Figure-Flowchart.data
 *
 * Overall
 *     Main Analysis File --> Runs the Figure Do-File (which is changed by the user to reflect the flow of data analysis )
@@ -69,13 +80,16 @@
 *     LaTeX Document --> Changed by the user to arrange or re-arrange the TikZ picture in the Manuscript.
 *     
 * REFERENCES
-*     Citation: Jann, Ben (2016 Nov 27). Creating LaTeX documents from within Stata using texdoc. University of Bern Social Sciences Working Paper No. 14; The Stata Journal 16(2): 245-263. Reprinted with updates at ftp://ftp.repec.org/opt/ReDIF/RePEc/bss/files/wp14/jann-2015-texdoc.pdf Retrieved on July 28, 2017.
+* 1. Texdoc Command Use Based On: 
+*    Citation: Jann, Ben (2016 Nov 27). Creating LaTeX documents from within Stata using texdoc. University of Bern Social Sciences Working Paper No. 14; The Stata Journal 16(2): 245-263. Reprinted with updates at ftp://ftp.repec.org/opt/ReDIF/RePEc/bss/files/wp14/jann-2015-texdoc.pdf Retrieved on July 28, 2017.
+* 2. TikzPicture Diagram Code Based On: 
+* 	 Citation: Willert, Morten Vejs (2011 Dec 31). "A CONSORT-style flowchart of a randomized controlled trial". TikZ Example (Texample.net). Retrieved from http://www.texample.net/tikz/examples/consort-flowchart/ 
 
 ********************************************************************************
 ****** DEPENDENCIES
 ********************************************************************************
 
-*! version 0.0.1  28jul2017  Isaac M. E. Dodd
+*! version 0.0.2  31jul2017  Isaac M. E. Dodd
 * FLOWCHART ---------------------------------------------------------------------
 capture program drop flowchart
 program define flowchart

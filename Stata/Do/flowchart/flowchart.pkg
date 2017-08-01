@@ -7,4 +7,9 @@ d Distribution-Date: 28july2017
 p flowchart Download the Flowchart package.
 f flowchart.ado
 f flowchart.sthlp
+f figure-flowchart.texdoc
+f example.do
+f Manuscript.tex
+f Methods--Figure-Flowchart.data
+f Methods--Figure-Flowchart.tikz
 e

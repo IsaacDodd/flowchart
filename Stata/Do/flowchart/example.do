@@ -8,8 +8,9 @@
 	*** Rows can be created using macros to fill in each row as the data for the analysis are changed.
 
 * DIAGRAM: Call Post-Production texdoc file to write this analysis as a diagram.
+ 	* All files are relative to the current working directory.
 
-flowchart init using "Methods--Fig-TEST.data"
+flowchart init using "Methods--Figure-Flowchart.data"
 
 flowchart writerow(enrollment): ///
 	"referred" 173 "Referred", ///
@@ -91,7 +92,7 @@ flowchart connect wlistintervention_left measurement3monpostint_left
 flowchart connect measurement3monpostint_left wlist3mon_left
 flowchart connect wlist3mon_left analyzed_left 
 
-flowchart finalize, input("figure.texdoc") output("figure.tikz")
+flowchart finalize, input("figure-flowchart.texdoc") output("Methods--Figure-Flowchart.tikz")
 
 /*
 * TESTS: Uncomment the following lines to run tests. Alternatively, use this as a template to follow:
@@ -130,5 +131,3 @@ flowchart connect rownametest2_left rownametest4_left
 
 flowchart finalize, input("figure.texdoc") output("figure.tikz")
 */
-
-

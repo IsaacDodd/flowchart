@@ -142,3 +142,13 @@ Package pgf Error: No shape named <blockname_orientation> is known. \path (<bloc
 	This is likely due to an error in using the 'flowchart connect' command where you referred to a block that does not exist. If a row does not have an accompanying block, whether left or center oriented, it cannot be connected to any other blocks. Therefore, try reviewing the connection to determine if you may be connecting an arrow to a block that is blank.
 	
 For problems not resolved through this list, please open an issue/bug.
+
+{marker citations}{. . .}
+{title:Bibliography, Citations, & Credit}
+
+References: 
+
+1. Texdoc Command Use Based On: 
+    Citation: Jann, Ben (2016 Nov 27). Creating LaTeX documents from within Stata using texdoc. University of Bern Social Sciences Working Paper No. 14; The Stata Journal 16(2): 245-263. Reprinted with updates at ftp://ftp.repec.org/opt/ReDIF/RePEc/bss/files/wp14/jann-2015-texdoc.pdf Retrieved on July 28, 2017.
+2. TikzPicture Diagram Code Based On: 
+ 	 Citation: Willert, Morten Vejs (2011 Dec 31). "A CONSORT-style flowchart of a randomized controlled trial". TikZ Example (Texample.net). Retrieved from http://www.texample.net/tikz/examples/consort-flowchart/ 
