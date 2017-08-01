@@ -8,7 +8,7 @@ The final diagram will be similar in style to the ones used in the CONSORT 2010 
 For an example of the package's output, please see [Example1Output.pdf](https://github.com/IsaacDodd/flowchart/blob/master/example1output.pdf "Example1Output.pdf")
 ![Example1Output](https://github.com/IsaacDodd/flowchart/blob/master/PreviousVersions/example1output.png "Example 1 Output")
 
-The format follows closely the example of a [CONSORT-style flow diagram at TeXample](www.texample.net/tikz/examples/consort-flowchart/) which was written in PGF/TikZ by Morten Willert. The example code to generate the above diagram is incldued in the Ancillary Files installed with *flowchart*.
+The format follows closely the example of a [CONSORT-style flow diagram at TeXample](http://www.texample.net/tikz/examples/consort-flowchart/) which was written in PGF/TikZ by Morten Willert. The example code to generate the above diagram is incldued in the Ancillary Files installed with *flowchart*.
 
 ## Install
 
