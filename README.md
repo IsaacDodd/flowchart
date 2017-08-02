@@ -34,6 +34,7 @@ The format for the code follows this typical example, which is available in **ex
 * INITIALIZE: Start a new datatool variable file.
 flowchart init using "filename.data"
 
+* WRITE ROWS: [center-block] , [left-block]
 * Row with 2 blocks.
 flowchart writerow(rownametest1): "lblock1_line1" 46 "This is one line, \\ of a block." ///
 	"lblock1_line2" 43 "This is another line, of a block" ///
@@ -43,6 +44,8 @@ flowchart writerow(rownametest1): "lblock1_line1" 46 "This is one line, \\ of a 
 	"rblock1_line3" 44 "This is another line, of a block"
 	
 	* A '\\' in a description introduces a newline in LaTeX.
+	* Each of the 2 blocks can take several lines.
+	* Each line is a space-separated triplet of 3 fields: "variable_name" n_number "Descriptive text."
 
 * Row with No center-block (a center-block appears on the left)
 flowchart writerow(rownametest2): Flowchart_Blank, ///
@@ -76,7 +79,10 @@ flowchart finalize, input("figure.texdoc") output("figure.tikz")
 
 As they are identified, useful resources to produce visuals and diagrams will be listed here.
 1. Spreckelsen, Thees. (23 Aug. 2014.). "Stata: CONSORT Flowchart. Too curious to sit still." Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/ on August 1, 2017.
-	Dr. Spreckelsen's post was not known during the main portion of the development of the flowchart package nor were any ideas or code used, but the advantage of Spreckelsen's idea is the simplicity of the resulting diagram. The disadvantage is that it is not quite programmatic and is not as amenable to changes to the analysis that produces the diagram.
+
+	- Dr. Spreckelsen's post was not known during the main portion of the development of the flowchart package nor were any ideas or code used, but the advantage of Spreckelsen's idea is the simplicity of the resulting diagram. The disadvantage is that it is not quite programmatic and is not as amenable to changes to the analysis that produces the diagram. It does not appear to produce a publication-quality rendering. However, it is still a useful contribution to the existing methods to produce flow diagrams and Spreckelsen is to be applauded for his contribution.
+
+More will be added as they are found.
 
 ## Contributions
 
