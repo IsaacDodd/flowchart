@@ -21,6 +21,7 @@ In Stata, install flowchart and its main dependency in your system's ado filepat
 	. ssc install texdoc, replace
 
 To later update your Stata installation with the latest changes to the package, use the following command in Stata: 
+
 	. net install flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/) replace 
 
 ## How to Use
