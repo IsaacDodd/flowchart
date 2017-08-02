@@ -8,7 +8,7 @@ Use the **_flowchart_** package in Stata to generate a publication-quality **Sub
 The final diagram will be similar in style to the ones used in the PRISMA Statement, CONSORT 2010 Statement, or STROBE Statement Reporting Guidelines, which are very commonly used within formal publications for systematic review, clinical trial, or cohort study research findings. 
 
 For an example of the package's output, please see [example1output.pdf](https://github.com/IsaacDodd/flowchart/blob/master/example1output.pdf "example1output.pdf") and the example code that produced it in [flowchart_example1.do](https://github.com/IsaacDodd/flowchart/blob/master/flowchart_example1.do "flowchart_example1.do"). Here is a low-resolution screenshot of the PDF:
-![Example1Output](https://github.com/IsaacDodd/flowchart/blob/master/PreviousVersions/example1output.png "Example 1 Output")
+![Example1Output](https://github.com/IsaacDodd/flowchart/blob/master/PreviousVersion/example1output.png "Example 1 Output")
 
 The format follows closely the example of a [CONSORT-style flow diagram at TeXample](http://www.texample.net/tikz/examples/consort-flowchart/) which was written in PGF/TikZ by Morten Willert. The example code to generate the above diagram is incldued in the Ancillary Files installed with *flowchart*.
 
