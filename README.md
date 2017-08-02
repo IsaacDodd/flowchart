@@ -75,7 +75,8 @@ flowchart finalize, input("figure.texdoc") output("figure.tikz")
 ## Resources
 
 As they are identified, useful resources to produce visuals and diagrams will be listed here.
-1. Too curious to sit still (23 Aug. 2014.). Stata: CONSORT Flowchart. Too curious to sit still. Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/
+1. Spreckelsen, Thees. (23 Aug. 2014.). "Stata: CONSORT Flowchart. Too curious to sit still." Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/ on August 1, 2017.
+	Dr. Spreckelsen's post was not known during the main portion of the development of the flowchart package nor were any ideas or code used, but the advantage of Spreckelsen's idea is the simplicity of the resulting diagram. The disadvantage is that it is not quite programmatic and is not as amenable to changes to the analysis that produces the diagram.
 
 ## Contributions
 
