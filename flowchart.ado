@@ -1,10 +1,10 @@
 *##############################################################################*
 ********************************************************************************
-*** FLOWCHART - FIGURE: SUBJECT DISPOSITION FLOW DIAGRAM                    ****
+*** FLOWCHART - SUBJECT DISPOSITION FLOW DIAGRAM FIGURE GENERATOR           ****
 ********************************************************************************
 *##############################################################################*
 
-*! version 0.0.2  31jul2017  Isaac M. E. Dodd
+*! version 0.0.3  02aug2017  Isaac M. E. Dodd
 * FLOWCHART ---------------------------------------------------------------------
 capture program drop flowchart
 program define flowchart
@@ -14,11 +14,48 @@ program define flowchart
 	* Dependencies - Check Presence
 	capture which texdoc
 	if(_rc) {
-		display as error "Package 'texdoc' is required by flowchart command. Please run setup and try again."
+		display as error "Package 'texdoc' is required by the flowchart package. Please run command 'flowchart setup' and try again."
 		exit 111
 	}
-	
-	if("`1'" == "init" | "`1'" == "init,") {
+	if("`1'" == "" | "`1'" == "status" | "`1'" == "status," | "`1'" == "getstarted") {
+		display ""
+		display "|||||| FLOWCHART" 
+		display ""
+		display "Getting Started:"
+		display ""
+		display "	If this is your first time running the flowchart package, type: " _newline
+		display "		. flowchart setup" _newline
+		display `"	To start a new flowchart, here is a general starting point: "'
+		display ""
+		display `"	  Start with the command '. flowchart init using <filename>.data'"'
+		display `"	  It is an automatically created/generated/regenerated file.'"'
+		display `"	  Study the documentation and examples on how to properly format 'writerow' commands."'
+		display `"	  Use the 'connect' command to connect the blocks for each row."'
+		display `"	  End a diagram with the 'flowchart finalize' command with 2 important options:"'
+		display `"	  input("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
+		display `"	  output("...") is the .tikz file which is automatically generated/regenerated."'
+		display ""
+		display "Other Options:"
+		display ""
+		display "	1. Updates: To update flowchart, type: " _newline
+		display "		. flowchart setup, update " _newline
+		display "	2. Help: For extensive documentation, type: " _newline
+		display "		. help flowchart " _newline
+		display "	3. Support: For the URL to submit a support ticket, type: " _newline
+		display "		. flowchart setup, support " _newline
+		display "	4. Uninstall: To uninstall flowchart, type: " _newline
+		display "		. flowchart setup, uninstall "
+		display ""
+		display "Website:"
+		display ""
+		display `"	The flowchart package's website is at:	https://github.com/IsaacDodd/flowchart/"'
+		display ""
+		display "Read this message again at anytime by typing 'flowchart getstarted'"
+	}
+	else if("`1'" == "help" | "`1'" == "help,") {
+		help flowchart
+	}
+	else if("`1'" == "init" | "`1'" == "init,") {
 		global Flowchart_Settings = ""	// Stores settings in a space-delimited string.
 		global Flowchart_IteratorBlockfields = 0
 		global Flowchart_IteratorPathfields = 0
@@ -177,7 +214,6 @@ flowchart_tdwrite_blockfield `"      % -- Blank Center Block"'	// flowchart_blan
 					display `"          [blockparse: `blockparse']"'
 					display `"			LA: ``ilookahead'' "'
 				}
-					* To Do: Fix this so that the program puts the node on the lead rather than defining this at the start.
 				if("`blockparse'" == "center") {
 	local blockparsetoken = `"      \node [block_`blockparse'] (`subparam'_`blockparse') {"'	
 				} // fi: End of BlockParse
@@ -328,39 +364,114 @@ if("$Flowchart_Debug" == "tikz") {
 end
 capture program drop flowchart_setup
 program define flowchart_setup
-	syntax [anything] [, update]
-	
+	syntax [anything] [, update support uninstall]
+	display ""
 	display "|||||| Setup"
-	if("`update'" != "") {
-		display "Updating 'flowchart'..."
-		capture net install flowchart, replace from("https://raw.github.com/IsaacDodd/flowchart/")
+	display ""
+	if("`uninstall'" != "") {
+		display "Uninstalling 'flowchart' package installation..."
+		display ""
+		capture ado uninstall flowchart
 		if (_rc) {
-			display as error "Setup could not be completed. Please connect to the internet and try again."
+			display as error "Uninstall Error: Previous version of 'flowchart' could not be uninstalled."
+			exit 111
+		}
+		else {
+			display "...Package 'flowchart' uninstalled successfully."
+			display ""
+			display "Note: If you uninstalled the package due to an error, please notify the developers"
+			display "	   of this error so that it can be fixed for all users by submitting an issue"
+			display "	   at the following URL:"
+			display ""
+			display `"https://github.com/IsaacDodd/flowchart/issues/new/"'
+		}
+	}
+	else if("`support'" != "") {
+		display ""
+		display "Open a new support ticket using the following URL: " _newline
+		display `"https://github.com/IsaacDodd/flowchart/issues/new/"'
+		display ""
+	}
+	else if("`update'" != "") {
+		display "Updating 'flowchart' package installation..."
+		display ""
+		capture ado uninstall flowchart
+		if (_rc) {
+			display as error "Update Error: Previous version of 'flowchart' could not be uninstalled."
+			exit 111
+		}
+		capture net install flowchart, replace from("https://raw.github.com/IsaacDodd/flowchart/master/")
+		if (_rc) {
+			display "Update Error: Update could not be completed."
+			display "Instructions:"
+			display "  1. Uninstall 'flowchart' by running:"
+			display "       . ado uninstall flowchart"
+			display "  2. Install 'flowchart' from GitHub directly by running:"
+			display `"       . net install flowchart, replace from("https://raw.github.com/IsaacDodd/flowchart/master/")"'
+			display "  If Instruction #2 does not work, check your internet connection." 
+			display ""
+			capture ssc install flowchart, replace // Attempt to reinstall flwochart from SSC.
+			if(_rc) {
+				display as error "Update Error: Attempt to reinstall flowchart failed. Please reinstall flowchart."
+				exit 499
+			}
+		}
+		else {
+			display "...Update to flowchart installed successfully."
+			display ""
+		}
+	}
+	else {
+		* SETUP (Default)
+		* Update Flowchart from GitHub.
+		display " (1/3) Updating 'flowchart' installation ..."
+		display ""
+		capture ado uninstall flowchart // Same effect as ssc or net uninstall flowchart.
+		if (_rc) {
+			display as error "Setup Error: Update of 'flowchart' could not be completed. Attempts to update a previous version of flowchart has failed."
+			exit 111
+		}		
+		capture net install flowchart, replace from("https://raw.github.com/IsaacDodd/flowchart/master/")
+		if (_rc) {
+			capture ssc install flowchart	// Attempt to reinstall flowchart from SSC again since it was previously uninstalled.
+			display as error "Setup Error: Update of 'flowchart' could not be completed. Please check your internet connection and try again, or you may need to reinstall flowchart."
 			exit 499
 		}
 		else {
 			display "...Update to flowchart installed successfully."
+			display "Note: Updates to Flowchart will take effect when Stata is restarted."
+			display ""
+		}
+		* Install an updated version of texdoc
+		display " (2/3) Installing/Updating 'texdoc'..."
+		display ""
+		capture ssc install texdoc, replace
+		if (_rc) {
+			display as error "Setup Error: Installation of dependency 'texdoc' could not be completed. Please check your internet connection and try again."
+			exit 499
+		}
+		else {
+			display "...Texdoc installed/updated successfully."
+			display ""
+		}
+		display " (3/3) Installing Ancillary Files for 'flowchart'..."
+		capture net get flowchart, from("https://raw.github.com/IsaacDodd/flowchart/master/")
+		if (_rc) {
+			display as error "Setup Error: Setup could not install Ancillary Files. Please connect to the internet and try again." _newline "	(1) Check your current working directory to see if these ancillary files already exist. If so, there is no need to re-run setup." _newline " (2) Try running the following command:" _newline "	. net get flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/)" _newline "	(3) You may also download these files directly from the following URL:" _newline "	https://github.com/IsaacDodd/flowchart/releases"
+			exit 499
+		}
+		else {
+			display "...Ancillary files installed successfully in current working directory:"
+			pwd
+			display ""
+		}
+		display "|||||| Setup Complete"
+		display ""
+		if(_rc == 0) {
+			sleep 2000
+			flowchart getstarted	// Print the get started message.
 		}
 	}
-	display "Installing 'texdoc'..."
-	capture ssc install texdoc, replace
-	if (_rc) {
-		display as error "Setup could not be completed. Please connect to the internet and try again."
-		exit 499
-	}
-	else {
-		display "...Texdoc installed successfully."
-	}
-	display "Installing Ancillary Files..."
-	capture net get flowchart, from("https://raw.github.com/IsaacDodd/flowchart/")
-	if (_rc) {
-		display as error "Setup could not be completed. Please connect to the internet and try again."
-		exit 499
-	}
-	else {
-		display "...Ancillary files installed successfully."
-	}
-	display "|||||| Setup Complete"
 end
 capture program drop flowchart_debug
 program define flowchart_debug 

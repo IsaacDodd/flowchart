@@ -9,6 +9,7 @@
 {viewerjumpto "Remarks" "flowchart##remarks"}{...}
 {viewerjumpto "Examples" "flowchart##examples"}{...}
 {viewerjumpto "Troubleshooting" "flowchart##troubleshooting"}{...}
+{viewerjumpto "References" "flowchart##references"}{...}
 {viewerjumpto "Credits" "flowchart##credits"}{...}
 
 {title:FLOWCHART Package}
@@ -17,6 +18,10 @@
 {bf:flowchart} {hline 2}  Use this command to generate a publication-quality Subject Disposition Flowchart 
 Diagram in LaTeX format, similar in style to the ones used in the CONSORT 2010 Statement and STROBE Statement 
 Reporting Guidelines. An example flowchart can be found here: http://www.texample.net/tikz/examples/consort-flowchart/ 
+
+{phang}
+Updates to the FLOWCHART package can be installed by using the 'flowchart setup, update' command 
+or are available here: https://github.com/IsaacDodd/flowchart {p_end}
 
 {marker syntax}{...}
 {title:Syntax}
@@ -88,7 +93,7 @@ Reporting Guidelines. An example flowchart can be found here: http://www.texampl
 
 {dlgtab:Initialization}
 {phang}
-{bf:flowchart} init using <{it:filename.data}>
+{bf:flowchart} init using <{it:filename.data}>{p_end}
 
 	This command takes the filename of a text file where data variables can be written so that the 
 	datatool package in LaTeX can be used to load the file specified to fill in all of the 
@@ -106,8 +111,9 @@ Reporting Guidelines. An example flowchart can be found here: http://www.texampl
 		\usepackage{datatool}	% DataTool Package - Loads Subanalysis Data to generate flowchart
 			\DTLsetseparator{ = }% Delimiter
 	This will load the datatool and TikZ package.
-	
-{bf:flowchart set variable}, name([name_of_setting]) value([valuealphanumeric])
+
+{phang}
+{bf:flowchart set variable}, name([{it:name_of_setting}]) value([{it:valuealphanumeric}]){p_end}
 
 	This will write a variable to the variable file loaded by the datatool in LaTeX so that when the LaTeX
 	document is compiled it will populate the LaTeX document with the variable's value. 
@@ -117,9 +123,9 @@ Reporting Guidelines. An example flowchart can be found here: http://www.texampl
 		flowchart set layout, name(left_textwidth) value(18)
 		The name is prepended with set_ and written to the file.
 	
-{dlgtab:Rows (Boxes)}
+{dlgtab:Writing Rows (Boxes)}
 {phang}
-{bf:flowchart writerow(rowname): } 
+{bf:flowchart writerow(rowname): } {p_end}
 
 	Format: flowchart writerow([Name_of_row]): [Block_Center], [Block_Left]
 	
@@ -165,7 +171,7 @@ Reporting Guidelines. An example flowchart can be found here: http://www.texampl
 
 {dlgtab:Connections (Arrows)}
 {phang}
-{cmd:flowchart connect}
+{cmd:flowchart connect}{p_end}
 
 	Connect each row's block with an underscore and then the column-orientation corresponding to its 
 	side in this manner.
@@ -223,47 +229,88 @@ Here is a list of known problems that can arise in using this program and their 
 	Here is how it is fixed:
 		flowchart writerow(random): "randomized" 102 "Randomized", ///
 			Flowchart_Blank // Blank Row
-{phang}{cmd: TIKZ}{p_end}
+			
+{phang}{cmd: TIKZ Error in LaTeX}{p_end}
 
 	LATEX: Argument of \@dtl@lop@ff has an extra }. ...<filename of data file>.data"}
 
-		This is likely because you tried to use the Flowchart_Blank keyword but actually 
-		misspelled the 'Flowchart_Blank' keyword. Go back and edit the keyword and try again.
+	This is likely because you tried to use the Flowchart_Blank keyword but actually 
+	misspelled the 'Flowchart_Blank' keyword. Go back and edit the keyword and try again.
 		
 {phang}{cmd: TIKZ Package pgf Error}{p_end}
 
 	Package pgf Error: No shape named <blockname_orientation> is known. \path (<blockname_orientation>)
 
-		This is likely due to an error in using the 'flowchart connect' command where 
-		you referred to a block that does not exist. If a row does not have an accompanying 
-		block, whether left or center oriented, it cannot be connected to any other blocks. 
-		Therefore, try reviewing the connection to determine if you may be connecting an 
-		arrow to a block that is blank.
+	This is likely due to an error in using the 'flowchart connect' command where 
+	you referred to a block that does not exist. If a row does not have an accompanying 
+	block, whether left or center oriented, it cannot be connected to any other blocks. 
+	Therefore, try reviewing the connection to determine if you may be connecting an 
+	arrow to a block that is blank.
+
+{phang}{cmd: Initialization Error}{p_end}
 
 	flowchart init using C:\...\Filename With Spaces.data
 	invalid 'With' 
 	r(198);
+	
 		This error happens when you specify a filename that has spaces in it. Instead, put 
 		the entire filepath in quotes:
 	flowchart init using "C:\...\Filename With Spaces.data"
 		Note: Specifying the entire path isn't necessary if you are using a working directory 
 		with relative paths. See 'help filename' for an explanation of filenaming conventions.
 
+{phang}{cmd: Setup Errors}{p_end}
+
+	Flowchart won't uninstall:
+	criterion matches more than one package
+	r(111);
+
+		This problem has been fixed in updated versions of flowchart, but this explanation is 
+		left here in case it still happens. This is an error that is known to occur on Stata 
+		version 13 and lower and was fixed by Stata Corp. starting with Stata version 14. This 
+		occurs because Stata keeps track of which packages are installed, from where, and if 
+		you originally installed flowchart from the Boston College SSC database (i.e., through 
+		'ssc install flowchart', or did so through typing 'help flowchart', which chooses the 
+		ssc package by default), so updating flowchart through running 'flowchart setup' likely 
+		installed a second installation of flowchart -- in reality you only have 1 installation 
+		of flowchart but there are 2 entries in Stata's internal database of installed package. 
+		
+		This problem can be confirmed by typing into Stata: '. ado dir flowchart' and seeing 
+		that there are 2 flowchart packages installed. Therefore, to fix the problem on Stata 
+		version 13 or lower, type into Stata: '. net query flowchart'. Next to 'ado' you will 
+		find where your packages are installed (i.e., for example 'c:\ado\plus\'). In that 
+		directory, you will find stata.trk. Carefully edit the file: each package ends with 
+		a 'e'; Delete the extra flowchart entry by deleting from the 'S' line to the 'e' line. 
+		Then save this file. Now, run again the command  '. ado uninstall flowchart'. Now you 
+		can confirm that both entries have been removed by running '. ado dir flowchart' and 
+		seeing that no entries are returned. You can then install a fresh copy from GitHub by 
+		running the command: 
+
+		  . net install flowchart, from("https://raw.github.com/IsaacDodd/flowchart/master/")
+		
+		
+		The problem should now be resolved.
+
+{phang}{cmd: Other Issues}{p_end}
 		
 	For problems not resolved through this list, please open an issue/bug on GitHub. When 
 	opening a new issue, you can greatly speed up the issue resolution process by submitting 
 	2 things:
+	
 		1. In Stata, type 'which flowchart'. Copy and paste the results into your issue. This 
 		line specifies the exact version of the program you ran in case the problem was fixed 
 		or introduced in a subsequent release.
+		
 		2. In your do file, go to the line or lines that are giving you trouble. Before those 
 		lines, put 'flowchart debug on' and after those lines put 'flowchart debug off'. Then, 
 		rerun your program. You should notice in your working directory a new file was created 
 		called 'DebugLog.log'. Either copy and paste the content or attach it as a new file. 
 		Be sure to first remove any sensitive directories that you would not want the public 
 		to see since GitHub is an open source community.
+		
+		https://github.com/IsaacDodd/flowchart
 
-{marker citations}{...}
+{marker references}{...}
 {title:References & Bibliography}
 
 
@@ -273,15 +320,16 @@ Here is a list of known problems that can arise in using this program and their 
 	16(2): 245-263. Reprinted with updates at 
 	ftp://ftp.repec.org/opt/ReDIF/RePEc/bss/files/wp14/jann-2015-texdoc.pdf Retrieved on 
 	July 28, 2017.
+
 2. TikzPicture Diagram Code Based On: 
 	 Citation: Willert, Morten Vejs (2011 Dec 31). "A CONSORT-style flowchart of a 
 	 randomized controlled trial". TikZ Example (Texample.net). Retrieved from 
 	 http://www.texample.net/tikz/examples/consort-flowchart/ 
 
+{marker credit}{...}
 {title:Credits & Acknowledgements}
 
 	Credit to Ben Jann, whose texdoc package is a dependency in flowchart, and Morten 
 	Willert, whose example of a flowchart diagram in TikZ was studied and used heavily 
 	to generate similar flowcharts in this package.
-	
 	

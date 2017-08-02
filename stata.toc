@@ -1,7 +1,8 @@
 v 3
 * Reference http://www.stata.com/manuals13/rnet.pdf
-d FLOWCHART
-d Use this command to generate a publication-quality Subject Disposition Flowchart Diagram in LaTeX Format. This package uses Stata to generate the necessary TikZ code to run in LaTeX and produce the diagram as a PDF or any other format. 
+d {bf:FLOWCHART}
+d Use this command to generate a publication-quality Subject Disposition Flowchart Diagram in LaTeX Format. 
+d This package uses Stata to generate the necessary TikZ code to run in LaTeX and produce the diagram as a PDF or any other format. 
 d The final diagram will be similar in style to the ones used in the CONSORT 2010 Statement or STROBE Statement Reporting Guidelines.
 d After installation, type {bf: help flowchart} for detailed instructions on how to get started.
 d 

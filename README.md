@@ -10,7 +10,7 @@ The final diagram will be similar in style to the ones used in the CONSORT 2010 
 In Stata, install flowchart and its main dependency in your system's ado filepath and also flowchart's ancillary files into your current working directory by typing the following:
 
 	. net install flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/) replace
-	. net get flowchart, replace
+	. net get flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/)
 	. ssc install texdoc, replace
 	
 After installation, type **help flowchart** for detailed instructions on how to get started. Study the example1.do and example2.do files for very carefully laid out examples of its usage and a very detailed, thorough explanation.
