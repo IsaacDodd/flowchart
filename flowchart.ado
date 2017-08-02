@@ -19,44 +19,46 @@ program define flowchart
 	}
 	if("`1'" == "" | "`1'" == "status" | "`1'" == "status," | "`1'" == "getstarted") {
 		display ""
-		display "|||||| FLOWCHART" 
+		display "{hline}"
+		display "{bf:|||||| FLOWCHART}" 
 		display ""
-		display "Getting Started:"
+		display "  {title:Getting Started}:"
 		display ""
 		if("`1'" == "") {
-			display "	If this is your first time running the flowchart package, type: " _newline
+			display "  Setup: If this is your first time running the flowchart package, type: " _newline
 			display "		. flowchart setup" _newline
 		}
-		display `"	To start a new flowchart, here is a general starting point: "'
-		display ""
+		display `"  To start a new flowchart, here is a general starting point: "'
 		display `"	  Start with the command '. flowchart init using <filename>.data'"'
 		display `"	  It is an automatically created/generated/regenerated file.'"'
 		display `"	  Study the documentation and examples on how to properly format 'writerow' commands."'
 		display `"	  Use the 'connect' command to connect the blocks for each row."'
 		display `"	  End a diagram with the 'flowchart finalize' command with 2 important options:"'
-		display `"	  input("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
-		display `"	  output("...") is the .tikz file which is automatically generated/regenerated."'
+		display `"	  - input("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
+		display `"	  - output("...") is the .tikz file which is automatically generated/regenerated."'
 		display ""
-		display "Other Options:"
+		display "  {title:Other Options}:"
+		display "	1. Updates: To update flowchart, type: " //_newline
+		display "		. {stata flowchart setup, update:flowchart setup, update}" _newline
+		display "	2. Help: For extensive documentation, type: " //_newline
+		display "		. {help flowchart:help flowchart}" _newline
+		display "	3. Support: For the URL to submit a support ticket, type: " //_newline
+		display "		. {stata flowchart setup, support:flowchart setup, support}" _newline
+		display "	4. Uninstall: To uninstall flowchart, type: " //_newline
+		display "		. {stata flowchart setup, uninstall:flowchart setup, uninstall}" _newline
 		display ""
-		display "	1. Updates: To update flowchart, type: " _newline
-		display "		. flowchart setup, update " _newline
-		display "	2. Help: For extensive documentation, type: " _newline
-		display "		. help flowchart " _newline
-		display "	3. Support: For the URL to submit a support ticket, type: " _newline
-		display "		. flowchart setup, support " _newline
-		display "	4. Uninstall: To uninstall flowchart, type: " _newline
-		display "		. flowchart setup, uninstall "
+		display "  {title:Website}:"
+		display "	The flowchart package's website is available at:"
+		display `"	  	{browse "https://github.com/IsaacDodd/flowchart/"}"'
 		display ""
-		display "Website:"
+		display "  {title:License}:"
+		display "	GNU LGPL 2007 - By installing this program you agree to this license, available in full here:" //_newline
+		display `"	 	{browse "https://github.com/IsaacDodd/flowchart/blob/master/license.txt"}"'
 		display ""
-		display `"	The flowchart package's website is available at:	https://github.com/IsaacDodd/flowchart/"'
+		display "Read this message again at anytime by typing '{stata flowchart getstarted:flowchart getstarted}'"
 		display ""
-		display "License:" _newline
-		display "	GNU LGPL 2007 - By installing this program you agree to this license, available in full here:" _newline
-		display `"	 https://github.com/IsaacDodd/flowchart/blob/master/license.txt"'
-		display ""
-		display "Read this message again at anytime by typing 'flowchart getstarted'"
+		display "{bf:|||||| FLOWCHART}" 
+		display "{hline}"
 	}
 	else if("`1'" == "help" | "`1'" == "help,") {
 		help flowchart
@@ -412,13 +414,13 @@ program define flowchart_setup
 			display "	   of this error so that it can be fixed for all users by submitting an issue"
 			display "	   at the following URL:"
 			display ""
-			display `"https://github.com/IsaacDodd/flowchart/issues/new/"'
+			display `"{browse "https://github.com/IsaacDodd/flowchart/issues/new/"}"'
 		}
 	}
 	else if("`support'" != "") {
 		display ""
 		display "Open a new support ticket using the following URL: " _newline
-		display `"https://github.com/IsaacDodd/flowchart/issues/new/"'
+		display `"{browse "https://github.com/IsaacDodd/flowchart/issues/new/"}"'
 		display ""
 	}
 	else if("`update'" != "") {
@@ -434,7 +436,7 @@ program define flowchart_setup
 			display "Update Error: Update could not be completed."
 			display "Instructions:"
 			display "  1. Uninstall 'flowchart' by running:"
-			display "       . ado uninstall flowchart"
+			display "       . {stata ado uninstall flowchart:ado uninstall flowchart}"
 			display "  2. Install 'flowchart' from GitHub directly by running:"
 			display `"       . net install flowchart, replace from("https://raw.github.com/IsaacDodd/flowchart/master/")"'
 			display "  If Instruction #2 does not work, check your internet connection." 
@@ -502,7 +504,7 @@ program define flowchart_setup
 							 "	(2) Try running the following command:" _newline ///
 							 `"		. net get flowchart, from("https://raw.github.com/isaacdodd/flowchart/master/")"' _newline ///
 							 "	(3) You may also download these ancillary files directly from the latest release at the following URL:" _newline ///
-							 "		https://github.com/IsaacDodd/flowchart/releases "
+							 `"		{browse "https://github.com/IsaacDodd/flowchart/releases"} "'
 			exit 499
 		}
 		else {
@@ -513,7 +515,7 @@ program define flowchart_setup
 		}
 		display "|||||| Setup Complete"
 		display ""
-		display "__________________________________________"
+		display "{hline}"
 		display ""
 		if(_rc == 0) {
 			sleep 2000
