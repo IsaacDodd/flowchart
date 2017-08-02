@@ -4,7 +4,7 @@ d FLOWCHART: Generates subject disposition flow diagram figures in LaTeX using P
 d 
 d Distribution-Date: 20170801
 d
-d Requires: Stata >= v13
+d Requires: Stata version 13 and texdoc
 d 
 d Author:  Isaac M. E. Dodd
 d Support: github.com/IsaacDodd/flowchart/issues/new
@@ -13,8 +13,8 @@ d
 f flowchart.ado
 f flowchart.sthlp
 f figure-flowchart.texdoc
-f example1.do
-f example2.do
+f flowchart_example1.do
+f flowchart_example2.do
 f manuscript.tex
 f methods--figure-flowchart.data
 f methods--figure-flowchart.tikz

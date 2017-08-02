@@ -17,11 +17,16 @@
 {phang}
 {bf:flowchart} {hline 2}  Use this command to generate a publication-quality Subject Disposition Flowchart 
 Diagram in LaTeX format, similar in style to the ones used in the CONSORT 2010 Statement and STROBE Statement 
-Reporting Guidelines. An example flowchart can be found here: http://www.texample.net/tikz/examples/consort-flowchart/ 
+Reporting Guidelines. An example flowchart can be found here: http://www.texample.net/tikz/examples/consort-flowchart/ {p_end}
 
 {phang}
+To setup flowchart, type 'flowchart setup'. This will update the flowchart package and its main dependencies in 
+your system's ado filepath and also download flowchart's ancillary files into your current working directory.
 Updates to the FLOWCHART package can be installed by using the 'flowchart setup, update' command 
-or are available here: https://github.com/IsaacDodd/flowchart {p_end}
+or are available here: https://github.com/IsaacDodd/flowchart/ {p_end}
+
+Support is available at: https://github.com/IsaacDodd/flowchart/issues/new/
+Please see the Ancillary Files for extensive examples with explanations of usage. {p_end}
 
 {marker syntax}{...}
 {title:Syntax}
