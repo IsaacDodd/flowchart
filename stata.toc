@@ -9,7 +9,7 @@ d
 d {bf:Installation}
 d 	Type {bf: net install flowchart, from(https://raw.github.com/IsaacDodd/flowchart/issues/new/) }
 d {bf:Dependencies}
-d 	{bf:texdoc} - Install this by typing '. ssc install texdoc, replace' after installing flowchart.
+d 	{bf:texdoc} - Install this by typing 'flowchart setup' after installing flowchart.
 d 	The texdoc package (written by Ben Jann) is a dependency for the flowchart package which writes LaTeX-formatted files.
 d 
 d {bf:License}

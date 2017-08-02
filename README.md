@@ -7,7 +7,7 @@ Stata module to generate a publication-quality subject disposition flow diagram 
 Use the **_flowchart_** package in Stata to generate a publication-quality **Subject Disposition Flowchart Diagram** in LaTeX Format. This package gives Stata the ability to generate the necessary TikZ code to include in a LaTeX and produce the diagram as a PDF or any other format. 
 The final diagram will be similar in style to the ones used in the PRISMA Statement, CONSORT 2010 Statement, or STROBE Statement Reporting Guidelines, which are very commonly used within formal publications for systematic review, clinical trial, or cohort study research findings. 
 
-For an example of the package's output, please see [example1output.pdf](https://github.com/IsaacDodd/flowchart/blob/master/example1output.pdf "example1output.pdf") and the example code that produced it in [example1.do](https://github.com/IsaacDodd/flowchart/blob/master/example1.do "example1.do"). Here is a low-resolution screenshot of the PDF:
+For an example of the package's output, please see [example1output.pdf](https://github.com/IsaacDodd/flowchart/blob/master/example1output.pdf "example1output.pdf") and the example code that produced it in [flowchart_example1.do](https://github.com/IsaacDodd/flowchart/blob/master/flowchart_example1.do "flowchart_example1.do"). Here is a low-resolution screenshot of the PDF:
 ![Example1Output](https://github.com/IsaacDodd/flowchart/blob/master/PreviousVersions/example1output.png "Example 1 Output")
 
 The format follows closely the example of a [CONSORT-style flow diagram at TeXample](http://www.texample.net/tikz/examples/consort-flowchart/) which was written in PGF/TikZ by Morten Willert. The example code to generate the above diagram is incldued in the Ancillary Files installed with *flowchart*.
@@ -29,9 +29,9 @@ The format follows closely the example of a [CONSORT-style flow diagram at TeXam
 
 ## How to Use
 
-After installation, type **help flowchart** for detailed instructions on how to get started. Study the files **example1.do** and **example2.do** for very carefully laid out examples of usage and a very detailed, thorough explanation of the format.
+After installation, type **help flowchart** for detailed instructions on how to get started. Study the files **flowchart_example1.do** and **flowchart_example2.do** for very carefully laid out examples of usage and a very detailed, thorough explanation of the format.
 
-The format for the code follows this typical example, which is available in **example2.do**:
+The format for the code follows this typical example, which is available in **flowchart_example2.do**:
 
 ```stata
 * INITIALIZE: Start a new datatool variable file.

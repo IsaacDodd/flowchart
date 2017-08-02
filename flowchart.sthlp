@@ -20,13 +20,15 @@ Diagram in LaTeX format, similar in style to the ones used in the CONSORT 2010 S
 Reporting Guidelines. An example flowchart can be found here: http://www.texample.net/tikz/examples/consort-flowchart/ {p_end}
 
 {phang}
-To setup flowchart, type 'flowchart setup'. This will update the flowchart package and its main dependencies in 
-your system's ado filepath and also download flowchart's ancillary files into your current working directory.
+After installing the package, to setup flowchart type 'flowchart setup'. This will update the flowchart 
+package and its main dependencies in your system's ado filepath and also download flowchart's ancillary 
+files into your current working directory.
 Updates to the FLOWCHART package can be installed by using the 'flowchart setup, update' command 
 or are available here: https://github.com/IsaacDodd/flowchart/ {p_end}
 
 Support is available at: https://github.com/IsaacDodd/flowchart/issues/new/
-Please see the Ancillary Files for extensive examples with explanations of usage. {p_end}
+Please see the Ancillary Files for extensive examples with explanations of usage:
+	flowchart_example1.do, flowchart_example2.do, and manuscript.tex {p_end}
 
 {marker syntax}{...}
 {title:Syntax}
@@ -275,8 +277,8 @@ Here is a list of known problems that can arise in using this program and their 
 		version 13 and lower and was fixed by Stata Corp. starting with Stata version 14. This 
 		occurs because Stata keeps track of which packages are installed, from where, and if 
 		you originally installed flowchart from the Boston College SSC database (i.e., through 
-		'ssc install flowchart', or did so through typing 'help flowchart', which chooses the 
-		ssc package by default), so updating flowchart through running 'flowchart setup' likely 
+		'ssc install flowchart', or did so through typing 'help flowchart', which may have chosen
+		the ssc package by default), so updating flowchart by running 'flowchart setup' likely 
 		installed a second installation of flowchart -- in reality you only have 1 installation 
 		of flowchart but there are 2 entries in Stata's internal database of installed package. 
 		

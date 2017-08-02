@@ -1,8 +1,7 @@
 v 3
-* Reference http://www.stata.com/manuals13/rnet.pdf
 d FLOWCHART: Generates subject disposition flow diagram figures in LaTeX using PGF/TikZ to include in manuscripts
 d 
-d Distribution-Date: 20170801
+d Distribution-Date: 20170802
 d
 d Requires: Stata version 13 and texdoc
 d 
@@ -17,6 +16,7 @@ f flowchart_example1.do
 f flowchart_example2.do
 f manuscript.tex
 f methods--figure-flowchart.data
+f methods--figure-flowchart.tex
 f methods--figure-flowchart.tikz
 f example1output.pdf
 f example2output.pdf

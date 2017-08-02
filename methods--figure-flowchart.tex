@@ -1,0 +1,16 @@
+%% Flowchart Based on the CONSORT 2010 Statement Guidelines
+% Adapted from Citation: Willert, Morten Vejs. (2010 July). A CONSORT-style flowchart of a randomized controlled trial, using the PGF/TikZ package. Retrieved from http://www.texample.net/media/tikz/examples/TEX/consort-flowchart.tex on July 23, 2017. License: Creative Commons attribution license.
+	% Datatool Implementation - Based on example code from - Citation: P., Michael. (2016 Aug 3.). How to read a Variable from a file in LATEX?. Tex.stackexchange.com. Retrieved from https://tex.stackexchange.com/a/322198/138871 on July 23, 2017.
+\begin{figure}
+\begin{center}
+%% Load Subanalysis Data for Figure into \figvalue{} commands
+\DTLloaddb[noheader, keys={subanakey,subanavalue}]{subanalysis-flowchart}{"methods--figure-flowchart.data"}
+\newcommand{\figvalue}[1]{\DTLfetch{subanalysis-flowchart}{subanakey}{#1}{subanavalue}}
+  % Style - Setting the typeface to sans serif and the font size to small
+  % 	(the scope of this style is local to the environment)
+  \sffamily
+  \footnotesize
+  \input{methods--figure-flowchart.tikz}
+  \caption{Flowchart of the analytic sample of survey subjects data.} \label{fig:StudyFlowchart}
+\end{center}
+\end{figure}

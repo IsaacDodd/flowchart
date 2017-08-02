@@ -23,8 +23,10 @@ program define flowchart
 		display ""
 		display "Getting Started:"
 		display ""
-		display "	If this is your first time running the flowchart package, type: " _newline
-		display "		. flowchart setup" _newline
+		if("`1'" == "") {
+			display "	If this is your first time running the flowchart package, type: " _newline
+			display "		. flowchart setup" _newline
+		}
 		display `"	To start a new flowchart, here is a general starting point: "'
 		display ""
 		display `"	  Start with the command '. flowchart init using <filename>.data'"'
@@ -49,6 +51,10 @@ program define flowchart
 		display "Website:"
 		display ""
 		display `"	The flowchart package's website is at:	https://github.com/IsaacDodd/flowchart/"'
+		display ""
+		display "License:" _newline
+		display "	GNU LGPL 2007 - By installing this program you agree to this license, available in full here:" _newline
+		display `"	https://github.com/IsaacDodd/flowchart/blob/master/license.txt"'
 		display ""
 		display "Read this message again at anytime by typing 'flowchart getstarted'"
 	}
@@ -445,9 +451,16 @@ program define flowchart_setup
 		* Install an updated version of texdoc
 		display " (2/3) Installing/Updating 'texdoc'..."
 		display ""
+		* Install texdoc
 		capture ssc install texdoc, replace
 		if (_rc) {
 			display as error "Setup Error: Installation of dependency 'texdoc' could not be completed. Please check your internet connection and try again."
+			exit 499
+		}
+		* Install sjlatex
+		capture net install sjlatex, from(http://www.stata-journal.com/production)
+		if (_rc) {
+			display as error "Setup Error: Installation of dependency 'sjlatex' for dependency 'texdoc' could not be completed. Please check your internet connection and try again."
 			exit 499
 		}
 		else {
@@ -455,17 +468,21 @@ program define flowchart_setup
 			display ""
 		}
 		display " (3/3) Installing Ancillary Files for 'flowchart'..."
+		display ""
 		capture net get flowchart, from("https://raw.github.com/IsaacDodd/flowchart/master/")
 		if (_rc) {
 			display as error "Setup Error: Setup could not install Ancillary Files. Please connect to the internet and try again." _newline "	(1) Check your current working directory to see if these ancillary files already exist. If so, there is no need to re-run setup." _newline " (2) Try running the following command:" _newline "	. net get flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/)" _newline "	(3) You may also download these files directly from the following URL:" _newline "	https://github.com/IsaacDodd/flowchart/releases"
 			exit 499
 		}
 		else {
+			display ""
 			display "...Ancillary files installed successfully in current working directory:"
 			pwd
 			display ""
 		}
 		display "|||||| Setup Complete"
+		display ""
+		display "__________________________________________"
 		display ""
 		if(_rc == 0) {
 			sleep 2000

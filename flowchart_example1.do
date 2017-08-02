@@ -30,21 +30,20 @@
 *
 * DEPENDENCIES:
 * 	After installing flowchart, be sure the following are in place: 
-*   1. texdoc - STATA Command
+*   1. texdoc, sjlatex - STATA Packages
 *		Installation Instructions:
-*       In the STATA command-line, run the following 2 commands:
-*	    	ssc install texdoc, replace
-*       	net install sjlatex, from(http://www.stata-journal.com/production)
-* 	2. figure.texdoc = Ancillary File
+*       In the STATA command-line, run the following command:
+*	    	flowchart setup
+* 		This installs 2 dependencies: texdoc and its dependency, sjlatex
+* 	2. figure-flowchart.texdoc = Ancillary File
 *		Installation Instructions:
-* 		In the STATA command-line, run the following command:
-* 			net get flowchart, from(https://raw.github.com/IsaacDodd/flowchart/)
-* 		This will install all of the Ancillary Files to your working directory.
+* 		In the STATA command-line, when you ran the setup command, it also 
+* 			installed the Ancillary Files into your present working directory.
 *   3. LaTeX Setup (Typesetting)
 * 		A LaTeX setup should be installed to compile .tex and .tikz files:
 * 		a) Distribution (MiKTeX or TeXLive)
 * 			Recommended: MiKTeX, then use it to install the following packages: 
-* 				datatool, listings, multicols, xcolor, graphicx, tikz
+* 				datatool, listings, multicol, xcolor, graphicx, tikz
 * 			Download: https://miktex.org/download/
 * 		b) Distribution Engine 
 * 			Recommended: pdfLaTeX 
@@ -80,6 +79,7 @@
 * 
 * 	/Manuscript/
 * 		|
+*		|-- ##-[ProjectName]-[Main-Manuscript-File].tex      <-- LaTeX Document
 *		|-- ##-[ProjectName]-[Section]-Fig-[FigureName].tex  <-- LaTeX Document
 *       +-- ##-[ProjectName]-[Section]-Fig-[FigureName].tikz <-- TikZ Picture
 * 
@@ -120,25 +120,35 @@
 * 	Do File
 * 		This is the .do file that contains your analysis where you can use
 * 		the flowchart commands to generate the diagram.
-* 			See Example: example.do
-*   LaTeX Document
+* 			See Example: flowchart_example2.do
+*   LaTeX Documents
 *       This is a (.tex) file that contains a \begin{figure}...\end{figure} 
 * 		Environment command. STATA does not manipulate this file. It instead 
 * 		contains all of the design elements that arrange the TikZ picture 
-* 		appropriately in the Manuscrupt and also loads the Subanalysis Data 
+* 		appropriately in the Manuscript and also loads the Subanalysis Data 
 * 		(.data) in the Data file for generating the different components of the 
 * 		TikZ picture's diagram (e.g., data for the boxes of a 
 * 		Subject Disposition Flowchart).
+* 			See Example: methods--figure-flowchart.tex
+*		The manuscript's .tex file can then include this .tex file specific to 
+* 		the figure directly into the manuscript file with an \input{ } command:
+* 		\input{methods--figure-flowchart.tex}
 * 			See Example: manuscript.tex
 *   Figure Texdoc Do File - Do Not Edit
 *       This Do file is a 'Texdoc Do File' which is to say it is invoked by the 
 * 		texdoc command in STATA in the Main Analysis File that is producing the 
-* 		Subanalysis Data created from your analysis using your dataset.
-* 			See Example: figure-flowchart.texdoc
+* 		Subanalysis Data created from your analysis using your dataset. There's
+* 		no need to edit this file beyond changing its filename to match your
+* 		project's naming convention.
+* 			See Example: figure-flowchart.texdoc (No Need to Edit)
 *   TikZ Picture (Automatically regenerated)
 *       This is a 'picture' that is used by the TikZ package in LaTeX to 
-* 		generate a diagram in LaTeX.
-* 			See Example: methods--figure-flowchart.tikz
+* 		generate a diagram in LaTeX. There's no need to edit this file beyond
+* 		changing its filename to match your project's naming convention.
+* 		Instead, in your LaTeX document, use the \input{<filename.tikz>} to
+* 		make LaTeX automatically include it in the final document when 
+* 		compiling.
+* 			See Example: methods--figure-flowchart.tikz (No Need to Edit)
 *   Subanalysis Data File (Automatically regenerated)
 *       The data for a figure is produced from a subanalysis and is assigned to 
 * 		variables. The Data file consists of variables with the generated data, 
@@ -148,8 +158,10 @@
 * 		the subanalysis. The variables with data produced by the subanalysis 
 * 		have to have a unique name and are given a name in the do file that 
 * 		produces the figure. Data from the Dataset used in an analysis can be 
-* 		used to generate the data for the diagram.
-* 			See Example: methods--figure-flowchart.data
+* 		used to generate the data for the diagram. There's no need to edit the
+* 		file beyond changing its filename to match your project's naming 
+* 		convention.
+* 			See Example: methods--figure-flowchart.data (No Need to Edit)
 *
 * OVERALL: 
 * 
