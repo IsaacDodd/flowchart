@@ -14,15 +14,18 @@ The format follows closely the example of a [CONSORT-style flow diagram at TeXam
 
 ## Install
 
-In Stata, install flowchart and its main dependency in your system's ado filepath and also flowchart's ancillary files into your current working directory by typing the following commands:
+**New Install:** In Stata, to install the *flowchart* package and its main dependencies in your system's ado filepath, and also flowchart's ancillary files into your current working directory, type or copy-and-paste the following commands into Stata:
 
 	. net install flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/) replace
-	. net get flowchart, replace
-	. ssc install texdoc, replace
+	. flowchart setup
 
-To later update your Stata installation with the latest changes to the package, use the following command in Stata: 
+**Updates:** To later update your flowchart installation with the latest changes to the package, use the following command in Stata: 
 
-	. net install flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/) replace 
+	. flowchart setup, update
+	
+**Uninstall:** In order to complete the remove the package, flowchart can uninstall itself with the following command:
+	
+	. flowchart setup, uninstall
 
 ## How to Use
 
