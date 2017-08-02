@@ -4,7 +4,7 @@
 ********************************************************************************
 *##############################################################################*
 
-*! version 0.0.3  02aug2017  Isaac M. E. Dodd
+*! version 0.0.4  02aug2017  Isaac M. E. Dodd
 * FLOWCHART --------------------------------------------------------------------
 capture program drop flowchart
 program define flowchart
@@ -496,7 +496,13 @@ program define flowchart_setup
 		display ""
 		capture net get flowchart, from("https://raw.github.com/IsaacDodd/flowchart/master/")
 		if (_rc) {
-			display as error "Setup Error: Setup could not install Ancillary Files. Please connect to the internet and try again." _newline "	(1) Check your current working directory to see if these ancillary files already exist. If so, there is no need to re-run setup." _newline " (2) Try running the following command:" _newline "	. net get flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/)" _newline "	(3) You may also download these files directly from the following URL:" _newline "	https://github.com/IsaacDodd/flowchart/releases"
+			display as error "Setup Error: Setup could not install Ancillary Files. Please connect to the internet and try again." _newline ///
+							 "	(1) Check your current working directory to see if these ancillary files already exist." _newline ///
+							 "		If so, there is no need to re-run setup. Safely ignore this error message." _newline ///
+							 "	(2) Try running the following command:" _newline ///
+							 `"		. net get flowchart, from("https://raw.github.com/isaacdodd/flowchart/master/")"' _newline ///
+							 "	(3) You may also download these ancillary files directly from the latest release at the following URL:" _newline ///
+							 "		https://github.com/IsaacDodd/flowchart/releases "
 			exit 499
 		}
 		else {
