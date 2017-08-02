@@ -5,7 +5,7 @@
 *##############################################################################*
 
 *! version 0.0.3  02aug2017  Isaac M. E. Dodd
-* FLOWCHART ---------------------------------------------------------------------
+* FLOWCHART --------------------------------------------------------------------
 capture program drop flowchart
 program define flowchart
 	version 13
@@ -50,11 +50,11 @@ program define flowchart
 		display ""
 		display "Website:"
 		display ""
-		display `"	The flowchart package's website is at:	https://github.com/IsaacDodd/flowchart/"'
+		display `"	The flowchart package's website is available at:	https://github.com/IsaacDodd/flowchart/"'
 		display ""
 		display "License:" _newline
 		display "	GNU LGPL 2007 - By installing this program you agree to this license, available in full here:" _newline
-		display `"	https://github.com/IsaacDodd/flowchart/blob/master/license.txt"'
+		display `"	 https://github.com/IsaacDodd/flowchart/blob/master/license.txt"'
 		display ""
 		display "Read this message again at anytime by typing 'flowchart getstarted'"
 	}
@@ -182,7 +182,7 @@ program define flowchart
 				display " First Variable: `varfirst'"
 				display ""
 				* display " Macro Without Quotes: " `varothers' <-- Breaks with flowchart_blank
-				display ""
+				* display ""
 				display `" Compound Quotes (CQ's):  `varothers'"'
 				display ""
 				display `" Entire Statement (With CQ's): `0'"'
@@ -218,7 +218,7 @@ flowchart_tdwrite_blockfield `"      % -- Blank Center Block"'	// flowchart_blan
 				local ilookahead = `i' + 3
 				if("$Flowchart_Debug" == "on") {
 					display `"          [blockparse: `blockparse']"'
-					display `"			LA: ``ilookahead'' "'
+					display `"			LA: |``ilookahead''|"'
 				}
 				if("`blockparse'" == "center") {
 	local blockparsetoken = `"      \node [block_`blockparse'] (`subparam'_`blockparse') {"'	
@@ -274,15 +274,37 @@ flowchart_tdwrite_blockfield `"      & \\ % -- Blank Left Block"'	// flowchart_b
 						}
 					local linedesc = `"``i''"'	// Field 3 of the Line is expected to be the descriptive sentence.
 					if("$Flowchart_Debug" == "on") {
-						display "   Added to Block - Line `k': "
+						display "   Added to Block-Line [`k']: "
 					}
 					if(`k' == 1) {
 						if(trim("``ilookahead''") == ",") {
+							local ilookaheadx2 = `ilookahead' + 1
 							if("$Flowchart_Debug" == "on") {
-								display "	--- Singleton Lead-line on Center Block (k=1, LA is Comma): tdwriteline - [content] [lead] [singleton]"
 								display "      [blockparse: `blockparse'] [ i#: `i'] [ token: ``i''] [ k: `k']"
+								display "Lead-Line LA"
+								display "Look Ahead x 1: |``ilookahead''|"
+								display "Look Ahead x 2: |``ilookaheadx2''|"
 							}
-							flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead(`"`blockparsetoken'"') singleton
+							if(lower(trim("``ilookaheadx2''")) == "flowchart_blank") {
+								if("$Flowchart_Debug" == "on") {
+									display "...--- EndBlank Detection on Singleton:"
+									display "	--- Singleton Lead-line on Center Block but BLANK Left Block (k=1, LA is Comma, LA is flowchart_blank): tdwriteline - [content] [lead] [singleton] [end] [endblank]"
+								}
+								flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead(`"`blockparsetoken'"') singleton end endblank
+								if("$Flowchart_Debug" == "on") {
+									display "BREAK SINGLETON"
+								}
+								local blockparse = "left"
+								local i = `i' + 2	// Move by 2 tokens to move past the flowchart_blank
+								local stop = "stop"
+								continue, break 
+							}
+							else {
+								if("$Flowchart_Debug" == "on") {
+									display "	--- Singleton Lead-line on Center Block (k=1, LA is Comma): tdwriteline - [content] [lead] [singleton]"
+								}
+								flowchart_tdwriteline, name(`"`linename'"') num(`"`linenum'"') desc(`"`linedesc'"') lead(`"`blockparsetoken'"') singleton
+							}
 						}
 						else if(trim("``ilookahead''") == "") {
 							if("$Flowchart_Debug" == "on") {
@@ -302,6 +324,7 @@ flowchart_tdwrite_blockfield `"      & \\ % -- Blank Left Block"'	// flowchart_b
 					else if(trim("``ilookahead''") == "," | trim("``ilookahead''") == "" | lower(trim("``i''")) == "flowchart_blank" | lower(trim("``ilookahead''")) == "flowchart_blank") {
 						local ilookaheadx2 = `ilookahead' + 1
 							if("$Flowchart_Debug" == "on") {
+								display "Non-Lead-Line LA"
 								display "Look Ahead x 1: ``ilookahead''"
 								display "Look Ahead x 2: ``ilookaheadx2''"
 							}
@@ -323,8 +346,8 @@ flowchart_tdwrite_blockfield `"      & \\ % -- Blank Left Block"'	// flowchart_b
 								if("$Flowchart_Debug" == "on") {
 									display "BREAK"
 								}
-								local stop = "stop"
 								local i = `i' + 1
+								local stop = "stop"
 								continue, break 
 							}
 						}
@@ -452,13 +475,15 @@ program define flowchart_setup
 		display " (2/3) Installing/Updating 'texdoc'..."
 		display ""
 		* Install texdoc
+		display "	...Installing/Updating Texdoc..."
 		capture ssc install texdoc, replace
 		if (_rc) {
 			display as error "Setup Error: Installation of dependency 'texdoc' could not be completed. Please check your internet connection and try again."
 			exit 499
 		}
 		* Install sjlatex
-		capture net install sjlatex, from(http://www.stata-journal.com/production)
+		display "	...Installing/Updating sjlatex..."
+		capture net install sjlatex, from("http://www.stata-journal.com/production")
 		if (_rc) {
 			display as error "Setup Error: Installation of dependency 'sjlatex' for dependency 'texdoc' could not be completed. Please check your internet connection and try again."
 			exit 499
@@ -510,19 +535,24 @@ program define flowchart_debug
 		if("`r(status)'" == "off") {	
 			capture log close DebugLog
 			log using "DebugLog.log", name(DebugLog) append text
-			display ""
-			display "|||||| DebugLog Started: Log ID = `logid'"
-			display ""
-			display ""
+			local debugtitle = "Started"
 		}
 		else {
 			capture log close DebugLog
 			log using "DebugLog.log", name(DebugLog) replace text
-			display ""
-			display "|||||| DebugLog Resumed: Log ID = `logid'"
-			display ""
-			display ""
+			local debugtitle = "Resumed"
 		}
+		capture log close DebugLog
+		log using "DebugLog.log", name(DebugLog) append text
+		display ""
+		display "|||||| DebugLog `debugtitle': Log ID = `logid'"
+		capture noisily net query
+		capture noisily which flowchart
+		capture noisily ado dir flowchart
+		capture noisily which texdoc
+		capture noisily which sjlatex
+		display ""
+		display ""
 	}
 	else if("`off'" == "off") {
 		global Flowchart_Debug = "off"
@@ -631,7 +661,11 @@ program define flowchart_tdwriteline
 	if("`lead'" != "") {
 		if("`singleton'" != "") {
 			if("`end'" != "") {
+				if("`endblank'" != "") {
+					local addrowskip = "true"
+				}
 				local linestring = `"`lead'`desc' (n=\figvalue{`name'})}; \\"'	// Usually, a left-block that has only 1 line (a singleton) when the center-block was blank.
+
 			}
 			else {
 				local linestring = `"`lead'`desc' (n=\figvalue{`name'})}; "'
@@ -678,13 +712,14 @@ program define flowchart_tdwriteline
 	if("`addrowskip'" == "true") {
 		global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
 		.blockfields.list[$Flowchart_IteratorBlockfields] = `"      & \\"'
-		macro drop addrowskip
+		global Flowchart_IteratorBlockfields = $Flowchart_IteratorBlockfields + 1
+		.blockfields.list[$Flowchart_IteratorBlockfields] = `"       % -- Blank Left Block"'
+		macro drop addrowskip // Guarantee this is deleted from memory and only happens when it is supposed to happen.
 		if("$Flowchart_Debug" == "on") {
 			display `"Blockfield Linestring:       & \\"'
+			display `"Blockfield Linestring:        % -- Blank Left Block"'
 		}
 	}
 	*flowchart_tdwrite_blockfield `"`linestring'"'
 	*	texdoc write "`varname'"
 end
-
-
