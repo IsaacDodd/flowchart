@@ -1,0 +1,52 @@
+# About - For any contributor new to git: This file just tells the distributed version control system which files to ignore.
+
+# Development Files: Deprecated project files that start with _
+_*
+
+# Operating System-Generated Files
+desktop.ini
+thumbs.db
+.DS_Store
+.LSOverride
+.AppleDouble
+
+# Cloud Storage-Generated Directories
+.tmp.drivedownload
+.insync-trash
+
+# LaTeX-Generated Files
+*.aux
+*.synctex.gz
+*.bbl
+*.blg
+*.bbx
+*.bcf
+*.cbx
+*.run.xml
+*.toc
+*.dvi
+*.fd
+*.cls
+*.lbl
+*.lof
+*.lot
+*.ilg
+*.ind
+*.idx
+*.tuc
+*.soc
+*.fdb_latexmk
+*.fls
+*.spl
+*.auxlock
+*.xwm
+*.mkiv
+*.mkvi
+*.lua
+*.lfg
+*.mpiv
+*.nav
+*.vrb
+*.snm
+*.out
+*-blx.bib
