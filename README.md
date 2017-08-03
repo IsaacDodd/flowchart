@@ -98,7 +98,7 @@ More will be added as they are found.
 
 ## Contributions
 
-Contributions are greatly, greatly appreciated, and a major goal for this package is for *flowchart* to become a community-driven package. Please send pull requests via the conventional means here on GitHub for review. Please feel free to make this project your own by contributing code, new features, and fixes rather than developing them within separate forks. Collaborations are greatly welcomed.
+Contributions are greatly, greatly appreciated, and a major goal for this package is for *flowchart* to become a community-driven package. Please send pull requests via the conventional means here on GitHub for review. Please feel free to make this project your own by contributing code, new features, and fixes rather than developing them within separate forks. Collaborations are greatly welcomed. Please click on [CONTRIBUTING.md](https://github.com/IsaacDodd/flowchart/blob/master/CONTRIBUTING.md) above for an explanation on how to get started.
 
 ## Issues/Bugs, Suggestions, & Feedback
 

@@ -19,7 +19,7 @@ You will be given the proper attribution for any contributions you make to the f
 
 When sending a new pull request, please submit the following information (an 'abstract') to help speed up the process of reviewing and approving your changes:
 
-**Abstract**
+**Abstract:**
 - **Branch Name**: `feature-[featurename]` - The branch name should have a name that summarizes the feature to be added.	
 - **New Subcommand Name**: `flowchart [subcommandname]` - An explanation for subcommands is below.
 - **Summary**: Give a 3-4 sentence summary of what the contribution does. After that 
@@ -27,19 +27,22 @@ When sending a new pull request, please submit the following information (an 'ab
 - **Explanation**: After that feel free to give a lengthier, detailed explanation of the technical aspects of the contribution.
 - **To Do**: These are tasks that the developer approving your feature addition to the flowchart package should do.
 - **Contact Infromation**: Leave the best way to contact you in case there are problems.
+- **Attachments**: Drag and drop any images, screenshots, or samples of output that can be included onto the pull request in GitHub that you can provide to speed up the process of verifying that the feature works when it is tested.
 
-Use your judgment on which sections should be left out. After you submit your request, you will be contacted if there is a problem and any attributions will be assigned to you.
+Use your judgment on which sections should be left out. After you submit your request, you will be contacted if there is a problem, the changes will be reviewed, and attribution will be assigned to you for your effort.
 
 ### Subcommand Names
-If your feature requires a new subcommand name to be added, please choose a terse, convenient word and account for commas and any other redundant words. 
+If your new feature requires a new subcommand name to be added, please choose a terse, convenient word and account for commas and any other redundant words. 
 
 The initial syntax parsing is handled by Stata's 'syntax' command. So, the token for the subcommand is stored into macro `1'.
 
 
 	if("`1'" == "" | "`1'" == "mysubcommandname" | "`1'" == "mysubcommandname," | "`1'" == "alternativename") {
-		...
+		... \\ Your Code Here
 	}
 
+Your command would then be accessed via `flowchart mysubcommandname ...` with any additional words or options.
 	
-Beyoned the initial 'if' statement you can do anything necessary to get your new feature to work: you can use the `gettoken` command to parse the input or whatever you would like and what does not break the code.
+Beyoned the initial 'if' statement for the subcommand you can do anything necessary to get your new feature to work: you can use the `gettoken` command to parse the input or whatever you would like and what does not break the code.
 
+Thank you!
