@@ -11,12 +11,12 @@ program define flowchart
 	version 13
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
 	
-	if("`1'" == "" | "`1'" == "status" | "`1'" == "status," | "`1'" == "getstarted") {
+	if("`1'" == "" | "`1'" == "getstarted") {
 		display ""
-		display "{hline}"
-		display "{bf:|||||| FLOWCHART}" 
-		display ""
-		display "  {title:Getting Started}:"
+		flowchart_hline
+		flowchart_header
+		flowchart_title
+		flowchart_subtitle "Getting Started"
 		display ""
 		if("`1'" == "") {
 			display "  Setup: If this is your first time running the flowchart package, type: " //_newline
@@ -31,7 +31,7 @@ program define flowchart
 		display `"	  - input("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
 		display `"	  - output("...") is the .tikz file which is automatically generated/regenerated."'
 		display ""
-		display "  {title:Other Options}:"
+		flowchart_subtitle "Other Options"
 		display "	1. Updates: To update flowchart, type: " //_newline
 		display "		. {stata flowchart setup, update:flowchart setup, update}" _newline
 		display "	2. Help: For extensive documentation, type: " //_newline
@@ -41,18 +41,24 @@ program define flowchart
 		display "	4. Uninstall: To uninstall flowchart, type: " //_newline
 		display "		. {stata flowchart setup, uninstall:flowchart setup, uninstall}"
 		display ""
-		display "  {title:Website}:"
+		flowchart_subtitle "Website"
 		display "	The flowchart package's website is available at:"
 		display `"	  	{browse "https://github.com/IsaacDodd/flowchart/"}"'
 		display ""
-		display "  {title:License}:"
+		flowchart_subtitle "License"
 		display "	GNU LGPL 2007 - By installing this program you agree to this license, available in full here:" //_newline
 		display `"	 	{browse "https://github.com/IsaacDodd/flowchart/blob/master/license.txt"}"'
 		display ""
 		display "Read this message again at anytime by typing '{stata flowchart getstarted:flowchart getstarted}'"
 		display ""
-		display "{bf:|||||| FLOWCHART}" 
-		display "{hline}"
+		flowchart_footer
+		flowchart_hline
+	}
+	else if("`1'" == "status" | "`1'" == "status,") {
+		display ""
+		flowchart_header
+		flowchart_title
+		flowchart_footer
 	}
 	else if("`1'" == "help" | "`1'" == "help,") {
 		help flowchart
@@ -511,7 +517,7 @@ program define flowchart_setup
 		}
 		display "|||||| Setup Complete"
 		display ""
-		display "{hline}"
+		flowchart_hline
 		display ""
 		if(_rc == 0) {
 			sleep 2000
@@ -734,4 +740,75 @@ program define flowchart_tdwriteline
 	}
 	*flowchart_tdwrite_blockfield `"`linestring'"'
 	*	texdoc write "`varname'"
+end
+capture program drop flowchart_header
+program define flowchart_header
+	display "{bf:|||||| FLOWCHART}" 
+end
+capture program drop flowchart_footer
+program define flowchart_footer
+	display "{bf:|||||| FLOWCHART}" 
+end
+capture program drop flowchart_hline
+program define flowchart_hline
+	display "{hline}"
+end
+capture program drop flowchart_subtitle
+program define flowchart_subtitle
+	syntax [anything]
+	display `"  {title:`1'}:"'	// Requirement: Quotes around text. Safer to use quotes with input to avoid unusual errors rather than compound quotes.
+end
+capture program drop flowchart_title
+program define flowchart_title
+	syntax [anything] [, num(string)]
+	
+	if("`num'" == "") {
+		local num = floor((5-1+1)*runiform() + 1)
+	}
+	
+	* Based on ASCII Generated from: http://www.network-science.de/ascii/
+	* Citation: Seyfferth, Jorg. (19 Feb. 2011.). Imprint / Impressum. Network-science.de. Retrieved from http://www.network-science.de/impressum.html
+	* larry3d
+	display ""	// New Line - Before Title
+	if("`num'" == "1") {
+		display "    ___  ___                               __                       __       "
+		display "  /'___\/\_ \                             /\ \                     /\ \__    "
+		display " /\ \__/\//\ \     ___   __  __  __    ___\ \ \___      __     _ __\ \ ,_\   "
+		display " \ \ ,__\ \ \ \   / __\`\/\ \/\ \/\ \  /'___\ \  _ \`\  /'__\`\  /\\`'__\ \ \ \   "
+		display "  \ \ \_/  \_\ \_/\ \_\ \ \ \_/ \_/ \/\ \__/\ \ \ \ \/\ \_\.\_\ \ \/ \ \ \_  "
+		display "   \ \_\   /\____\ \____/\ \___ ___/'\ \____\\ \_\ \_\ \__/.\_\\ \_\  \ \__\ "
+		display "    \/_/   \/____/\/___/  \/__//__/   \/____/ \/_/\/_/\/__/\/_/ \/_/   \/__/ "
+	}
+	* ogre
+	else if("`num'" == "2") {
+		display "  __ _                   _                _    "
+		display " / _| | _____      _____| |__   __ _ _ __| |_  "
+		display "| |_| |/ _ \ \ /\ / / __| '_ \ / _\` | '__| __| "
+		display "|  _| | (_) \ V  V / (__| | | | (_| | |  | |_  "
+		display "|_| |_|\___/ \_/\_/ \___|_| |_|\__,_|_|   \__| "
+	}
+	* slant
+	else if("`num'" == "3") {
+		display "     ______                   __               __  "
+		display "    / __/ /___ _      _______/ /_  ____ ______/ /_ "
+		display "   / /_/ / __ \ | /| / / ___/ __ \/ __ \`/ ___/ __/ "
+		display "  / __/ / /_/ / |/ |/ / /__/ / / / /_/ / /  / /_   "
+		display " /_/ /_/\____/|__/|__/\___/_/ /_/\__,_/_/   \__/   "
+	}
+	* smslant
+	else if("`num'" == "4") {
+		display "    _____               __            __  "
+		display "   / _/ /__ _    ______/ /  ___ _____/ /_ "
+		display "  / _/ / _ \ |/|/ / __/ _ \/ _ \`/ __/ __/ "
+		display " /_//_/\___/__,__/\__/_//_/\_,_/_/  \__/  "
+	}
+	* speed
+	else if("`num'" == "5") {
+		display " _____________                     ______               _____  "
+		display " ___  __/__  /________      __________  /_______ _________  /_ "
+		display " __  /_ __  /_  __ \_ | /| / /  ___/_  __ \  __ \`/_  ___/  __/ "
+		display " _  __/ _  / / /_/ /_ |/ |/ // /__ _  / / / /_/ /_  /   / /_   "
+		display " /_/    /_/  \____/____/|__/ \___/ /_/ /_/\__,_/ /_/    \__/   "
+	}	
+	display ""	// New Line - After Title
 end
