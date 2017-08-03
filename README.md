@@ -86,10 +86,11 @@ flowchart finalize, input("figure.texdoc") output("figure.tikz")
 As they are identified, useful resources to produce visuals and diagrams will be listed here.
 1. Spreckelsen, Thees. (23 Aug. 2014.). "Stata: CONSORT Flowchart. Too curious to sit still." Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/ on August 1, 2017.
 
-- The details of Dr. Spreckelsen's post were not known during the main portion of the development of the flowchart package nor were any ideas or code used, but the advantage of Spreckelsen's idea is the simplicity of the resulting diagram. The disadvantage is that it is not dynamic (is static/non-programmable) and thus not as amenable to future changes to an analysis. Any changes to the numbers could mean overhauling the diagram. It also does not appear to produce a publication-quality rendering. However, it is still a useful contribution to the existing methods to produce flow diagrams and Spreckelsen is to be applauded for his contribution.
+The details of Dr. Spreckelsen's post were not known during the main portion of the development of the flowchart package nor were any ideas or code used, but the advantage of Spreckelsen's idea is the simplicity of the resulting diagram. The disadvantage is that it is not dynamic (is static/non-programmable) and thus not as amenable to future changes to an analysis. Any changes to the numbers could mean overhauling the diagram. It also does not appear to produce a publication-quality rendering. However, it is still a useful contribution to the existing methods to produce flow diagrams and Spreckelsen is to be applauded for his contribution.
 	
 2. Meine, Hans (20 May 2010.). Including TikZ Pictures. Kogs-www.informatik.uni-hamburg.de. Retrieved from https://kogs-www.informatik.uni-hamburg.de/~meine/tikz/process/ on August 3, 2017.
-- This is a great explanation of how to incorporate a TikZ Picture in LaTeX into a manuscript.
+This is a great explanation of how to incorporate a TikZ Picture in LaTeX into a manuscript.
+
 
 More will be added as they are found.
 
