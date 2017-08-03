@@ -31,9 +31,9 @@ When sending a new pull request, please submit the following information (an 'ab
 Use your judgment on which sections should be left out. After you submit your request, you will be contacted if there is a problem and any attributions will be assigned to you.
 
 ### Subcommand Names
-	If your feature requires a new subcommand name to be added, please choose a terse, convenient word and account for commas and any other redundant words. 
+If your feature requires a new subcommand name to be added, please choose a terse, convenient word and account for commas and any other redundant words. 
 
-	The initial syntax parsing is handled by Stata's 'syntax' command. So, the token for the subcommand is stored in macro ```1'``
+The initial syntax parsing is handled by Stata's 'syntax' command. So, the token for the subcommand is stored in macro ```1'``
 
 	```stata
 		if("`1'" == "" | "`1'" == "mysubcommandname" | "`1'" == "mysubcommandname," | "`1'" == "alternativename") {
@@ -41,5 +41,5 @@ Use your judgment on which sections should be left out. After you submit your re
 		}
 	```
 	
-	Beyoned the initial 'if' statement you can do anything necessary to get your new feature to work: you can use the `gettoken` command to parse the input or whatever you would like and what does not break the code.
+Beyoned the initial 'if' statement you can do anything necessary to get your new feature to work: you can use the `gettoken` command to parse the input or whatever you would like and what does not break the code.
 
