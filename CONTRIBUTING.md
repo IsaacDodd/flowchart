@@ -1,3 +1,9 @@
+# Issues/Bugs
+
+Before submitting what you believe to be a new issue or bug, please study carefully the documentation for flowchart by typing `help flowchart`. If your problem is not addressed, please go ahead and submit a [new issue](https://github.com/IsaacDodd/flowchart/issues/new/). 
+
+Please include the exact warning you received, the conditions or commands you typed in in order to get to that message, the version of Stata you are using, and any other information that may be helpful. Submitting bugs actually helps all users of the *flowchart* package.
+
 # Contributions
 
 The flowchart package has the potential of being an extremely useful addition to Stata. Your help is greatly needed and would be greatly appreciated! Here is how to get started contributing to the flowchart package.
