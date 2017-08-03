@@ -11,12 +11,6 @@ program define flowchart
 	version 13
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
 	
-	* Dependencies - Check Presence
-	capture which texdoc
-	if(_rc) {
-		display as error "Package 'texdoc' is required by the flowchart package. Please run command 'flowchart setup' and try again."
-		exit 111
-	}
 	if("`1'" == "" | "`1'" == "status" | "`1'" == "status," | "`1'" == "getstarted") {
 		display ""
 		display "{hline}"
@@ -81,6 +75,8 @@ program define flowchart
 			display _rc
 		}
 		flowchart_init
+		display ""
+		display "...flowchart initialized."
 	}
 	else if("`1'" == "close" | "`1'" == "finalize" | "`1'" == "close," | "`1'" == "finalize," ) {
 		if("$Flowchart_Debug" == "on") {
@@ -525,7 +521,7 @@ program define flowchart_setup
 end
 capture program drop flowchart_debug
 program define flowchart_debug 
-	syntax [anything] [, on off tikz logreset]
+	syntax [anything] [, on off tikz logreset check]
 	if("`on'" == "on") {
 		global Flowchart_Debug = "on"
 		
@@ -576,6 +572,14 @@ program define flowchart_debug
 		display "|||||| DebugLog Mode: Tikz"
 		display ""
 		display ""
+	}
+	else if("`check'" == "check") {	
+		* Dependencies - Check Presence
+		capture which texdoc
+		if(_rc) {
+			display as error "Package 'texdoc' is required by the flowchart package. Please run command 'flowchart setup' and try again."
+			exit 111
+		}
 	}
 	else {
 		global Flowchart_Debug = "off"
