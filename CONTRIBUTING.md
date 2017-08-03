@@ -10,4 +10,4 @@ Here is how to get started contributing to the FLOWCHART package for Stata.
 - **New Features**: The project is very open to new ideas. Please study the present source code and go right ahead and send a pull request.
 
 ### Attribution
-Your help is greatly needed and would be greatly appreciated! You will be given proper attribution for any contributions you make to the flowchart package.
+Your help is greatly needed and would be greatly appreciated! You will be given the proper attribution for any contributions you make to the flowchart package.
