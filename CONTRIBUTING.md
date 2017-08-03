@@ -29,6 +29,18 @@ When sending a new pull request, please submit the following information (an 'ab
 - **Contact Infromation**: Leave the best way to contact you in case there are problems.
 - **Attachments**: Drag and drop any images, screenshots, or samples of output that can be included onto the pull request in GitHub that you can provide to speed up the process of verifying that the feature works when it is tested.
 
+**Template:**
+Here is a template for the abstract: 
+	[Abstract]
+	Branch Name: 
+	New Subcommand Name: 
+	Summary: 
+	Novelty: 
+	Explanation: 
+	To Do: 
+	Contact Infromation: 
+	Attachments: 
+
 Use your judgment on which sections should be left out. After you submit your request, you will be contacted if there is a problem, the changes will be reviewed, and attribution will be assigned to you for your effort.
 
 ### Subcommand Names
