@@ -26,7 +26,7 @@ program define flowchart
 		display ""
 		if("`1'" == "") {
 			display "  Setup: If this is your first time running the flowchart package, type: " _newline
-			display "		. flowchart setup" _newline
+			display "		. {stata flowchart setup:flowchart setup}" _newline
 		}
 		display `"  To start a new flowchart, here is a general starting point: "'
 		display `"	  Start with the command '. flowchart init using <filename>.data'"'
