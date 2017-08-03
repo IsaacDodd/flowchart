@@ -31,6 +31,7 @@ When sending a new pull request, please submit the following information (an 'ab
 
 **Template:**
 Here is a template for the abstract: 
+
 	[Abstract]
 	Branch Name: 
 	New Subcommand Name: 
