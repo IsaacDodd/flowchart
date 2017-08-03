@@ -25,7 +25,7 @@ program define flowchart
 		display "  {title:Getting Started}:"
 		display ""
 		if("`1'" == "") {
-			display "  Setup: If this is your first time running the flowchart package, type: " _newline
+			display "  Setup: If this is your first time running the flowchart package, type: " //_newline
 			display "		. {stata flowchart setup:flowchart setup}" _newline
 		}
 		display `"  To start a new flowchart, here is a general starting point: "'
@@ -45,7 +45,7 @@ program define flowchart
 		display "	3. Support: For the URL to submit a support ticket, type: " //_newline
 		display "		. {stata flowchart setup, support:flowchart setup, support}" _newline
 		display "	4. Uninstall: To uninstall flowchart, type: " //_newline
-		display "		. {stata flowchart setup, uninstall:flowchart setup, uninstall}" _newline
+		display "		. {stata flowchart setup, uninstall:flowchart setup, uninstall}"
 		display ""
 		display "  {title:Website}:"
 		display "	The flowchart package's website is available at:"
