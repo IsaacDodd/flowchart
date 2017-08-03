@@ -11,7 +11,7 @@ program define flowchart
 	version 13
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
 	
-	if("`1'" == "" | "`1'" == "getstarted") {
+	if("`1'" == "" | "`1'" == "getstarted" | ("`1'" == "get" & "`2'" == "started")) {
 		display ""
 		flowchart_hline
 		flowchart_header
