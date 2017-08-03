@@ -187,7 +187,7 @@ Please see the Ancillary Files for extensive examples with explanations of usage
 {title:Options}
 {dlgtab:Main}
 {phang}
-{cmd:flowchart connect} [blockname_orientation1] [blockname_orientation2] {opt arrow(shape)} allows you to specify the type of arrow.
+{cmd:flowchart connect} [blockname_orientation1] [blockname_orientation2], {opt arrow(shape)} allows you to specify the type of arrow.
 
 
 {marker remarks}{...}
