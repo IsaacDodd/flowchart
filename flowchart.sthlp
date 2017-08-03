@@ -24,11 +24,11 @@ After installing the package, to setup flowchart type 'flowchart setup'. This wi
 package and its main dependencies in your system's ado filepath and also download flowchart's ancillary 
 files into your current working directory.
 Updates to the FLOWCHART package can be installed by using the 'flowchart setup, update' command 
-or are available here: https://github.com/IsaacDodd/flowchart/ {p_end}
+or are available here: https://github.com/IsaacDodd/flowchart/
 
 Support is available at: https://github.com/IsaacDodd/flowchart/issues/new/
 Please see the Ancillary Files for extensive examples with explanations of usage:
-	flowchart_example1.do, flowchart_example2.do, and manuscript.tex {p_end}
+	flowchart_example1.do, flowchart_example2.do, and manuscript.tex
 
 {marker syntax}{...}
 {title:Syntax}
