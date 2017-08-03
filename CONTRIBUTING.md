@@ -33,13 +33,13 @@ Use your judgment on which sections should be left out. After you submit your re
 ### Subcommand Names
 If your feature requires a new subcommand name to be added, please choose a terse, convenient word and account for commas and any other redundant words. 
 
-The initial syntax parsing is handled by Stata's 'syntax' command. So, the token for the subcommand is stored in macro ```1'``
+The initial syntax parsing is handled by Stata's 'syntax' command. So, the token for the subcommand is stored into macro `1'.
 
-	```stata
-		if("`1'" == "" | "`1'" == "mysubcommandname" | "`1'" == "mysubcommandname," | "`1'" == "alternativename") {
-			...
-		}
-	```
+
+	if("`1'" == "" | "`1'" == "mysubcommandname" | "`1'" == "mysubcommandname," | "`1'" == "alternativename") {
+		...
+	}
+
 	
 Beyoned the initial 'if' statement you can do anything necessary to get your new feature to work: you can use the `gettoken` command to parse the input or whatever you would like and what does not break the code.
 
