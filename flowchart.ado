@@ -537,7 +537,7 @@ program define flowchart_setup
 end
 capture program drop flowchart_debug
 program define flowchart_debug 
-	syntax [anything] [, on off tikz logreset check info]
+	syntax [anything] [, on off tikz logreset check info deletefiles yes]
 	
 	if("`on'" == "on") {
 		global Flowchart_Debug = "on"
@@ -634,6 +634,15 @@ program define flowchart_debug
 		display "Read this message again at anytime by typing '{stata flowchart debug info:flowchart debug info}'"
 		flowchart_footer
 	}
+	else if("`deletefiles'" == "deletefiles") {
+		if("`yes'" == "yes") {
+			flowchart_debugdeletefiles
+		}
+		else {
+			display "Are you sure you want to delete the ancillary files in the current working directory?"
+			display "	{stata flowchart debug deletefiles yes: Yes}"
+		}
+	}
 	else {
 		if("$Flowchart_Debug" == "on") {
 			flowchart debug off
@@ -645,6 +654,21 @@ program define flowchart_debug
 			flowchart debug info
 		}
 	}
+end
+capture program drop flowchart_debugdeletefiles
+program define flowchart_debugdeletefiles
+	* DeleteFiles - This deletes the ancillary files from the current working directory - Use with caution.
+	rm methods--figure-flowchart.tex
+	rm methods--figure-flowchart.data
+	rm methods--figure-flowchart.tikz
+	rm manuscript.tex
+	rm license.txt
+	rm figure-flowchart.texdoc
+	rm example1output.pdf
+	rm example2output.pdf
+	rm flowchart_example1.do
+	rm flowchart_example2.do
+			display " ...Ancillary Files Deleted."
 end
 capture program drop flowchart_debugcheck
 program define flowchart_debugcheck
