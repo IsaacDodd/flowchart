@@ -32,7 +32,10 @@ The format follows closely the example of a [CONSORT-style flow diagram at TeXam
 
 ## How to Use
 
-After installation, type **help flowchart** for detailed instructions on how to get started. Study the files **flowchart_example1.do** and **flowchart_example2.do** for very carefully laid out examples of usage and a very detailed, thorough explanation of the format.
+After installation, type `flowchart getstarted` for an introductory message to the *flowchart package*. 
+![GetStartedMessage](https://github.com/IsaacDodd/flowchart/releases/download/v0.0.5/GetStartedMessage.png "Get Started Message")
+
+Type **help flowchart** for detailed instructions on how to get started. Study the files **flowchart_example1.do** and **flowchart_example2.do** for very carefully laid out examples of usage and a very detailed, thorough explanation of the format.
 
 The format for the code follows this typical example, which is available in **flowchart_example2.do**:
 
