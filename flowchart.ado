@@ -1,10 +1,11 @@
+*! version 0.0.5  04aug2017  Isaac M. E. Dodd
+
 *##############################################################################*
 ********************************************************************************
 *** FLOWCHART - SUBJECT DISPOSITION FLOW DIAGRAM FIGURE GENERATOR           ****
 ********************************************************************************
 *##############################################################################*
 
-*! version 0.0.4  03aug2017  Isaac M. E. Dodd
 * FLOWCHART --------------------------------------------------------------------
 capture program drop flowchart
 program define flowchart
@@ -461,8 +462,8 @@ program define flowchart_setup
 		display ""
 		capture ado uninstall flowchart // Same effect as ssc or net uninstall flowchart.
 		if (_rc) {
-			display as error "Setup Error: Update of 'flowchart' could not be completed. Attempts to update a previous version of flowchart has failed."
-			exit 111
+			display as error "Setup Error: Update of 'flowchart' could not be completed. Attempt to update a previous version of flowchart has failed."
+			// exit 111 <-- This is the normal exit code. Rather than exist here, try to continue to see if the flowchart installation can be replaced.
 		}		
 		capture net install flowchart, replace from("https://raw.github.com/IsaacDodd/flowchart/master/")
 		if (_rc) {
@@ -616,6 +617,10 @@ program define flowchart_debug
 		display "3. To Debug TikZ Code: "
 		display "	. {stata flowchart debug tikz:flowchart debug tikz}"
 		display "	This will insert debugging information into the TikZ code." _newline
+		
+		display "4. To Uninstall Flowchart: "
+		display "	. {stata flowchart setup, uninstall:flowchart setup, uninstall}"
+		display "	This will uninstall the flowchart package. The dependencies will remain." _newline
 		
 		display "Read this message again at anytime by typing '{stata flowchart debug info:flowchart debug info}'"
 		flowchart_footer
