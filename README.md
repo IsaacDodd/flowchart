@@ -88,7 +88,7 @@ flowchart finalize, input("figure.texdoc") output("figure.tikz")
 
 As they are identified, useful resources to produce visuals and diagrams will be listed here.
 
-1. Online LaTeX Editors/Compilers:
+1. **Online LaTeX Editors/Compilers**:
 
 	- **[ShareLaTeX](https://www.sharelatex.com/)** - https://www.sharelatex.com/
 	
@@ -96,7 +96,7 @@ As they are identified, useful resources to produce visuals and diagrams will be
 	
 	Compile LaTeX documents right in your browser with either of these two webservices. These two companies are merging and soon will be one editor. One of these works well for testing the *flowchart package* out-of-the-box. Register an account and copy and paste the manuscript, figure file, tikz file, and data file in the same directory with the proper extensions and it should compile and allow you to download the resulting PDF.
 
-2. Reporting Guidelines (Most Common):
+2. **Reporting Guidelines** (Most Common):
 
 	Here are some common reporting guidelines:
 	
@@ -111,6 +111,8 @@ As they are identified, useful resources to produce visuals and diagrams will be
 	**(c) [PRISMA Statmenet](http://www.prisma-statement.org)** - http://www.prisma-statement.org - For Systematic Reviews and Meta-Analyses.
 	
 	Alessandro Liberati (21 Jul. 2009). [The PRISMA Statement for Reporting Systematic Reviews and Meta-Analyses of Studies That Evaluate Health Care Interventions: Explanation and Elaboration](http://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1000100). PLOS Medicine. 6(7):e1000100.
+	
+	**(d) [The EQUATOR Network](http://www.equator-network.org/)** - http://www.equator-network.org - Lists of Other Reporting Guidelines. This resource is an endeavor to provide a comprehensive list of reporting guidelines for different types of studies and areas of research.
 	
 3. Spreckelsen, Thees. (23 Aug 2014). "**Stata: CONSORT Flowchart. Too curious to sit still**". Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/ on August 1, 2017.
 
