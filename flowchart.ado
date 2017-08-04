@@ -4,7 +4,7 @@
 ********************************************************************************
 *##############################################################################*
 
-*! version 0.0.4  02aug2017  Isaac M. E. Dodd
+*! version 0.0.4  03aug2017  Isaac M. E. Dodd
 * FLOWCHART --------------------------------------------------------------------
 capture program drop flowchart
 program define flowchart
@@ -527,7 +527,8 @@ program define flowchart_setup
 end
 capture program drop flowchart_debug
 program define flowchart_debug 
-	syntax [anything] [, on off tikz logreset check]
+	syntax [anything] [, on off tikz logreset check info]
+	
 	if("`on'" == "on") {
 		global Flowchart_Debug = "on"
 		
@@ -538,68 +539,141 @@ program define flowchart_debug
 		capture log query DebugLog
 		* If a log has already been started, DebugLog will exist. If it is off (i.e., it was started but has been closed/turned off), 
 		* 	append to the existing log. If DebugLog does not exist (r(status) is blank) or it exists but is on already, replace the log.
-		display "Debugging On."
+		flowchart_subtitle "DEBUG MODE ON"
 		display ""
-		display "  Starting DebugLog..."
+		display "  Starting Debug Log..."
 		display ""
 		if("`r(status)'" == "off") {	
 			capture log close DebugLog
 			log using "DebugLog.log", name(DebugLog) append text
-			local debugtitle = "Started"
+			local debugtitle = "STARTED"
 		}
 		else {
 			capture log close DebugLog
 			log using "DebugLog.log", name(DebugLog) replace text
-			local debugtitle = "Resumed"
+			local debugtitle = "RESUMED"
 		}
 		capture log close DebugLog
 		log using "DebugLog.log", name(DebugLog) append text
 		display ""
-		display "|||||| DebugLog `debugtitle': Log ID = `logid'"
-		capture noisily net query
-		capture noisily which flowchart
-		capture noisily ado dir flowchart
-		capture noisily which texdoc
-		capture noisily which sjlatex
+		flowchart_header "DEBUG LOG `debugtitle': Log ID = `logid'"
 		display ""
 		display ""
 	}
 	else if("`off'" == "off") {
 		global Flowchart_Debug = "off"
-		display ""
-		display "|||||| DebugLog Off"
-		display ""
-		display ""
 		capture log off DebugLog
+		display ""
+		flowchart_footer "DEBUG LOG: OFF"
+		display ""
+		display ""
 	}
 	else if("`tikz'" == "tikz") {
 		global Flowchart_Debug = "tikz"
 		display ""
-		display "|||||| DebugLog Mode: Tikz"
+		flowchart_header "DEBUG MODE: TikZ"
 		display ""
 		display ""
 	}
-	else if("`check'" == "check") {	
-		* Dependencies - Check Presence
-		capture which texdoc
+	else if("`check'" == "check") {
+		flowchart_header "DEBUG INFO"
+		flowchart_debugcheck
+		flowchart_footer
+	}
+	else if("`logreset'" == "logreset") {
+		display "..."
+		capture log close DebugLog
+		flowchart_footer "DEBUG LOG RESET" // Close just the log without turning off $Flowchart_Debug
+	}
+	else if("`close'" == "close") {
+		global Flowchart_Debug = "off"
+		capture log close DebugLog	// Close the log and also turn off $Flowchart_Debug
+		display ""
+		flowchart_footer "DEBUG LOG CLOSED"
+		display ""
+		display ""
+	}
+	else if("`info'" == "info") {
+		display ""
+		flowchart_header "DEBUG"
+		display ""
+		flowchart_subtitle "Debug Options"
+		display ""
+		display "1. To Debug Code:" _newline
+		display "	Turn Debugging Mode On: "
+		display "	. {stata flowchart debug on:flowchart debug on}"
+		display "	Use this at the start of code that produces errors." _newline
+		
+		display " 	Turn Debugging Mode Off: "
+		display "	. {stata flowchart debug off:flowchart debug off}"
+		display "	Use this at the end of code that produces errors." _newline
+		display "	This will generate DebugLog.log in your working directory with debugging information." _newline
+		
+		display "2. To Get Environment Information: "
+		display "	. {stata flowchart debug check:flowchart debug check}"
+		display "	This will give you versioning information on Stata, the flowchart package, and dependencies installed." _newline
+		
+		display "3. To Debug TikZ Code: "
+		display "	. {stata flowchart debug tikz:flowchart debug tikz}"
+		display "	This will insert debugging information into the TikZ code." _newline
+		
+		flowchart_footer
+	}
+	else {
+		if("$Flowchart_Debug" == "on") {
+			flowchart debug off
+		}
+		else if("$Flowchart_Debug" == "off") {
+			flowchart debug on
+		}
+		else {
+			flowchart debug info
+		}
+	}
+end
+capture program drop flowchart_debugcheck
+program define flowchart_debugcheck
+		display ""
+		
+		* Stata Version Information: 
+		flowchart_subtitle "Stata"
+		display ""
+		display "  [Version]"
+		version	// Returns the STATA Version #
+		display ""
+		display "  [ADO Directory]"
+		capture noisily net query
+		display ""
+		
+		* Dependencies - Check Presence & Give Version #'s: 
+		flowchart_subtitle "Dependency Check"
+		display ""
+		display "  1. [Flowchart Package]"
+		capture noisily which flowchart
+		if(_rc) {
+			display as error "Package 'flowchart' likely uninstalled itself. Please try reinstalling the package again."
+			exit 111
+		}
+		capture noisily ado dir flowchart
+		if(_rc) {
+			display as error "ADO Directory could not be returned for the 'flowchart' package."
+			exit 111
+		}
+		display ""
+		display "  2. [TexDoc Package]"
+		capture noisily which texdoc
 		if(_rc) {
 			display as error "Package 'texdoc' is required by the flowchart package. Please run command 'flowchart setup' and try again."
 			exit 111
 		}
-	}
-	else {
-		global Flowchart_Debug = "off"
 		display ""
-		display "|||||| DebugLog Closed"
+		display "  3. [SJLatex]"
+		capture noisily which sjlatex
+		if(_rc) {
+			display as error "Package 'sjlatex' is required by the 'texdoc' package. Please run command 'flowchart setup' and try again."
+			exit 111
+		}
 		display ""
-		display ""
-		capture log close DebugLog
-	}
-	
-	if("`logreset'" != "") {
-		capture log close DebugLog
-		display "...DebugLog reset."
-	}
 end
 capture program drop flowchart_init
 program define flowchart_init
@@ -743,11 +817,27 @@ program define flowchart_tdwriteline
 end
 capture program drop flowchart_header
 program define flowchart_header
-	display "{bf:|||||| FLOWCHART}" 
+	syntax [anything]
+	
+	if ("`1'" != "") {
+		local text = "`1'"
+	}
+	else {
+		local text = "FLOWCHART"
+	}
+	display "{bf:|||||| `text'}" 
 end
 capture program drop flowchart_footer
 program define flowchart_footer
-	display "{bf:|||||| FLOWCHART}" 
+	syntax [anything]
+	
+	if ("`1'" != "") {
+		local text = "`1'"
+	}
+	else {
+		local text = "FLOWCHART"
+	}
+	display "{bf:|||||| `text'}" 
 end
 capture program drop flowchart_hline
 program define flowchart_hline
