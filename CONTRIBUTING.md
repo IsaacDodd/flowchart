@@ -1,8 +1,8 @@
 # Issues/Bugs
 
-Before submitting what you believe to be a new issue or bug, please study carefully the documentation for flowchart by typing `help flowchart`. If your problem is not addressed, please go ahead and submit a [new issue](https://github.com/IsaacDodd/flowchart/issues/new/). 
+Before submitting what you believe to be a new issue or bug, please study carefully the documentation for flowchart by typing `help flowchart`. If your problem is not addressed, please go ahead and submit a [new issue](https://github.com/IsaacDodd/flowchart/issues/new/).
 
-Please include the exact warning you received, the conditions or commands you typed in in order to get to that message, the version of Stata you are using, and any other information that may be helpful. Submitting bugs actually helps all users of the *flowchart* package.
+When submitting a new ticket, type `flowchart debug info` to receive helpful copy-and-paste system information collected by the package that will aide in understanding the issue since some problems are specific to certain setups (and type `flowchart debug` for more options). Please include the exact warning you received, the conditions or commands you typed in in order to get to that message, and any other information that may be helpful. Submitting bugs actually helps all users of the *flowchart* package.
 
 # Contributions
 
