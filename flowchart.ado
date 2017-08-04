@@ -658,17 +658,18 @@ end
 capture program drop flowchart_debugdeletefiles
 program define flowchart_debugdeletefiles
 	* DeleteFiles - This deletes the ancillary files from the current working directory - Use with caution.
-	rm methods--figure-flowchart.tex
-	rm methods--figure-flowchart.data
-	rm methods--figure-flowchart.tikz
-	rm manuscript.tex
-	rm license.txt
-	rm figure-flowchart.texdoc
-	rm example1output.pdf
-	rm example2output.pdf
-	rm flowchart_example1.do
-	rm flowchart_example2.do
-			display " ...Ancillary Files Deleted."
+	capture rm methods--figure-flowchart.tex
+	capture rm methods--figure-flowchart.data
+	capture rm methods--figure-flowchart.tikz
+	capture rm manuscript.tex
+	capture rm license.txt
+	capture rm figure-flowchart.texdoc
+	capture rm example1output.pdf
+	capture rm example2output.pdf
+	capture rm flowchart_example1.do
+	capture rm flowchart_example2.do
+	
+	display " ...Ancillary Files Deleted."
 end
 capture program drop flowchart_debugcheck
 program define flowchart_debugcheck
