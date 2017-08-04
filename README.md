@@ -19,7 +19,7 @@ The format follows closely the example of a [CONSORT-style flow diagram at TeXam
 
 **New Install:** In Stata, to install the *flowchart* package and its main dependencies in your system's ado filepath, and also flowchart's ancillary files into your current working directory, type or copy-and-paste the following commands into Stata:
 
-	. net install flowchart, from(https://raw.github.com/isaacdodd/flowchart/master/) replace
+	. net install flowchart, from("https://raw.github.com/isaacdodd/flowchart/master/") replace
 	. flowchart setup
 
 **Updates:** To later update your flowchart installation with the latest changes to the package, use the following command in Stata: 
@@ -85,11 +85,18 @@ flowchart finalize, input("figure.texdoc") output("figure.tikz")
 
 As they are identified, useful resources to produce visuals and diagrams will be listed here.
 
-1. Spreckelsen, Thees. (23 Aug 2014). "**Stata: CONSORT Flowchart. Too curious to sit still**". Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/ on August 1, 2017.
+1. Online LaTeX Editors/Compilers:
+
+	ShareLaTeX	- https://www.sharelatex.com/
+	Overleaf 	- https://overleaf.com/
+	
+	Compile LaTeX documents right in your browser with either of these two webservices. These two companies are merging and soon will be one editor. One of these works well for testing the *flowchart package* out-of-the-box. Register an account and copy and paste the manuscript, figure file, tikz file, and data file in the same directory with the proper extensions and it should compile and allow you to download the resulting PDF.
+
+2. Spreckelsen, Thees. (23 Aug 2014). "**Stata: CONSORT Flowchart. Too curious to sit still**". Retrieved from https://theesspreckelsen.wordpress.com/2014/08/23/stata-consort-flowchart/ on August 1, 2017.
 
 	The details of Dr. Spreckelsen's post were not known during the main portion of the development of the flowchart package nor were any ideas or code used, but the advantage of Spreckelsen's idea is the simplicity of the resulting diagram. The disadvantage is that it is not dynamic (is static/non-programmable) and thus not as amenable to future changes to an analysis. Any changes to the numbers could mean overhauling the diagram. It also does not appear to produce a publication-quality rendering. However, it is still a useful contribution to the existing methods to produce flow diagrams and Spreckelsen is to be applauded for his contribution.
 	
-2. Meine, Hans. (20 May 2010). "**Including TikZ Pictures**". Retrieved from https://kogs-www.informatik.uni-hamburg.de/~meine/tikz/process/ on August 3, 2017.
+3. Meine, Hans. (20 May 2010). "**Including TikZ Pictures**". Retrieved from https://kogs-www.informatik.uni-hamburg.de/~meine/tikz/process/ on August 3, 2017.
 
 	This is a great explanation of how to incorporate a TikZ Picture in LaTeX into a manuscript.
 

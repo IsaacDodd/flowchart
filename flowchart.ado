@@ -12,22 +12,27 @@ program define flowchart
 	version 13
 	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
 	
-	if("`1'" == "" | "`1'" == "getstarted" | ("`1'" == "get" & "`2'" == "started")) {
+	if("`1'" == "" | "`1'" == "getstarted" | "`1'" == "firsttime" | ("`1'" == "get" & "`2'" == "started")) {
 		display ""
 		flowchart_hline
 		flowchart_header
 		flowchart_title
 		flowchart_subtitle "Getting Started"
 		display ""
-		if("`1'" == "") {
+		if("`1'" == "" | "`1'" == "firsttime") {
 			display "  Setup: If this is your first time running the flowchart package, type: " //_newline
 			display "		. {stata flowchart setup:flowchart setup}" _newline
+			display `"	  Start with the example flow diagram in "flowchart_example1.do" "'
+			display `"	  If you do not have a LaTeX distribution installed you can get started using an online editor:"'
+			display `"	  	{browse "https://www.sharelatex.com/"}"'
+			display `"	  	{browse "https://www.overleaf.com/"}"'
+			display `"	  See the notes in "flowchart_example1.do" on how to eventually get started with a full LaTeX setup."'
 		}
 		display `"  To start a new flowchart, here is a general starting point: "'
 		display `"	  Start with the command '. flowchart init using <filename>.data'"'
-		display `"	  It is an automatically created/generated/regenerated file.'"'
+		display `"	  (<filename>.data is an automatically generated/regenerated variable file.)"'
 		display `"	  Study the documentation and examples on how to properly format 'writerow' commands."'
-		display `"	  Use the 'connect' command to connect the blocks for each row."'
+		display `"	  Use the 'connect' command to draw arrows between the blocks in each row."'
 		display `"	  End a diagram with the 'flowchart finalize' command with 2 important options:"'
 		display `"	  - input("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
 		display `"	  - output("...") is the .tikz file which is automatically generated/regenerated."'
@@ -522,7 +527,7 @@ program define flowchart_setup
 		display ""
 		if(_rc == 0) {
 			sleep 2000
-			flowchart getstarted	// Print the get started message.
+			flowchart firsttime	// Print the get started message. Include the 'first time' part of the message
 		}
 	}
 end

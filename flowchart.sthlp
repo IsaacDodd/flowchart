@@ -34,6 +34,9 @@ and are also available here: {browse "https://github.com/IsaacDodd/flowchart/"}
 		{browse "http://www.texample.net/tikz/examples/consort-flowchart/"}
 	Example of the {it:flowchart package}'s output to replicate this example: 
 		{browse "https://github.com/IsaacDodd/flowchart/blob/master/example1output.pdf"}
+	If you do not yet have a LaTeX setup, an online LaTeX editor is a good place to start:
+		{browse "https://www.sharelatex.com"}
+		{browse "https://www.overleaf.com"}
 
 {marker syntax}{...}
 {title:Syntax}
@@ -143,11 +146,11 @@ In LaTeX, place something like this in the preamble section of your .tex file (t
 
 	...
 	% 	Figures, Diagrams, and Other Graphics
-	\usepackage{tikz}		% TikZ Package - Generates graphics (i.e., flowcharts)
+	\usepackage{tikz}		% TikZ Package - Generates graphics (i.e., flowcharts generated)
 		\usetikzlibrary{shapes,arrows}
 		\newcommand*{\h}{\hspace{5pt}}% For indentation
 		\newcommand*{\hh}{\h\h}% Double indentation
-	\usepackage{datatool}	% DataTool Package - Loads Subanalysis Data to generate flowchart
+	\usepackage{datatool}		% DataTool Package - Loads variable data file
 		\DTLsetseparator{ = }% Delimiter
 	...
 
@@ -238,6 +241,8 @@ The sides of the diagram are initially counter-intuitive. Think of it like readi
 
 
 {dlgtab:Block Connections ("Arrows")}
+
+{p}
 {bf:flowchart connect}
 
 	{bf:Format:} [rowname_center] --> [rowname_left] - Connect a center block to a left block for horizontal 
@@ -262,8 +267,9 @@ Connect each row's block with an underscore and then the column-orientation corr
 
 {marker remarks}{...}
 {title:Remarks}
-{pstd}
-For detailed information on this command, see {browse "https://github.com/IsaacDodd/flowchart/"}.
+
+{phang}
+For detailed information on the {it:flowchart package}, visit {browse "https://github.com/IsaacDodd/flowchart/"}.
 
 		
 {marker examples}{...}
