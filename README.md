@@ -35,7 +35,7 @@ The format follows closely the example of a [CONSORT-style flow diagram at TeXam
 After installation, type `flowchart getstarted` for an introductory message to the *flowchart package*. 
 ![GetStartedMessage](https://github.com/IsaacDodd/flowchart/blob/master/PreviousVersion/GetStartedMessage.png "Get Started Message")
 
-Type **help flowchart** for detailed instructions on how to get started. Study the files **flowchart_example1.do** and **flowchart_example2.do** for very carefully laid out examples of usage and a very detailed, thorough explanation of the format.
+Type `help flowchart` for detailed instructions on how to get started. Study the files **flowchart_example1.do** and **flowchart_example2.do** for very carefully laid out examples of usage and a very detailed, thorough explanation of the format.
 
 The format for the code follows this typical example, which is available in **flowchart_example2.do**:
 
@@ -91,6 +91,7 @@ As they are identified, useful resources to produce visuals and diagrams will be
 1. Online LaTeX Editors/Compilers:
 
 	ShareLaTeX	- https://www.sharelatex.com/
+	
 	Overleaf 	- https://overleaf.com/
 	
 	Compile LaTeX documents right in your browser with either of these two webservices. These two companies are merging and soon will be one editor. One of these works well for testing the *flowchart package* out-of-the-box. Register an account and copy and paste the manuscript, figure file, tikz file, and data file in the same directory with the proper extensions and it should compile and allow you to download the resulting PDF.
