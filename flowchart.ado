@@ -617,6 +617,7 @@ program define flowchart_debug
 		display "	. {stata flowchart debug tikz:flowchart debug tikz}"
 		display "	This will insert debugging information into the TikZ code." _newline
 		
+		display "Read this message again at anytime by typing '{stata flowchart debug info:flowchart debug info}'"
 		flowchart_footer
 	}
 	else {
@@ -633,6 +634,15 @@ program define flowchart_debug
 end
 capture program drop flowchart_debugcheck
 program define flowchart_debugcheck
+		display ""
+		
+		* Machine Inforation:
+		flowchart_subtitle "Machine"
+		display ""
+		display "  [Operating System]"
+		display "`c(os)'"
+		display "  [Machine Type]"
+		display "`c(machine_type)'"
 		display ""
 		
 		* Stata Version Information: 
