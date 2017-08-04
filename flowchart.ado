@@ -23,10 +23,7 @@ program define flowchart
 			display "  Setup: If this is your first time running the flowchart package, type: " //_newline
 			display "		. {stata flowchart setup:flowchart setup}" _newline
 			display `"	  Start with the example flow diagram in "flowchart_example1.do" "'
-			display `"	  If you do not have a LaTeX distribution installed you can get started using an online editor:"'
-			display `"	  	{browse "https://www.sharelatex.com/"}"'
-			display `"	  	{browse "https://www.overleaf.com/"}"'
-			display `"	  See the notes in "flowchart_example1.do" on how to eventually get started with a full LaTeX setup."'
+			display ""
 		}
 		display `"  To start a new flowchart, here is a general starting point: "'
 		display `"	  Start with the command '. flowchart init using <filename>.data'"'
@@ -37,6 +34,13 @@ program define flowchart
 		display `"	  - input("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
 		display `"	  - output("...") is the .tikz file which is automatically generated/regenerated."'
 		display ""
+		if("`1'" == "" | "`1'" == "firsttime") {
+			display `"	  If you do not have a LaTeX distribution installed you can get started using an online editor:"'
+			display `"	  	{browse "https://www.sharelatex.com/"}"'
+			display `"	  	{browse "https://www.overleaf.com/"}"'
+			display `"	  See the notes in "flowchart_example1.do" on how to eventually get started with a full LaTeX setup."'
+			display ""
+		}
 		flowchart_subtitle "Other Options"
 		display "	1. Updates: To update flowchart, type: " //_newline
 		display "		. {stata flowchart setup, update:flowchart setup, update}" _newline
