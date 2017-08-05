@@ -549,7 +549,7 @@ program define flowchart_debug
 		capture log query DebugLog
 		* If a log has already been started, DebugLog will exist. If it is off (i.e., it was started but has been closed/turned off), 
 		* 	append to the existing log. If DebugLog does not exist (r(status) is blank) or it exists but is on already, replace the log.
-		flowchart_subtitle "DEBUG MODE ON"
+		flowchart_subtitle "DEBUG MODE: ON"
 		display ""
 		display "  Starting Debug Log..."
 		display ""
@@ -573,8 +573,14 @@ program define flowchart_debug
 	else if("`off'" == "off") {
 		global Flowchart_Debug = "off"
 		capture log off DebugLog
+		if(_rc) {
+			display as error "Could not turn off DebugLog."
+		}
+		else {
+			display "...DebugLog Off."
+		}
 		display ""
-		flowchart_footer "DEBUG LOG: OFF"
+		flowchart_footer "DEBUG MODE: OFF"
 		display ""
 		display ""
 	}
@@ -586,26 +592,41 @@ program define flowchart_debug
 		display ""
 	}
 	else if("`check'" == "check") {
-		flowchart_header "DEBUG INFO"
+		flowchart_hline
+		flowchart_header "DEBUG CHECK"
 		flowchart_debugcheck
 		flowchart_footer
+		flowchart_hline
 	}
 	else if("`logreset'" == "logreset") {
-		display "..."
 		capture log close DebugLog
-		flowchart_footer "DEBUG LOG RESET" // Close just the log without turning off $Flowchart_Debug
+		if(_rc) {
+			display as error "DebugLog could not be closed."
+			display _rc
+		}
+		else {
+			display "...DebugLog Closed."
+			display ""
+			flowchart_footer "DEBUG LOG RESET" // Close just the log without turning off $Flowchart_Debug
+		}
 	}
 	else if("`close'" == "close") {
 		global Flowchart_Debug = "off"
 		capture log close DebugLog	// Close the log and also turn off $Flowchart_Debug
-		display ""
-		flowchart_footer "DEBUG LOG CLOSED"
-		display ""
-		display ""
+		if(_rc) {
+			display as error "Could not close DebugLog."
+		}
+		else {
+			display "...DebugLog Closed."
+			display ""
+			flowchart_footer "DEBUG MODE: OFF"
+			display ""
+		}
 	}
 	else if("`info'" == "info") {
 		display ""
-		flowchart_header "DEBUG"
+		flowchart_hline
+		flowchart_header "DEBUG INFO"
 		display ""
 		flowchart_subtitle "Debug Options"
 		display ""
@@ -633,6 +654,7 @@ program define flowchart_debug
 		
 		display "Read this message again at anytime by typing '{stata flowchart debug info:flowchart debug info}'"
 		flowchart_footer
+		flowchart_hline
 	}
 	else if("`deletefiles'" == "deletefiles") {
 		if("`yes'" == "yes") {
