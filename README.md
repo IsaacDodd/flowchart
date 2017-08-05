@@ -83,10 +83,16 @@ flowchart connect rownametest2_left rownametest4_left
 * FINALIZE: This writes the files and generates the 'tikzpicture'
 flowchart finalize, input("figure.texdoc") output("figure.tikz")
 ```
-	
+
+## Behind the Scenes
+
+Under the hood, *flowchart* is an interesting package because it functions like a compiler and extends to some of the limitations of Stata's language features. It converts a simplistic Stata format into discrete tokens using Stata's low-level [tokenizer](https://en.wikipedia.org/wiki/Lexical_analysis), then through a hand-written parser (similar to a 2-token [look-ahead](https://en.wikipedia.org/wiki/LALR_parser), or LALR(2) parser) flowchart makes sense of each parsed token based on its logical sequence. Other internal functions [transcompile](https://github.com/IsaacDodd/flowchart/releases) the tokens into the correct TikZ code, looping through each block's lines. The connections go into a separate section.
+
+The result is TikZ code that compiles into a flow diagram. (To see some of this in action, turn on the debugging log with the command `flowchart debug on` and run the code.) In the future, work can be done to simplify the overall structure to to extend its functionality to further forms of diagrams and other languages, replicating the underlying principles.
+
 ## Resources
 
-As they are identified, useful resources to produce visuals and diagrams will be listed here.
+As they are identified, useful resources will be listed here that produce visuals and diagrams using statistical methods.
 
 1. **Online LaTeX Editors/Compilers**:
 
@@ -122,7 +128,6 @@ As they are identified, useful resources to produce visuals and diagrams will be
 
 	This is a great explanation of how to incorporate a TikZ Picture in LaTeX into a manuscript.
 
-
 More resources will be added as they are found.
 
 ## Contributions
@@ -139,5 +144,5 @@ Credit to Ben Jann, whose texdoc package is a dependency in flowchart, and Morte
 
 ## License
 
-By installing this program you agree to the GNU LGPL under which this program is licensed. Please see License.txt for the full license of the GNU LGPL 2007, which allows for the incorporation of this program in proprietary software if necessary but without warranty.
-Note: 'Flowchart' comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions. Copyright (c) 2017.  Isaac M. E. Dodd. All rights reserved.
+By installing this program you agree to the GNU LGPL under which this program is licensed. Please see [License.txt](https://github.com/IsaacDodd/flowchart/blob/master/license.txt) for the full license of the GNU LGPL 2007, which allows for the incorporation of this program in proprietary software if necessary but without warranty.
+Note: 'Flowchart' comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions. Copyright © 2017.  Isaac M. E. Dodd. All rights reserved.
