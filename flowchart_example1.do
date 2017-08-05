@@ -51,6 +51,15 @@
 * 		c) IDE Editor
 * 			Recommended: TeXstudio (instead of others: TeXworks, TeXMaker, etc.)
 * 			Download: http://www.texstudio.org/
+* 		-----------------------------
+* 		d) Online LaTeX Setup 
+* 			Setting up a, b, and c can take some time. Therefore, an online
+* 			LaTeX can be used if you would like get started quickly.
+* 				ShareLaTeX - http://www.sharelatex.com/
+* 				Overleaf - http://www.overleaf.com/
+* 			These two companies have announced that they will soon merge into 
+* 			one editor.
+* 		-----------------------------
 * 		If you are a beginner/new to LaTeX, here are good starting points:
 * 			Installations:
 * 				https://www.youtube.com/watch?v=WewSa9aaFXg
@@ -265,7 +274,8 @@ flowchart writerow(analyzed): ///
 	"intervention_analyzed" 51 "Analyzed in Intervention group", ///
 	"postwaitlist_analyzed" 51 "Analyzed in Wait-list control group"
 
-* Connects the blocks with arrows by their orientation. Format: rowname_blockorientation rowname_blockorientation
+* Format: rowname_blockorientation rowname_blockorientation
+* This command connects the blocks with arrows by their assigned orientation. 
 * 	Use rowname_center for the center-block (first block of triplets), which will appear on the left of the diagram.
 * 	Use rowname_left for the left-block (second blow of triplets), which will appear on the right of the diagram.
 flowchart connect enrollment_center enrollment_left
@@ -287,5 +297,7 @@ flowchart connect wlist3mon_left analyzed_left
 
 flowchart finalize, input("figure-flowchart.texdoc") output("methods--figure-flowchart.tikz")
 
-display "Now, include the new .tikz file as a figure diagram in your LaTeX document."
-display "Use the preamble in the ancillary manuscript file as a guide on which packages and command to include."
+
+* Now, using LaTeX, compile the manuscript.tex file -- This file is already setup to tie all of these files together.
+* 	This file shows you how you would use \input{} to include the new .tikz file as a figure diagram into a 'figure' tex LaTeX document.
+* 	The preamble in the ancillary manuscript file is a guide on which packages and commands to include in your LaTeX setup.
