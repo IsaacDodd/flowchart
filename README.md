@@ -1,10 +1,10 @@
 # FLOWCHART
 
-Stata module to generate a publication-quality subject disposition flow diagram in LaTeX using the TikZ package directly within Stata using texdoc 
+Stata module to generate a publication-quality subject disposition flow diagram in LaTeX using the PGF/TikZ package directly within Stata using texdoc
 
 ## Introduction
 
-Use the **_flowchart_** package in Stata to generate a publication-quality **Subject Disposition Flowchart Diagram** in LaTeX Format. This package gives Stata the ability to generate the necessary TikZ code to include in a LaTeX and produce the diagram as a PDF or any other format. 
+Use the **_flowchart_** package in Stata to generate a publication-quality **Subject Disposition Flowchart Diagram** in LaTeX Format. This package gives Stata the ability to generate the necessary TikZ code to include in a LaTeX and produce the diagram as a PDF or any other format. Similar to how the 'estout' package in Stata is commonly used to generate tables from regression analysis output for published journal articles, this package can be used to generate flowcharts for publications that show how the subjects from a study were included/excluded into analysis groups, or further refinements.
 
 The final diagram will be similar in style to the ones used in the PRISMA Statement, CONSORT 2010 Statement, or STROBE Statement Reporting Guidelines, which are very commonly used within formal publications for systematic review, clinical trial, or cohort study research findings. This package allows generating this diagram to be automated so that the numbers in the diagram change as the analysis changes, saving hours of work.
 
@@ -86,11 +86,12 @@ flowchart finalize, input("figure.texdoc") output("figure.tikz")
 
 After running this code, the LaTeX figure and manuscript files, which tie in the TikZ file and data file, can then be compiled using a LaTeX distribution and IDE editor with a previewer. Please see [**flowchart_example1.do**](https://github.com/IsaacDodd/flowchart/blob/master/flowchart_example1.do) and the [list of resources](https://github.com/IsaacDodd/flowchart/blob/master/RESOURCES.md) for more information on LaTeX.
 
-## Behind the Scenes
+### Behind the Scenes
 
 Under the hood, *flowchart* is an interesting package because it functions like a [compiler](https://en.wikipedia.org/wiki/Compiler) and extends to some of the limitations of Stata's language features. It converts a simplistic Stata format into discrete tokens using Stata's low-level [tokenizer](https://en.wikipedia.org/wiki/Lexical_analysis), then through a hand-written parser (similar to a 2-token [look-ahead](https://en.wikipedia.org/wiki/LALR_parser), or LALR(2) parser) flowchart makes sense of each parsed token based on its logical sequence. Other internal functions [transcompile](https://en.wikipedia.org/wiki/Source-to-source_compiler) the tokens into the correct [PGF/TikZ](https://en.wikipedia.org/wiki/PGF/TikZ) code, looping through each block's lines. The connections go into a separate section.
 
 The result is TikZ code that compiles into a [flow diagram](https://en.wikipedia.org/wiki/Flowchart). (To see some of this in action, turn on the debugging log with the command `flowchart debug on` and run the code.) In the future, work can be done to simplify the overall structure to to extend its functionality to further forms of diagrams and other languages, replicating the underlying principles.
+
 
 ## Resources
 
@@ -98,15 +99,18 @@ As they are identified, useful resources that produce visuals and diagrams using
 
 ## Contributions
 
-Contributions are greatly, greatly appreciated, and a major goal for this package is for *flowchart* to become a community-driven package. 
+[Contributions](https://github.com/IsaacDodd/flowchart/blob/master/CONTRIBUTING.md) are greatly, greatly appreciated, and a major goal for this package is for *flowchart* to become a community-driven package. 
 
 ### Support for Issues/Bugs, Suggestions, & Feedback
 
-Please submit bugs using [GitHub](https://github.com/IsaacDodd/flowchart/issues/new/ "Open a New Issue on GitHub for Flowchart"). It is very difficult to respond to issue requests via email. All comments, feedback, and suggestions are also greatly welcomed.
+Please [submit bugs using GitHub](https://github.com/IsaacDodd/flowchart/issues/new/ "Open a New Issue on GitHub for Flowchart") since it is much more difficult to respond to issues or feature requests via email. All comments, feedback, or suggestions are greatly welcomed.
 
 ### Source Code & Development
-Please send your code via pull requests via the conventional means here on GitHub for review. Please feel free to make this project your own by contributing new code changes, new features, and fixes rather than forking the code into a separate project. Collaborations are greatly welcomed. Please click on [CONTRIBUTING.md](https://github.com/IsaacDodd/flowchart/blob/master/CONTRIBUTING.md) above for an explanation on how to get started.
+Please send your code via pull requests via the conventional means here on GitHub for review. Please feel free to make this project your own by contributing new code changes, new features, and fixes rather than forking the code into a separate project. Collaborations are greatly welcomed. Please click on [CONTRIBUTING.md](https://github.com/IsaacDodd/flowchart/blob/master/CONTRIBUTING.md#contributions) above for an explanation on how to get started.
 
+## Future Directions
+
+If this package becomes often-used, or there are further feature requests, additional steps could incldue different styles of flowchart diagrams to match various Reporting Guidelines, functions to be able to create boxes from calculations, or a wider variety of box options. There are many directions this project could take should a user-base arise.
 
 ## Credit
 
@@ -114,5 +118,5 @@ Credit to Ben Jann, whose texdoc package is a dependency in flowchart, and Morte
 
 ## License
 
-By installing this program you agree to the GNU LGPL under which this program is licensed. Please see [License.txt](https://github.com/IsaacDodd/flowchart/blob/master/license.txt) for the full license of the GNU LGPL 2007, which allows for the incorporation of this program in proprietary software if necessary but without warranty.
+By installing this package you agree to the GNU LGPL under which this package is licensed. Please see [License.txt](https://github.com/IsaacDodd/flowchart/blob/master/license.txt) for the full license of the GNU LGPL 2007, which does allow for the incorporation of this package in proprietary software if necessary but without warranty.
 Note: 'Flowchart' comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions. Copyright © 2017.  Isaac M. E. Dodd. All rights reserved.

@@ -690,7 +690,7 @@ program define flowchart_debugdeletefiles
 	capture rm example2output.pdf
 	capture rm flowchart_example1.do
 	capture rm flowchart_example2.do
-	
+	display ""
 	display " ...Ancillary Files Deleted."
 end
 capture program drop flowchart_debugcheck
