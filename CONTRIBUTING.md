@@ -57,7 +57,9 @@ The initial syntax parsing is handled by Stata's 'syntax' command. So, the token
 
 
 	if("`1'" == "" | "`1'" == "mysubcommandname" | "`1'" == "mysubcommandname," | "`1'" == "alternativename") {
+	
 		... \\ Your Code Here
+		
 	}
 
 Your command would then be accessed via `flowchart mysubcommandname ...` with any additional words or options.
