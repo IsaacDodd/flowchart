@@ -2,6 +2,8 @@
 
 Stata module to generate a publication-quality subject disposition flow diagram in LaTeX using the PGF/TikZ package directly within Stata using texdoc
 
+*Fully tested on Stata versions 13, 14, and 15*
+
 ## Introduction
 
 Use the **_flowchart_** package in Stata to generate a publication-quality **Subject Disposition Flowchart Diagram** in LaTeX Format. This package gives Stata the ability to generate the necessary TikZ code to include in a LaTeX and produce the diagram as a PDF or any other format. Similar to how the 'estout' package in Stata is commonly used to generate tables from regression analysis output for published journal articles, this package can be used to generate flowcharts for publications that show how the subjects from a study were included/excluded into analysis groups, or further refinements.
