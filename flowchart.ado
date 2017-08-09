@@ -57,7 +57,7 @@ program define flowchart
 		display ""
 		flowchart_subtitle "License"
 		display "	GNU LGPL 2007 - By installing this program you agree to this license, available in full here:" //_newline
-		display `"	 	{browse "https://github.com/IsaacDodd/flowchart/blob/master/license.txt"}"'
+		display `"	 	{browse "https://github.com/IsaacDodd/flowchart/blob/master/LICENSE.txt"}"'
 		display ""
 		display "Read this message again at anytime by typing '{stata flowchart getstarted:flowchart getstarted}'"
 		display ""
