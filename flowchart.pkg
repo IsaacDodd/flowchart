@@ -7,7 +7,7 @@ d Requires: Stata version 13 and texdoc
 d 
 d Author:  Isaac M. E. Dodd
 d Support: github.com/IsaacDodd/flowchart/issues/new
-d License: GNU LGPL 2007 - By installing this program you agree to this license.
+d License: GNU LGPL 2007 - By installing this package you agree to this license.
 d
 f flowchart.ado
 f flowchart.sthlp
@@ -20,5 +20,5 @@ f methods--figure-flowchart.tex
 f methods--figure-flowchart.tikz
 f example1output.pdf
 f example2output.pdf
-f license.txt
+f LICENSE.txt
 e
