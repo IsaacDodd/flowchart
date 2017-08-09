@@ -15,7 +15,7 @@ d
 d {bf:License}
 d   This program is licensed under the GNU LGPL 2007 which allows for proprietary programs to use this package 
 d	as a subroutine but has specific open source implications. 
-d 	Please see License.txt for the full license. 'Flowchart' comes with ABSOLUTELY NO WARRANTY. 
+d 	Please see LICENSE.txt for the full license; by installing and/or using this software you agree to this license. 'Flowchart' comes with ABSOLUTELY NO WARRANTY. 
 d 	This is free software, and you are welcome to redistribute it under certain conditions.
 d 	The flowchart package is Copyright (C) 2017. Isaac M. E. Dodd. All rights reserved.
 d 
