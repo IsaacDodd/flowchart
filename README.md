@@ -120,5 +120,5 @@ Credit to Ben Jann, whose texdoc package is a dependency in flowchart, and Morte
 
 ## License
 
-By installing this package you agree to the GNU LGPL under which this package is licensed. Please see [License.txt](https://github.com/IsaacDodd/flowchart/blob/master/license.txt) for the full license of the GNU LGPL 2007, which does allow for the incorporation of this package in proprietary software if necessary but without warranty.
+By installing this package you agree to the GNU LGPL under which this package is licensed. Please see [LICENSE.txt](https://github.com/IsaacDodd/flowchart/blob/master/LICENSE.txt) for the full license of the GNU LGPL 2007, which does allow for the incorporation of this package in proprietary software if necessary but without warranty.
 Note: 'Flowchart' comes with ABSOLUTELY NO WARRANTY; This is free software, and you are welcome to redistribute it under certain conditions. Copyright © 2017.  Isaac M. E. Dodd. All rights reserved.
