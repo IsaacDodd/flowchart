@@ -23,7 +23,7 @@ More resources will be added as they are found.
 	
 	Moher, D., et al. (8 Dec. 2016.). [CONSORT 2010 Explanation and Elaboration](http://www.consort-statement.org/Media/Default/Downloads/CONSORT%202010%20Explanation%20and%20Elaboration%20(BMJ).pdf). BMJ. EPub, 1-28.
 	
-	**(c) [PRISMA Statmenet](http://www.prisma-statement.org)** - http://www.prisma-statement.org - For Systematic Reviews and Meta-Analyses.
+	**(c) [PRISMA Statement](http://www.prisma-statement.org)** - http://www.prisma-statement.org - For Systematic Reviews and Meta-Analyses.
 	
 	Alessandro Liberati (21 Jul. 2009). [The PRISMA Statement for Reporting Systematic Reviews and Meta-Analyses of Studies That Evaluate Health Care Interventions: Explanation and Elaboration](http://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1000100). PLOS Medicine. 6(7):e1000100.
 	
