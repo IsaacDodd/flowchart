@@ -10,7 +10,7 @@
 capture program drop flowchart
 program define flowchart
 	version 13
-	syntax [anything] [using/] [, name(string) value(string) input(string) output(string) arrow(string) *]
+	syntax [anything] [using/] [, name(string) value(string) template(string) output(string) arrow(string) *]
 	
 	if("`1'" == "" | "`1'" == "getstarted" | "`1'" == "firsttime" | ("`1'" == "get" & "`2'" == "started")) {
 		display ""
@@ -31,7 +31,7 @@ program define flowchart
 		display `"	  Study the documentation and examples on how to properly format 'writerow' commands."'
 		display `"	  Use the 'connect' command to draw arrows between the blocks in each row."'
 		display `"	  End a diagram with the 'flowchart finalize' command with 2 important options:"'
-		display `"	  - input("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
+		display `"	  - template("...") is the .texdoc file, is an ancillary file which you don't need to edit."'
 		display `"	  - output("...") is the .tikz file which is automatically generated/regenerated."'
 		display ""
 		if("`1'" == "" | "`1'" == "firsttime") {
@@ -99,7 +99,7 @@ program define flowchart
 			display "Closed."
 		}
 		capture file close FlowchartFile 
-		flowchart_tdfinalize, input("`input'") output("`output'")
+		flowchart_tdfinalize, template("`template'") output("`output'")
 	}
 	else if("`1'" == "setup" | "`1'" == "setup,") {
 		gettoken varfirst varothers : 0
@@ -786,12 +786,12 @@ end
 
 capture program drop flowchart_tdfinalize
 program define flowchart_tdfinalize
-	syntax , input(string) output(string)
+	syntax , template(string) output(string)
 	***\\ TIKZ PICTURE: Write the TikZ Picture to the file.
 	if("$Flowchart_Debug" == "on") {
-		display "`input' `output'"
+		display "`template' `output'"
 	}
-	texdoc do "`input'", init("`output'") replace
+	texdoc do "`template'", init("`output'") replace
 	* Important Note: The '.tikz' extension here is important since if it is not specified, calling 'texdoc do' in the Main Analysis Do File will overwrite the .tex file of the same name in the same directory.
 	texdoc close
 end

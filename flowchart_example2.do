@@ -40,4 +40,4 @@ flowchart connect rownametest3_center rownametest5_center
 flowchart connect rownametest2_left rownametest4_left
 
 * |||||| FINALIZE: This writes the files and generates the 'tikzpicture'
-flowchart finalize, input("figure.texdoc") output("figure.tikz")
+flowchart finalize, template("figure.texdoc") output("figure.tikz")
