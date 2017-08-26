@@ -57,7 +57,7 @@ This file is created by the {it:flowchart package} in Stata and used by LaTeX's 
 	a new row in the diagram. A detailed explanation is below.{p_end}
 {synopt:{opt con:nect}} {bf:connect} rowname_{it:blockorientation} rowname_{it:blockorientation}, [arrow({it:type})] {hline 2} 
 	Draws arrows between the blocks across or between rows by specifying 'rowname underscore block-orientation'. {p_end}
-{synopt:{opt fin:alize}} {bf:finalize}, input("{it:filename.texdoc}") output("{it:filename.tikz}") {hline 2} 
+{synopt:{opt fin:alize}} {bf:finalize}, template("{it:filename.texdoc}") output("{it:filename.tikz}") {hline 2} 
 	Takes the prespecified texdoc syntax in {it:filename.texdoc} and writes into it the TikZ code into {it:filename.tikz} to be included in a manuscript's LaTeX document. {p_end}
 {synopt:{opt setu:p}} {bf:setup}, [{it:update}] {hline 2} Installs texdoc and any other dependencies and 
 	replaces the current flowchart installation. Alternatively, option [, {it:update}] can be specified to 
