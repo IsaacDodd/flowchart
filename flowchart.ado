@@ -1,4 +1,4 @@
-*! version 0.0.7  26aug2017  Isaac M. E. Dodd
+*! version 0.0.8  18feb2019  Isaac M. E. Dodd
 
 *##############################################################################*
 ********************************************************************************
@@ -140,8 +140,14 @@ program define flowchart
 			display "Connect: `1' `2' `3'"
 		}
 		if("`arrow'" != "") {
-			if("`arrow'" == "angled" | "`arrow'" == "angle") {
-				local arrow = "-|"
+			if("`arrow'" == "angled" | "`arrow'" == "angle" | "`arrow'" == "angledrev" | "`arrow'" == "anglerev") {
+				if("`arrow'" == "angled" | "`arrow'" == "angle") {
+					local arrow = "-|"
+				}
+				else if("`arrow'" == "angledrev" | "`arrow'" == "anglerev") {	// Reverse the arrow direction
+					local arrow = "|-"
+				}
+				
 				if("$Flowchart_Debug" == "on") {
 					display "`3'"
 				}
