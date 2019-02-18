@@ -37,8 +37,9 @@ program define flowchart
 		display ""
 		if("`1'" == "" | "`1'" == "firsttime") {
 			display `"	  If you do not have a LaTeX distribution installed you can get started using an online editor:"'
-			display `"	  	{browse "https://www.sharelatex.com/"}"'
 			display `"	  	{browse "https://www.overleaf.com/"}"'
+			display `"	  	{browse "https://papeeria.com/"}"'
+			display `"	  	{browse "https://www.latexbase.com/"}"'
 			display `"	  See the notes in "flowchart_example1.do" on how to eventually get started with a full LaTeX setup."'
 			display ""
 		}
